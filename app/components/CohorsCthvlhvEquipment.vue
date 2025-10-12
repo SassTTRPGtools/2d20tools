@@ -13,51 +13,98 @@
     <!-- WEAPONS 武器區域 -->
     <div class="mb-6">
       <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-        WEAPONS
+        武器
       </label>
       <div class="overflow-x-auto">
         <table class="w-full border-collapse mt-2 min-w-max">
           <thead>
             <tr>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-24">NAME</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-20">FOCUS</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-28">REACH OR RANGE</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">DAMAGE & EFFECTS</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-16">SIZE</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">QUALITIES</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-24">名稱</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-20">專精</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-28">距離</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">傷害&效果</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-16">體積</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">特性</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-20">操作</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="n in 5" :key="`weapon-${n}`" class="h-10">
+            <tr v-for="(weapon, index) in weaponList" :key="`weapon-${index}`" class="h-12">
               <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
-              </td>
-              <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
-              </td>
-              <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
+                <input 
+                  type="text" 
+                  v-model="weapon.name"
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
+                  placeholder="武器名稱"
+                >
               </td>
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
+                  v-model="weapon.focus"
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
+                  placeholder="專精"
+                >
+              </td>
+              <td class="p-1 border border-red-900 bg-white">
+                <input 
+                  type="text" 
+                  v-model="weapon.reach"
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0 text-center"
+                  placeholder="距離"
+                >
+              </td>
+              <td class="p-1 border border-red-900 bg-white">
+                <input 
+                  type="text" 
+                  v-model="weapon.damage"
                   class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
                   @mouseenter="handleDamageEffectHover"
                   @mouseleave="hideQualityTooltip"
-                  placeholder="輸入傷害效果，如：強烈、擊倒等"
+                  placeholder="傷害效果"
                 >
-              </td>
-              <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
               </td>
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
-                  @mouseenter="handleQualityHover"
-                  @mouseleave="hideQualityTooltip"
-                  placeholder="輸入武器特性，如：精準、沉重等"
+                  v-model="weapon.size"
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0 text-center"
+                  placeholder="體積"
                 >
+              </td>
+              <td class="p-1 border border-red-900 bg-white">
+                <div class="flex flex-wrap gap-1 p-1 min-h-8">
+                  <span
+                    v-for="(quality, qIndex) in weapon.qualities"
+                    :key="`weapon-quality-${qIndex}`"
+                    class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full border border-blue-300 cursor-help"
+                    @mouseenter="(e) => showQualityTooltip(e, quality, 'weapon')"
+                    @mouseleave="hideQualityTooltip"
+                  >
+                    {{ quality }}
+                  </span>
+                  <span v-if="weapon.qualities.length === 0" class="text-gray-400 text-xs italic">
+                    無特性
+                  </span>
+                </div>
+              </td>
+              <td class="p-1 border border-red-900 bg-white text-center">
+                <div class="flex flex-col gap-1">
+                  <button
+                    @click="openWeaponModal(index)"
+                    class="text-blue-600 hover:text-blue-800 text-xs font-bold"
+                    type="button"
+                  >
+                    選擇
+                  </button>
+                  <button
+                    @click="clearWeapon(index)"
+                    class="text-red-600 hover:text-red-800 text-xs font-bold"
+                    type="button"
+                  >
+                    清空
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -205,6 +252,90 @@
       ></div>
     </div>
 
+    <!-- 武器選擇Modal -->
+    <div 
+      v-if="showWeaponModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click="closeWeaponModal"
+    >
+      <div 
+        class="bg-white rounded-lg shadow-2xl max-w-6xl w-full mx-4 max-h-96 overflow-hidden"
+        @click.stop
+      >
+        <div class="bg-red-900 text-white p-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-bold">選擇武器</h3>
+            <button 
+              @click="closeWeaponModal"
+              class="text-white hover:text-gray-200 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+        
+        <div class="p-4">
+          <div class="overflow-y-auto max-h-64">
+            <table class="w-full border-collapse text-xs">
+              <thead>
+                <tr>
+                  <th class="bg-gray-100 p-2 font-bold text-left border">名稱</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">專精</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">距離</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">傷害</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">體積</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border">特性</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">選擇</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="weapon in defaultWeapons" :key="weapon.name" class="hover:bg-gray-50">
+                  <td class="p-2 border">{{ weapon.name }}</td>
+                  <td class="p-2 border text-center">{{ weapon.focus }}</td>
+                  <td class="p-2 border text-center">{{ weapon.reach }}</td>
+                  <td class="p-2 border text-center font-mono">{{ weapon.damage }}</td>
+                  <td class="p-2 border text-center">{{ weapon.size }}</td>
+                  <td class="p-2 border">
+                    <div class="flex flex-wrap gap-1">
+                      <span
+                        v-for="quality in weapon.qualities"
+                        :key="quality"
+                        class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full border border-blue-300 cursor-help"
+                        @mouseenter="(e) => showQualityTooltip(e, quality, 'weapon')"
+                        @mouseleave="hideQualityTooltip"
+                      >
+                        {{ quality }}
+                      </span>
+                      <span v-if="weapon.qualities.length === 0" class="text-gray-400 text-xs italic">
+                        無特性
+                      </span>
+                    </div>
+                  </td>
+                  <td class="p-2 border text-center">
+                    <button
+                      @click="selectWeapon(weapon)"
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+                    >
+                      選擇
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="bg-gray-100 p-4 text-right">
+          <button
+            @click="closeWeaponModal"
+            class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 text-sm rounded mr-2 transition-colors"
+          >
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- 護甲選擇Modal -->
     <div 
       v-if="showArmorModal"
@@ -346,6 +477,18 @@ const weaponQualities = ref({
     name: '特殊',
     description: '此武器具有特殊性質或能力，於描述中另行說明。'
   },
+  '特殊-斧': {
+    name: '特殊（斧）',
+    description: '單手斧亦可作為「投擲武器」使用，射程為近距，造成與近戰相同的傷害。'
+  },
+  '特殊-杖': {
+    name: '特殊（杖）',
+    description: '若以雙手持杖，將距離降為 2，基礎傷害提升為 3。'
+  },
+  '特殊-標槍': {
+    name: '特殊（標槍）',
+    description: '雖非為近戰而造，若角色擁有「近戰武器」專精，則可以標槍進行近戰攻擊。此時距離為 2，造成的傷害與遠程相同。'
+  },
   '精巧': {
     name: '精巧',
     description: '攻擊聲響難以察覺，需以「洞察＋觀察」檢定（難度 2）察覺。遊戲主持人可依距離或環境噪音調整難度。'
@@ -412,6 +555,146 @@ const armorQualities = ref({
   }
 })
 
+// 預設武器資料
+const defaultWeapons = ref([
+  {
+    name: '斧',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '3🎲兇猛',
+    size: '次要',
+    qualities: ['特殊-斧']
+  },
+  {
+    name: '棍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '2🎲',
+    size: '次要',
+    qualities: []
+  },
+  {
+    name: '棍杖',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '3🎲震懾',
+    size: '主要',
+    qualities: []
+  },
+  {
+    name: '匕首',
+    focus: '近戰武器',
+    reach: '1',
+    damage: '2🎲穿透1',
+    size: '次要',
+    qualities: ['隱藏', '精巧']
+  },
+  {
+    name: '多用途軍斧',
+    focus: '近戰武器',
+    reach: '1',
+    damage: '3🎲穿透1',
+    size: '次要',
+    qualities: []
+  },
+  {
+    name: '標槍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '3🎲穿透1',
+    size: '次要',
+    qualities: ['特殊-標槍']
+  },
+  {
+    name: '長矛',
+    focus: '近戰武器',
+    reach: '3',
+    damage: '4🎲穿透1',
+    size: '主要',
+    qualities: []
+  },
+  {
+    name: '杖',
+    focus: '近戰武器',
+    reach: '3',
+    damage: '2🎲',
+    size: '主要',
+    qualities: ['特殊-杖']
+  },
+  {
+    name: '劍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '4🎲',
+    size: '主要',
+    qualities: ['格擋']
+  },
+  {
+    name: '鐮刀劍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '4🎲兇猛',
+    size: '主要',
+    qualities: []
+  },
+  {
+    name: '羅馬短劍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '4🎲穿透1',
+    size: '主要',
+    qualities: ['格擋']
+  },
+  {
+    name: '長劍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '5🎲',
+    size: '主要',
+    qualities: ['雙手']
+  },
+  {
+    name: '騎士長劍',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '5🎲穿透1',
+    size: '主要',
+    qualities: ['雙手']
+  },
+  {
+    name: '徒手攻擊',
+    focus: '徒手',
+    reach: '0',
+    damage: '2🎲',
+    size: '—',
+    qualities: ['精巧']
+  },
+  {
+    name: '戰斧',
+    focus: '近戰武器',
+    reach: '2',
+    damage: '4🎲兇猛',
+    size: '主要',
+    qualities: ['雙手']
+  },
+  {
+    name: '小盾',
+    focus: '近戰武器',
+    reach: '1',
+    damage: '2🎲震懾',
+    size: '次要',
+    qualities: ['盾牌2']
+  },
+  {
+    name: '大盾',
+    focus: '近戰武器',
+    reach: '1',
+    damage: '3🎲震懾',
+    size: '主要',
+    qualities: ['盾牌3']
+  }
+])
+
 // 預設護甲資料
 const defaultArmors = ref([
   {
@@ -435,6 +718,18 @@ const defaultArmors = ref([
     qualities: ['沉重', '不適']
   }
 ])
+
+// 武器列表和Modal狀態
+const weaponList = ref([
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] }
+])
+
+const showWeaponModal = ref(false)
+const selectedWeaponIndex = ref(0)
 
 // 護甲列表和Modal狀態
 const armorList = ref([
@@ -545,6 +840,40 @@ const handleDamageEffectHover = (event) => {
   
   if (foundEffect) {
     showQualityTooltip(event, foundEffect, 'damage')
+  }
+}
+
+// 武器modal相關函數
+const openWeaponModal = (index) => {
+  selectedWeaponIndex.value = index
+  showWeaponModal.value = true
+}
+
+const closeWeaponModal = () => {
+  showWeaponModal.value = false
+}
+
+const selectWeapon = (weapon) => {
+  weaponList.value[selectedWeaponIndex.value] = {
+    name: weapon.name,
+    focus: weapon.focus,
+    reach: weapon.reach,
+    damage: weapon.damage,
+    size: weapon.size,
+    qualities: [...weapon.qualities]
+  }
+  closeWeaponModal()
+}
+
+// 清空武器
+const clearWeapon = (index) => {
+  weaponList.value[index] = {
+    name: '',
+    focus: '',
+    reach: '',
+    damage: '',
+    size: '',
+    qualities: []
   }
 }
 
