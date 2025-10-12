@@ -79,16 +79,20 @@
     </div>
 
     <!-- 個人真相與疤痕 -->
-    <div class="mb-4">
+    <div class="mb-6">
       <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
         PERSONAL TRUTHS & SCARS
       </label>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 mt-2">
-        <textarea 
+      <div class="flex gap-2 mt-2 overflow-x-auto">
+        <div 
           v-for="n in 5" 
           :key="n"
-          class="border-2 border-red-900 p-2 h-20 bg-white font-serif resize-none text-sm"
-        ></textarea>
+          class="flex-shrink-0 w-40 lg:flex-1"
+        >
+          <textarea 
+            class="w-full border-2 border-red-900 p-2 h-20 bg-white font-serif resize-none text-sm"
+          ></textarea>
+        </div>
       </div>
     </div>
 
@@ -101,13 +105,13 @@
           <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
             STRESS
           </label>
-          <div class="border-2 border-red-900 p-2 bg-white">
-            <div class="grid gap-1">
-              <div class="flex gap-1 justify-start" v-for="row in 3" :key="row">
+          <div class="border-2 border-red-900 p-3 bg-white">
+            <div class="flex flex-col gap-1">
+              <div class="flex gap-1" v-for="row in 2" :key="row">
                 <div 
-                  v-for="col in 8" 
+                  v-for="col in 15" 
                   :key="col"
-                  class="w-6 h-6 border-2 border-red-900 bg-white cursor-pointer hover:bg-red-100"
+                  class="w-6 h-6 border-2 border-red-900 bg-white cursor-pointer hover:bg-red-100 transition-colors"
                   :class="{ 'bg-red-900': stressBoxes[row-1] && stressBoxes[row-1][col-1] }"
                   @click="toggleStress(row, col)"
                 ></div>
@@ -119,55 +123,66 @@
         <!-- 勇氣與財富 -->
         <div class="flex gap-4">
           <div class="flex flex-col flex-1">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               COURAGE
             </label>
-            <input 
-              type="text" 
-              class="border-2 border-red-900 p-2 w-full bg-white font-serif h-16"
-            >
+            <div class="border-2 border-red-900 bg-white h-20">
+              <textarea 
+                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
+              ></textarea>
+            </div>
           </div>
           <div class="flex flex-col flex-1">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               FORTUNE
             </label>
-            <input 
-              type="text" 
-              class="border-2 border-red-900 p-2 w-full bg-white font-serif h-16"
-            >
+            <div class="border-2 border-red-900 bg-white h-20">
+              <textarea 
+                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
+              ></textarea>
+            </div>
           </div>
         </div>
       </div>
       
       <!-- 右側：護甲區域 -->
-      <div class="flex flex-col gap-4 lg:w-1/2">
-        <div class="flex gap-4">
-          <div class="flex flex-col flex-1">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+      <div class="flex gap-4 lg:w-1/2">
+        <!-- 左側：BASE ARMOR 和 TOTAL ARMOR -->
+        <div class="flex flex-col w-32 gap-4">
+          <div class="flex flex-col">
+            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               BASE ARMOR
             </label>
-            <input 
-              type="text" 
-              class="border-2 border-red-900 p-2 w-full bg-white font-serif h-16"
-            >
+            <div class="border-2 border-red-900 bg-white h-20">
+              <textarea 
+                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none text-center"
+              ></textarea>
+            </div>
           </div>
-          <div class="flex flex-col flex-1">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+          
+          <div class="flex flex-col">
+            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               TOTAL ARMOR
             </label>
-            <input 
-              type="text" 
-              class="border-2 border-red-900 p-2 w-full bg-white font-serif h-16"
-            >
+            <div class="border-2 border-red-900 bg-white h-20">
+              <textarea 
+                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none text-center"
+              ></textarea>
+            </div>
           </div>
         </div>
+        
+        <!-- 右側：INJURIES -->
         <div class="flex flex-col flex-1">
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
             INJURIES
           </label>
-          <textarea 
-            class="border-2 border-red-900 p-2 w-full bg-white font-serif resize-none flex-1 min-h-32"
-          ></textarea>
+          <div class="border-2 border-red-900 bg-white flex-1" style="min-height: 168px;">
+            <textarea 
+              class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
+              style="min-height: 164px;"
+            ></textarea>
+          </div>
         </div>
       </div>
     </div>

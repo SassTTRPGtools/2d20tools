@@ -1,35 +1,34 @@
 <template>
   <div class="bg-magnus-bg min-h-screen">
     <!-- 主要容器 -->
-    <div class="flex">
-      <!-- 自適應容器 -->
-      <div class="flex-1 px-4 py-8 max-w-6xl mx-auto">
-        <div class="bg-white shadow-2xl rounded-lg p-6 md:p-8">
-          <!-- 直接渲染組件 -->
-          <CohorsCthvlhvSheet v-if="activeTab === 'basic'" />
-          <CohorsCthvlhvEquipment v-else-if="activeTab === 'equipment'" />
-          <CohorsCthvlhvSpells v-else-if="activeTab === 'spells'" />
-          <CohorsCthvlhvNotes v-else-if="activeTab === 'notes'" />
-        </div>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <div class="bg-white shadow-2xl rounded-lg p-6 md:p-8">
+        <!-- 直接渲染組件 -->
+        <CohorsCthvlhvSheet v-if="activeTab === 'basic'" />
+        <CohorsCthvlhvEquipment v-else-if="activeTab === 'equipment'" />
+        <CohorsCthvlhvSpells v-else-if="activeTab === 'spells'" />
+        <CohorsCthvlhvNotes v-else-if="activeTab === 'notes'" />
       </div>
+    </div>
 
-      <!-- 右側頁籤導航 -->
-      <div class="print:hidden w-20 bg-gradient-to-b from-slate-800 to-slate-900 border-l border-red-900/30 flex flex-col min-h-screen">
+    <!-- 浮動右側頁籤導航 -->
+    <div class="print:hidden fixed right-4 top-1/2 transform -translate-y-1/2 z-50">
+      <div class="floating-tabs bg-gradient-to-b from-slate-800/95 to-slate-900/95 rounded-2xl border border-red-900/30 shadow-2xl backdrop-blur-sm hover:shadow-3xl transition-all duration-300">
         <!-- 標題區域 -->
-        <div class="p-4 border-b border-red-900/30">
+        <div class="px-3 py-2 border-b border-red-900/30">
           <div class="text-red-400 text-xs font-bold text-center">
             SHEETS
           </div>
         </div>
         
         <!-- 頁籤按鈕 -->
-        <div class="flex-1 py-4">
+        <div class="py-3">
           <div class="space-y-2 px-2">
             <button 
               v-for="(tab, index) in tabs" 
               :key="tab.id"
               @click="activeTab = tab.id"
-              class="tab-button w-full h-16 rounded-lg font-bold text-xs transition-all duration-300 border-2 flex flex-col items-center justify-center relative group"
+              class="tab-button w-16 h-16 rounded-lg font-bold text-xs transition-all duration-300 border-2 flex flex-col items-center justify-center relative group"
               :class="activeTab === tab.id 
                 ? 'bg-gradient-to-b from-red-500 to-red-700 text-white border-red-400 shadow-lg shadow-red-900/50 transform scale-105' 
                 : 'bg-gradient-to-b from-slate-600 to-slate-800 text-slate-300 border-slate-500 hover:from-slate-500 hover:to-slate-700 hover:text-white hover:border-slate-400 hover:shadow-lg'"
@@ -39,7 +38,7 @@
                 {{ tab.icon }}
               </div>
               <!-- 頁籤文字 -->
-              <div class="leading-tight text-center whitespace-pre-line transform transition-transform group-hover:scale-105">
+              <div class="leading-tight text-center whitespace-pre-line text-xs transform transition-transform group-hover:scale-105">
                 {{ tab.shortName }}
               </div>
               
@@ -59,8 +58,8 @@
         </div>
 
         <!-- 底部裝飾 -->
-        <div class="p-4 border-t border-red-900/30">
-          <div class="text-red-400/60 text-xs text-center">
+        <div class="px-3 py-2 border-t border-red-900/30">
+          <div class="text-red-400/60 text-xs text-center leading-tight">
             COHORS<br>CTHVLHV
           </div>
         </div>
@@ -166,10 +165,20 @@ const tabs = [
   }
 }
 
+/* 浮動頁籤樣式 */
+.floating-tabs {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 /* 響應式調整 */
 @media (max-width: 768px) {
-  .w-20 {
-    width: 60px;
+  .fixed.right-4 {
+    right: 8px;
+  }
+  
+  .w-16 {
+    width: 48px;
   }
   
   .h-16 {
@@ -178,6 +187,34 @@ const tabs = [
   
   .text-xs {
     font-size: 0.6rem;
+  }
+  
+  .px-3 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .py-2 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fixed.right-4 {
+    right: 4px;
+  }
+  
+  .w-16 {
+    width: 40px;
+  }
+  
+  .h-16 {
+    height: 40px;
+  }
+  
+  .text-xs {
+    font-size: 0.5rem;
   }
 }
 </style>
