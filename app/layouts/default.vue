@@ -4,6 +4,7 @@
       <div class="text-2xl font-bold text-magnus-text tracking-widest magnus-title drop-shadow font-typewriter">2D20角色表</div>
       <nav class="space-x-4">        
         <NuxtLink to="/" class="text-magnus-text hover:text-magnus-accent font-semibold transition duration-300">首頁</NuxtLink>
+        <NuxtLink to="/character" class="text-magnus-text hover:text-magnus-accent font-semibold transition duration-300">角色表</NuxtLink>
       </nav>
     </header>
     <main class="flex-1 flex flex-col bg-magnus-bg">
