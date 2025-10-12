@@ -4,15 +4,15 @@ module.exports = {
     extend: {
       colors: {
         magnus: {
-          bg: '#181c1b', // 深墨綠黑
-          paper: '#232a25', // 紙張灰綠
-          accent: '#a13c3c', // 暗紅
-          text: '#e5e1d8', // 仿舊紙色
-          faded: '#6b7a6a', // 暗灰綠
+          bg: '#1e293b', // 鮮明深藍色
+          paper: '#334155', // 亮藍灰色
+          accent: '#f97316', // 鮮明橙色
+          text: '#f8fafc', // 明亮白色
+          faded: '#3b82f6', // 鮮明藍色
         },
       },
       fontFamily: {
-        typewriter: ['Special Elite', 'serif'],
+        typewriter: ['Google Sans Code', 'serif'],
       },
     },
   },
