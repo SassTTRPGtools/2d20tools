@@ -113,19 +113,48 @@
       <div class="flex flex-col lg:w-1/2">
         <!-- 壓力區域 -->
         <div class="mb-4">
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-            壓力
-          </label>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm">
+              壓力
+            </label>
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-red-900">上限:</label>
+              <input 
+                type="number" 
+                v-model.number="maxStressBoxes"
+                min="1" 
+                max="20"
+                class="border border-red-900 px-2 py-1 text-xs w-12 text-center bg-white font-serif"
+              >
+              <span class="text-xs text-red-900">/ 20</span>
+            </div>
+            <button 
+              @click="clearStress"
+              class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+            >
+              清空
+            </button>
+          </div>
           <div class="border-2 border-red-900 p-3 bg-white">
             <div class="flex flex-col gap-1">
               <div class="flex gap-1" v-for="row in 2" :key="row">
                 <div 
-                  v-for="col in 15" 
+                  v-for="col in 10" 
                   :key="col"
-                  class="w-6 h-6 border-2 border-red-900 bg-white cursor-pointer hover:bg-red-100 transition-colors"
-                  :class="{ 'bg-red-900': stressBoxes[row-1] && stressBoxes[row-1][col-1] }"
+                  class="w-6 h-6 border-2 transition-colors relative group"
+                  :class="getStressBoxClasses(row, col)"
                   @click="toggleStress(row, col)"
-                ></div>
+                  @mouseenter="previewStress(row, col)"
+                  @mouseleave="clearPreview"
+                >
+                  <!-- 懸停提示 -->
+                  <div 
+                    v-if="isHovering && (row - 1) * 10 + (col - 1) < maxStressBoxes"
+                    class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
+                  >
+                    {{ (row - 1) * 10 + col }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -137,20 +166,26 @@
             <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               勇氣
             </label>
-            <div class="border-2 border-red-900 bg-white h-20">
-              <textarea 
-                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
-              ></textarea>
+            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+              <input 
+                type="number"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                min="0" 
+                max="99"
+              >
             </div>
           </div>
           <div class="flex flex-col flex-1">
             <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               命運點
             </label>
-            <div class="border-2 border-red-900 bg-white h-20">
-              <textarea 
-                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
-              ></textarea>
+            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+              <input 
+                type="number"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                min="0" 
+                max="99"
+              >
             </div>
           </div>
         </div>
@@ -164,10 +199,13 @@
             <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               基礎護甲
             </label>
-            <div class="border-2 border-red-900 bg-white h-20">
-              <textarea 
-                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none text-center"
-              ></textarea>
+            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+              <input 
+                type="number"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                min="0" 
+                max="99"
+              >
             </div>
           </div>
           
@@ -175,10 +213,13 @@
             <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               總護甲
             </label>
-            <div class="border-2 border-red-900 bg-white h-20">
-              <textarea 
-                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none text-center"
-              ></textarea>
+            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+              <input 
+                type="number"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                min="0" 
+                max="99"
+              >
             </div>
           </div>
         </div>
@@ -200,59 +241,58 @@
 
     <!-- 屬性表格 -->
     <div class="mb-6 relative">
-      <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-        屬性
-      </label>
-      <table class="w-full border-collapse mt-2 table-fixed">
-        <thead>
-          <tr>
-            <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-20"></th>
-            <th 
-              v-for="attribute in attributes" 
-              :key="attribute.code"
-              class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 relative cursor-help"
-              @mouseenter="showTooltip($event, attribute)"
-              @mouseleave="hideTooltip"
-            >
-              <div class="text-xs font-normal">{{ attribute.name }}</div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="bg-red-900 text-white font-bold text-xs p-1 border border-red-900">
-              數值
-            </td>
-            <td 
-              v-for="attribute in attributes" 
-              :key="`rating-${attribute.code}`"
-              class="p-0 border border-red-900 text-center bg-white"
-            >
-              <input 
-                type="number" 
-                class="w-full p-1 text-center border-0 bg-transparent font-serif text-xs"
-                min="0" max="99"
+      <div class="border-2 border-red-900">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr>
+              <th class="bg-red-900 text-white p-2 text-xs font-bold text-left">屬性</th>
+              <th 
+                v-for="attribute in attributes" 
+                :key="attribute.code"
+                class="bg-red-900 text-white p-2 text-xs font-bold border-l border-red-900 text-center cursor-help"
+                @mouseenter="showTooltip($event, attribute)"
+                @mouseleave="hideTooltip"
               >
-            </td>
-          </tr>
-          <tr>
-            <td class="bg-red-900 text-white font-bold text-xs p-1 border border-red-900">
-              傷害加值
-            </td>
-            <td 
-              v-for="attribute in attributes" 
-              :key="`bonus-${attribute.code}`"
-              class="p-0 border border-red-900 text-center bg-white"
-            >
-              <input 
-                type="number" 
-                class="w-full p-1 text-center border-0 bg-transparent font-serif text-xs"
-                min="0" max="99"
+                {{ attribute.name }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bg-red-900 text-white font-bold text-xs p-2 text-left">
+                數值
+              </td>
+              <td 
+                v-for="attribute in attributes" 
+                :key="`rating-${attribute.code}`"
+                class="p-0 border-l border-red-900 text-center bg-white"
               >
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <input 
+                  type="number" 
+                  class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
+                  min="0" max="99"
+                >
+              </td>
+            </tr>
+            <tr>
+              <td class="bg-red-900 text-white font-bold text-xs p-2 border-t border-red-900 text-left">
+                額外傷害
+              </td>
+              <td 
+                v-for="attribute in attributes" 
+                :key="`bonus-${attribute.code}`"
+                class="p-0 border-l border-t border-red-900 text-center bg-white"
+              >
+                <input 
+                  type="number" 
+                  class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
+                  min="0" max="99"
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       
       <!-- 浮動提示框 -->
       <div 
@@ -280,36 +320,45 @@
     <div class="flex flex-col xl:flex-row gap-6 relative">
       <!-- 技能列表 -->
       <div class="flex-1">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-          技能
-        </label>
-        <div class="overflow-x-auto">
-          <table class="w-full mt-2 min-w-max">
+        <div class="border-2 border-red-900">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr>
+                <th class="bg-red-900 text-white p-2 text-xs font-bold text-left w-32">技能</th>
+                <th class="bg-red-900 text-white p-2 text-xs font-bold text-center border-l border-red-900 w-20">等級</th>
+                <th class="bg-red-900 text-white p-2 text-xs font-bold text-left border-l border-red-900">專精</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr v-for="skill in skillsData" :key="skill.code">
+              <tr v-for="skill in skillsData" :key="skill.code" class="border-t border-red-900">
                 <td 
-                  class="bg-red-900 text-white font-bold text-xs px-2 py-1 w-32 min-w-max cursor-help"
+                  class="bg-amber-100 text-red-900 font-bold text-xs px-2 py-2 cursor-help"
                   @mouseenter="showSkillTooltip($event, skill)"
                   @mouseleave="hideSkillTooltip"
                 >
                   {{ skill.name }}
                 </td>
-                <td class="pl-2 border-b border-red-900">
+                <td class="border-l border-red-900 bg-white text-center">
+                  <input 
+                    type="number" 
+                    class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
+                    min="0" max="99"
+                  >
+                </td>
+                <td class="border-l border-red-900 bg-white px-2 py-1">
                   <!-- 專精切換按鈕 -->
-                  <div class="flex flex-wrap gap-1 py-1">
-                    <button
-                      v-for="focus in skill.focuses"
+                  <div class="text-xs text-red-900">
+                    <span
+                      v-for="(focus, index) in skill.focuses"
                       :key="focus.name"
                       @click="toggleFocus(skill.code, focus.name)"
                       @mouseenter="showFocusTooltip($event, focus)"
                       @mouseleave="hideFocusTooltip"
-                      class="px-2 py-1 text-xs rounded border transition-all duration-200 cursor-pointer"
+                      class="cursor-pointer transition-all duration-200 hover:bg-red-100 px-1 rounded"
                       :class="isFocusActive(skill.code, focus.name) 
-                        ? 'bg-green-600 text-white border-green-600 font-bold shadow-sm' 
-                        : 'bg-white text-red-900 border-red-300 hover:bg-red-50 hover:border-red-500'"
-                    >
-                      {{ focus.name }}
-                    </button>
+                        ? 'bg-green-600 text-white font-bold' 
+                        : 'text-red-900'"
+                    >{{ focus.name }}<span v-if="index < skill.focuses.length - 1"></span></span>
                   </div>
                 </td>
               </tr>
@@ -354,21 +403,21 @@
       
       <!-- 語言與經驗 -->
       <div class="flex-1 xl:max-w-sm">
-        <div class="mb-4">
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-            LANGUAGES
-          </label>
+        <div class="mb-4 border-2 border-red-900">
+          <div class="bg-red-900 text-white p-2 text-xs font-bold">
+            語言
+          </div>
           <textarea 
-            class="border-2 border-red-900 p-2 w-full mt-2 bg-white font-serif resize-none h-32"
+            class="w-full p-2 bg-white font-serif resize-none h-32 border-0"
           ></textarea>
         </div>
         
-        <div>
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-            EXPERIENCE
-          </label>
+        <div class="border-2 border-red-900">
+          <div class="bg-red-900 text-white p-2 text-xs font-bold">
+            經驗
+          </div>
           <textarea 
-            class="border-2 border-red-900 p-2 w-full mt-2 bg-white font-serif resize-none h-20"
+            class="w-full p-2 bg-white font-serif resize-none h-20 border-0"
           ></textarea>
         </div>
       </div>
@@ -574,7 +623,10 @@ const attributes = ref([
   }
 ])
 
-const stressBoxes = ref(Array(3).fill().map(() => Array(8).fill(false)))
+const stressBoxes = ref(Array(2).fill().map(() => Array(10).fill(false)))
+const maxStressBoxes = ref(20) // 最大可用壓力格數量
+const isHovering = ref(false)
+const hoverIndex = ref(-1)
 
 const tooltip = ref({
   show: false,
@@ -621,7 +673,48 @@ const focusTooltipStyle = computed(() => ({
 }))
 
 const toggleStress = (row, col) => {
-  stressBoxes.value[row - 1][col - 1] = !stressBoxes.value[row - 1][col - 1]
+  const clickedIndex = (row - 1) * 10 + (col - 1)
+  
+  // 檢查點擊的格子是否在可用範圍內
+  if (clickedIndex >= maxStressBoxes.value) {
+    return
+  }
+  
+  // 計算當前已填滿的格子數
+  let currentFilledCount = 0
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 10; j++) {
+      const index = i * 10 + j
+      if (index >= maxStressBoxes.value) break
+      if (stressBoxes.value[i][j]) {
+        currentFilledCount = index + 1
+      } else {
+        break
+      }
+    }
+  }
+  
+  // 清空所有格子
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 10; j++) {
+      stressBoxes.value[i][j] = false
+    }
+  }
+  
+  // 如果點擊的位置等於當前填滿的位置，則清空（取消選擇）
+  if (clickedIndex + 1 === currentFilledCount) {
+    return
+  }
+  
+  // 填滿從第一格到點擊位置的所有格子
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 10; j++) {
+      const index = i * 10 + j
+      if (index <= clickedIndex && index < maxStressBoxes.value) {
+        stressBoxes.value[i][j] = true
+      }
+    }
+  }
 }
 
 const showTooltip = (event, attribute) => {
@@ -762,5 +855,38 @@ const toggleFocus = (skillCode, focusName) => {
 
 const isFocusActive = (skillCode, focusName) => {
   return selectedFocuses.value[skillCode]?.includes(focusName) || false
+}
+
+const getStressBoxClasses = (row, col) => {
+  const boxIndex = (row - 1) * 10 + (col - 1)
+  const isAvailable = boxIndex < maxStressBoxes.value
+  const isChecked = stressBoxes.value[row - 1] && stressBoxes.value[row - 1][col - 1]
+  
+  if (!isAvailable) {
+    return 'border-gray-400 bg-gray-200 cursor-not-allowed'
+  }
+  
+  if (isChecked) {
+    return 'border-red-900 bg-red-900 cursor-pointer hover:bg-red-700'
+  }
+  
+  return 'border-red-900 bg-white cursor-pointer hover:bg-red-100'
+}
+
+const clearStress = () => {
+  stressBoxes.value = Array(2).fill().map(() => Array(10).fill(false))
+}
+
+const previewStress = (row, col) => {
+  const boxIndex = (row - 1) * 10 + (col - 1)
+  if (boxIndex < maxStressBoxes.value) {
+    isHovering.value = true
+    hoverIndex.value = boxIndex
+  }
+}
+
+const clearPreview = () => {
+  isHovering.value = false
+  hoverIndex.value = -1
 }
 </script>
