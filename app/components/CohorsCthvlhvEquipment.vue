@@ -39,7 +39,13 @@
                 <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
               </td>
               <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
+                <input 
+                  type="text" 
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
+                  @mouseenter="handleDamageEffectHover"
+                  @mouseleave="hideQualityTooltip"
+                  placeholder="輸入傷害效果，如：強烈、擊倒等"
+                >
               </td>
               <td class="p-1 border border-red-900 bg-white">
                 <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
@@ -354,6 +360,46 @@ const weaponQualities = ref({
   }
 })
 
+// 傷害效果資料
+const damageEffects = ref({
+  '區域': {
+    name: '區域',
+    description: '每擲出一個效果😈，攻擊額外命中一名處於初始目標「近距」內的目標。次要目標承受完整效果。'
+  },
+  '消耗': {
+    name: '消耗',
+    description: '每擲出一個效果😈，目標承受 1 點疲勞。'
+  },
+  '強烈': {
+    name: '強烈',
+    description: '若攻擊造成傷勢且擲出效果😈，則額外造成一處傷勢。'
+  },
+  '擊倒': {
+    name: '擊倒',
+    description: '目標踉蹌或倒地。若效果😈數 ≥ 目標的運動技能等級，則目標倒地。此外也破除防備狀態。'
+  },
+  '持續': {
+    name: '持續 X',
+    description: '效果具延續性。若攻擊產生至少一個效果，目標在其回合開始時連續 X 輪擲挑戰骰🎲，承受擲骰產生的壓力。此擲骰不再觸發額外效果。若目標為物體，則效果立即生效。'
+  },
+  '穿透': {
+    name: '穿透 X',
+    description: '每擲出一個效果😈，忽略 X 點抗性。'
+  },
+  '纏縛': {
+    name: '纏縛',
+    description: '攻擊使目標糾纏束縛。目標無法執行除掙脫以外的行動。掙脫需進行一次（通常為體魄＋運動）技能檢定，難度等於效果😈數。掙脫耗費一次主動作，但仍可在同回合執行副動作。'
+  },
+  '震懾': {
+    name: '震懾',
+    description: '目標暫時無法行動，令其失去防備。若效果😈數 ≥ 目標的韌性等級，則其在下個回合無法採取任何行動。'
+  },
+  '兇猛': {
+    name: '兇猛',
+    description: '攻擊特別致命。每擲出一個效果😈，額外造成 +1 壓力。'
+  }
+})
+
 // 護甲特性資料
 const armorQualities = ref({
   '沉重': {
@@ -417,9 +463,16 @@ const tooltipStyle = computed(() => ({
 
 // 提示框函數
 const showQualityTooltip = (event, qualityName, type = 'weapon') => {
-  const qualities = type === 'weapon' ? weaponQualities.value : armorQualities.value
-  const quality = qualities[qualityName]
+  let qualities
+  if (type === 'weapon') {
+    qualities = weaponQualities.value
+  } else if (type === 'armor') {
+    qualities = armorQualities.value
+  } else if (type === 'damage') {
+    qualities = damageEffects.value
+  }
   
+  const quality = qualities[qualityName]
   if (!quality) return
   
   const rect = event.target.getBoundingClientRect()
@@ -477,6 +530,21 @@ const handleQualityHover = (event) => {
   
   if (foundQuality) {
     showQualityTooltip(event, foundQuality, 'weapon')
+  }
+}
+
+// 處理傷害效果懸浮事件
+const handleDamageEffectHover = (event) => {
+  const inputValue = event.target.value
+  if (!inputValue) return
+  
+  // 檢查輸入的文字是否包含已知的傷害效果
+  const foundEffect = Object.keys(damageEffects.value).find(effect => 
+    inputValue.toLowerCase().includes(effect.toLowerCase())
+  )
+  
+  if (foundEffect) {
+    showQualityTooltip(event, foundEffect, 'damage')
   }
 }
 
