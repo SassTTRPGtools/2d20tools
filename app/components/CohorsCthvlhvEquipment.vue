@@ -721,11 +721,11 @@ const defaultArmors = ref([
 
 // 武器列表和Modal狀態
 const weaponList = ref([
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [] }
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
+  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' }
 ])
 
 const showWeaponModal = ref(false)
@@ -767,7 +767,19 @@ const showQualityTooltip = (event, qualityName, type = 'weapon') => {
     qualities = damageEffects.value
   }
   
-  const quality = qualities[qualityName]
+  // 先嘗試精確比對
+  let quality = qualities[qualityName]
+  
+  // 如果精確比對失敗，嘗試模糊比對
+  if (!quality) {
+    const foundQualityKey = Object.keys(qualities).find(key => 
+      qualityName.toLowerCase().includes(key.toLowerCase())
+    )
+    if (foundQualityKey) {
+      quality = qualities[foundQualityKey]
+    }
+  }
+  
   if (!quality) return
   
   const rect = event.target.getBoundingClientRect()
@@ -843,6 +855,8 @@ const handleDamageEffectHover = (event) => {
   }
 }
 
+
+
 // 武器modal相關函數
 const openWeaponModal = (index) => {
   selectedWeaponIndex.value = index
@@ -860,7 +874,8 @@ const selectWeapon = (weapon) => {
     reach: weapon.reach,
     damage: weapon.damage,
     size: weapon.size,
-    qualities: [...weapon.qualities]
+    qualities: [...weapon.qualities],
+    qualityInput: ''
   }
   closeWeaponModal()
 }
@@ -873,7 +888,8 @@ const clearWeapon = (index) => {
     reach: '',
     damage: '',
     size: '',
-    qualities: []
+    qualities: [],
+    qualityInput: ''
   }
 }
 
