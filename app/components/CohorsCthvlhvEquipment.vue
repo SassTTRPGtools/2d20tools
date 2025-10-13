@@ -1062,7 +1062,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useEquipmentData } from '~/composables/useEquipmentData'
 import { useTalentData } from '~/composables/useTalentData'
 
@@ -1977,5 +1977,65 @@ const parseQualities = (qualitiesText, type = 'weapon') => {
   })
   
   return result
+}
+
+// 監聽數據管理事件
+onMounted(() => {
+  // 監聽載入裝備數據事件
+  window.addEventListener('loadEquipmentData', (event) => {
+    if (event.detail) {
+      loadEquipmentData(event.detail)
+    }
+  })
+  
+  // 監聽清除裝備數據事件
+  window.addEventListener('clearCharacterData', () => {
+    clearEquipmentData()
+  })
+
+  // 監聽獲取裝備數據事件
+  window.addEventListener('getEquipmentData', () => {
+    window.characterEquipmentData = getEquipmentData()
+  })
+})
+
+// 獲取裝備數據
+const getEquipmentData = () => {
+  return {
+    selectedWeapons: selectedWeapons.value,
+    selectedArmor: selectedArmor.value,
+    customWeapons: customWeapons.value,
+    customArmor: customArmor.value,
+    selectedSkillTools: selectedSkillTools.value,
+    selectedMiscellaneous: selectedMiscellaneous.value,
+    selectedTalents: selectedTalents.value,
+    customTalents: customTalents.value
+  }
+}
+
+// 載入裝備數據
+const loadEquipmentData = (data) => {
+  if (!data) return
+  
+  if (data.selectedWeapons) selectedWeapons.value = [...data.selectedWeapons]
+  if (data.selectedArmor) selectedArmor.value = [...data.selectedArmor]
+  if (data.customWeapons) customWeapons.value = [...data.customWeapons]
+  if (data.customArmor) customArmor.value = [...data.customArmor]
+  if (data.selectedSkillTools) selectedSkillTools.value = [...data.selectedSkillTools]
+  if (data.selectedMiscellaneous) selectedMiscellaneous.value = [...data.selectedMiscellaneous]
+  if (data.selectedTalents) selectedTalents.value = [...data.selectedTalents]
+  if (data.customTalents) customTalents.value = [...data.customTalents]
+}
+
+// 清除裝備數據
+const clearEquipmentData = () => {
+  selectedWeapons.value = []
+  selectedArmor.value = []
+  customWeapons.value = []
+  customArmor.value = []
+  selectedSkillTools.value = []
+  selectedMiscellaneous.value = []
+  selectedTalents.value = []
+  customTalents.value = []
 }
 </script>

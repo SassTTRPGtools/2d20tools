@@ -1096,4 +1096,121 @@ const removeExperienceRecord = (index) => {
     currentExperience.value = netExperience.value
   }
 }
+
+// 監聽數據載入和清除事件
+onMounted(() => {
+  // 監聽載入數據事件
+  window.addEventListener('loadCharacterData', (event) => {
+    if (event.detail && event.detail.characterSheet) {
+      loadCharacterSheetData(event.detail.characterSheet)
+    }
+  })
+  
+  // 監聽清除數據事件
+  window.addEventListener('clearCharacterData', () => {
+    clearCharacterSheetData()
+  })
+
+  // 監聽獲取數據事件
+  window.addEventListener('getSheetData', () => {
+    window.characterSheetData = getCharacterSheetData()
+  })
+})
+
+// 獲取角色表單數據
+const getCharacterSheetData = () => {
+  return {
+    // 基本信息
+    name: characterName.value,
+    culture: culture.value,
+    rank: rank.value,
+    wealth: wealth.value,
+    archetype: archetype.value,
+    background: background.value,
+    talent: talent.value,
+    
+    // 屬性
+    might: might.value,
+    agility: agility.value,
+    reason: reason.value,
+    personality: personality.value,
+    
+    // 技能
+    ...skills.value,
+    
+    // 經驗值
+    currentExperience: currentExperience.value,
+    totalExperience: totalExperience.value,
+    experienceRecords: experienceRecords.value,
+    
+    // 其他
+    notes: notes.value,
+    sanity: sanity.value,
+    // ... 添加其他需要保存的數據
+  }
+}
+
+// 載入角色表單數據
+const loadCharacterSheetData = (data) => {
+  if (!data) return
+  
+  // 基本信息
+  if (data.name !== undefined) characterName.value = data.name
+  if (data.culture !== undefined) culture.value = data.culture
+  if (data.rank !== undefined) rank.value = data.rank
+  if (data.wealth !== undefined) wealth.value = data.wealth
+  if (data.archetype !== undefined) archetype.value = data.archetype
+  if (data.background !== undefined) background.value = data.background
+  if (data.talent !== undefined) talent.value = data.talent
+  
+  // 屬性
+  if (data.might !== undefined) might.value = data.might
+  if (data.agility !== undefined) agility.value = data.agility
+  if (data.reason !== undefined) reason.value = data.reason
+  if (data.personality !== undefined) personality.value = data.personality
+  
+  // 技能
+  Object.keys(skills.value).forEach(skill => {
+    if (data[skill] !== undefined) {
+      skills.value[skill] = data[skill]
+    }
+  })
+  
+  // 經驗值
+  if (data.currentExperience !== undefined) currentExperience.value = data.currentExperience
+  if (data.totalExperience !== undefined) totalExperience.value = data.totalExperience
+  if (data.experienceRecords) experienceRecords.value = data.experienceRecords
+  
+  // 其他
+  if (data.notes !== undefined) notes.value = data.notes
+  if (data.sanity !== undefined) sanity.value = data.sanity
+}
+
+// 清除角色表單數據
+const clearCharacterSheetData = () => {
+  characterName.value = ''
+  culture.value = ''
+  rank.value = ''
+  wealth.value = ''
+  archetype.value = ''
+  background.value = ''
+  talent.value = ''
+  
+  might.value = 0
+  agility.value = 0
+  reason.value = 0
+  personality.value = 0
+  
+  // 重置技能
+  Object.keys(skills.value).forEach(skill => {
+    skills.value[skill] = 0
+  })
+  
+  currentExperience.value = 0
+  totalExperience.value = 0
+  experienceRecords.value = []
+  
+  notes.value = ''
+  sanity.value = 10
+}
 </script>

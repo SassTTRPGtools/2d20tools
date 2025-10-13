@@ -533,7 +533,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useSpellData } from '~/composables/useSpellData'
 
 // 響應式數據
@@ -785,5 +785,81 @@ const hideDamageTooltipHandler = () => {
 if (typeof window !== 'undefined') {
   window.showDamageTooltipHandler = showDamageTooltipHandler
   window.hideDamageTooltipHandler = hideDamageTooltipHandler
+}
+
+// 監聽數據管理事件
+onMounted(() => {
+  // 監聽載入法術數據事件
+  window.addEventListener('loadSpellData', (event) => {
+    if (event.detail) {
+      loadSpellData(event.detail)
+    }
+  })
+  
+  // 監聽清除法術數據事件
+  window.addEventListener('clearCharacterData', () => {
+    clearSpellData()
+  })
+
+  // 監聽獲取法術數據事件
+  window.addEventListener('getSpellData', () => {
+    window.characterSpellData = getSpellData()
+  })
+})
+
+// 獲取法術數據
+const getSpellData = () => {
+  return {
+    selectedCasterType: selectedCasterType.value,
+    selectedTraditions: selectedTraditions.value,
+    spellSlots: spellSlots.value.map(slot => ({
+      id: slot.id,
+      spellId: slot.spell?.id,
+      spellName: slot.spell?.name,
+      spellbook: slot.spell?.spellbook
+    }))
+  }
+}
+
+// 載入法術數據
+const loadSpellData = (data) => {
+  if (!data) return
+  
+  if (data.selectedCasterType !== undefined) {
+    selectedCasterType.value = data.selectedCasterType
+  }
+  
+  if (data.selectedTraditions) {
+    selectedTraditions.value = [...data.selectedTraditions]
+  }
+  
+  if (data.spellSlots && Array.isArray(data.spellSlots)) {
+    // 重建法術槽位
+    spellSlots.value = data.spellSlots.map(slotData => {
+      const slot = {
+        id: slotData.id || Date.now() + Math.random()
+      }
+      
+      if (slotData.spellId) {
+        // 根據法術 ID 查找完整的法術數據
+        const allSpells = spellbooks.flatMap(spellbook => getSpellsBySpellbook(spellbook))
+        const spell = allSpells.find(s => s.id === slotData.spellId)
+        if (spell) {
+          slot.spell = spell
+        }
+      }
+      
+      return slot
+    })
+  }
+}
+
+// 清除法術數據
+const clearSpellData = () => {
+  selectedCasterType.value = ''
+  selectedTraditions.value = []
+  spellSlots.value = []
+  showSpellModal.value = false
+  spellSearchTerm.value = ''
 }
 </script>

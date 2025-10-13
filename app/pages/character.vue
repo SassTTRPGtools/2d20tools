@@ -11,6 +11,12 @@
       </div>
     </div>
 
+    <!-- Cohors Cthulhu 角色卡專用的懸浮按鈕 -->
+    <FloatingActionButtons 
+      character-type="cohors-cthulhu"
+      storage-key="cohors-cthulhu-character-data" 
+    />
+
     <!-- 浮動右側頁籤導航 -->
     <div class="print:hidden fixed right-4 top-1/2 transform -translate-y-1/2 z-50">
       <div class="floating-tabs bg-gradient-to-b from-slate-800/95 to-slate-900/95 rounded-2xl border border-red-900/30 shadow-2xl backdrop-blur-sm hover:shadow-3xl transition-all duration-300">
