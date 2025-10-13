@@ -16,8 +16,6 @@
       v-if="showMenu" 
       class="flex flex-col space-y-2 animate-fade-in"
     >
-
-
       <!-- 匯出 JSON -->
       <button 
         @click="handleExport"
@@ -63,15 +61,6 @@
         </span>
       </button>
     </div>
-
-    <!-- 通知訊息 -->
-    <div 
-      v-if="notification.show" 
-      class="fixed top-4 left-4 max-w-sm p-4 rounded-lg shadow-lg transition-all duration-300 z-60"
-      :class="notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'"
-    >
-      {{ notification.message }}
-    </div>
   </div>
 </template>
 
@@ -96,16 +85,12 @@ const props = defineProps({
 const themes = {
   'cohors-cthulhu': {
     main: 'bg-red-600 hover:bg-red-700',
-    save: 'bg-blue-500 hover:bg-blue-600',
-    load: 'bg-green-500 hover:bg-green-600',
     export: 'bg-yellow-500 hover:bg-yellow-600',
     import: 'bg-purple-500 hover:bg-purple-600',
     clear: 'bg-red-500 hover:bg-red-600'
   },
   'future-expansion': {
     main: 'bg-slate-600 hover:bg-slate-700',
-    save: 'bg-cyan-500 hover:bg-cyan-600',
-    load: 'bg-emerald-500 hover:bg-emerald-600',
     export: 'bg-amber-500 hover:bg-amber-600',
     import: 'bg-indigo-500 hover:bg-indigo-600',
     clear: 'bg-rose-500 hover:bg-rose-600'
@@ -119,16 +104,6 @@ const currentTheme = computed(() => {
 
 // 響應式數據
 const showMenu = ref(false)
-const notification = reactive({
-  show: false,
-  message: '',
-  type: 'success'
-})
-
-// 計算儲存鍵
-const computedStorageKey = computed(() => {
-  return props.storageKey || `${props.characterType}-character-data`
-})
 
 // 使用 Pinia Store
 const store = useCohorsCthvlhvStore()
@@ -140,36 +115,35 @@ const toggleMenu = () => {
 
 // Pinia Store 已自動處理持久化，無需手動載入
 
-// 顯示通知
-const showNotification = (message, type = 'success') => {
-  notification.message = message
-  notification.type = type
-  notification.show = true
-  
-  setTimeout(() => {
-    notification.show = false
-  }, 3000)
-}
-
 // 匯出 JSON
 const handleExport = async () => {
   try {
+    // 獲取完整角色資料
     const data = store.getFullCharacterData
+    
+    // 檢查是否有角色名稱作為檔案名
+    const characterName = data.basicInfo?.characterName || '未命名角色'
+    const timestamp = new Date().toISOString().split('T')[0]
+    const fileName = `${characterName}-${timestamp}.json`
+    
+    // 創建 JSON 字串並添加格式化
     const jsonStr = JSON.stringify(data, null, 2)
-    const blob = new Blob([jsonStr], { type: 'application/json' })
+    const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     
+    // 創建下載連結
     const a = document.createElement('a')
     a.href = url
-    a.download = `cohors-character-${new Date().toISOString().split('T')[0]}.json`
+    a.download = fileName
+    a.style.display = 'none'
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
     
-    showNotification('角色資料已匯出', 'success')
+    console.log(`角色資料已匯出：${fileName}`)
   } catch (error) {
-    showNotification(`匯出失敗: ${error.message}`, 'error')
+    console.error('匯出錯誤:', error)
   }
   showMenu.value = false
 }
@@ -184,36 +158,92 @@ const handleImport = async () => {
     input.onchange = (event) => {
       const file = event.target.files[0]
       if (file) {
+        // 檢查檔案大小（限制 10MB）
+        if (file.size > 10 * 1024 * 1024) {
+          console.error('檔案過大，請選擇小於 10MB 的檔案')
+          return
+        }
+        
         const reader = new FileReader()
         reader.onload = (e) => {
           try {
             const data = JSON.parse(e.target.result)
+            
+            // 基本資料驗證
+            if (!data || typeof data !== 'object') {
+              throw new Error('無效的 JSON 格式')
+            }
+            
+            // 檢查是否是角色資料格式
+            const hasValidStructure = 
+              data.hasOwnProperty('basicInfo') || 
+              data.hasOwnProperty('weapons') || 
+              data.hasOwnProperty('spells') ||
+              data.hasOwnProperty('metadata')
+            
+            if (!hasValidStructure) {
+              throw new Error('不是有效的角色資料格式')
+            }
+            
+            // 載入資料到 Store
             store.loadCharacterData(data)
-            showNotification('角色資料載入成功', 'success')
+            
+            // 顯示成功訊息
+            const characterName = data.basicInfo?.characterName || '角色資料'
+            console.log(`${characterName} 載入成功`)
+            
           } catch (error) {
-            showNotification(`檔案格式錯誤: ${error.message}`, 'error')
+            console.error('載入錯誤:', error)
+            console.error(`檔案載入失敗: ${error.message}`)
           }
         }
-        reader.readAsText(file)
+        
+        reader.onerror = () => {
+          console.error('檔案讀取失敗')
+        }
+        
+        reader.readAsText(file, 'UTF-8')
       }
     }
     
     input.click()
   } catch (error) {
-    showNotification(`載入失敗: ${error.message}`, 'error')
+    console.error('匯入錯誤:', error)
   }
   showMenu.value = false
 }
 
 // 清除全部
 const handleClear = async () => {
-  if (confirm('確定要清除所有資料嗎？此操作無法復原。')) {
-    try {
-      store.resetStore()
-      showNotification('所有資料已清除', 'success')
-    } catch (error) {
-      showNotification(`清除失敗: ${error.message}`, 'error')
+  try {
+    // 雙重確認避免意外清除
+    const currentCharacterName = store.basicInfo?.characterName || '當前角色'
+    
+    console.log('清除功能 - Store 物件:', store)
+    console.log('清除功能 - 可用的方法:', Object.getOwnPropertyNames(Object.getPrototypeOf(store)))
+    console.log('清除功能 - clearAllData 方法存在:', typeof store.clearAllData)
+    
+    if (confirm(`確定要清除「${currentCharacterName}」的所有資料嗎？\n\n此操作無法復原！`)) {
+      if (confirm('最後確認：真的要刪除所有資料嗎？')) {
+        // 檢查方法是否存在
+        if (typeof store.clearAllData !== 'function') {
+          throw new Error(`clearAllData 不是一個函數，類型為: ${typeof store.clearAllData}`)
+        }
+        
+        console.log('開始執行 clearAllData...')
+        await store.clearAllData()
+        console.log('所有角色資料已清除')
+      }
     }
+  } catch (error) {
+    console.error('清除錯誤詳細資訊:', {
+      message: error.message,
+      stack: error.stack,
+      store: store,
+      storeType: typeof store,
+      clearAllDataExists: 'clearAllData' in store,
+      clearAllDataType: typeof store.clearAllData
+    })
   }
   showMenu.value = false
 }

@@ -216,7 +216,7 @@ const testSpells = () => {
 // 清空所有資料
 const clearAllData = () => {
   try {
-    store.resetStore()
+    store.clearAllData()
     showMessage('所有資料已清空！')
   } catch (error) {
     showMessage(`清空失敗: ${error.message}`, false)
