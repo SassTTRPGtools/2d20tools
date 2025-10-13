@@ -37,31 +37,24 @@ export const useCharacterData = (customStorageKey = null) => {
         const sheetDataEvent = new CustomEvent('getSheetData')
         window.dispatchEvent(sheetDataEvent)
         return window.characterSheetData || {}
-        break
         
       case 'CohorsCthvlhvSpells':
-        // 從全域狀態獲取法術數據
+        // 觸發事件獲取法術數據
         const spellDataEvent = new CustomEvent('getSpellData')
         window.dispatchEvent(spellDataEvent)
-        // 這將由法術組件響應並返回數據
-        data.selectedSpells = window.characterSpellData?.selectedSpells || []
-        data.casterType = window.characterSpellData?.casterType || ''
-        data.tradition = window.characterSpellData?.tradition || ''
-        break
+        return window.characterSpellData || {}
         
       case 'CohorsCthvlhvEquipment':
         // 觸發事件獲取裝備數據
         const equipDataEvent = new CustomEvent('getEquipmentData')
         window.dispatchEvent(equipDataEvent)
         return window.characterEquipmentData || {}
-        break
         
       case 'CohorsCthvlhvNotes':
         // 觸發事件獲取筆記數據
         const notesDataEvent = new CustomEvent('getNotesData')
         window.dispatchEvent(notesDataEvent)
         return window.characterNotesData || {}
-        break
     }
     
     return data
@@ -186,20 +179,10 @@ export const useCharacterData = (customStorageKey = null) => {
 
   // 應用角色表單數據
   const applySheetData = (sheetData) => {
-    Object.keys(sheetData).forEach(fieldName => {
-      const element = document.querySelector(`[data-sheet-field="${fieldName}"]`)
-      if (element) {
-        if (element.type === 'checkbox') {
-          element.checked = sheetData[fieldName]
-        } else if (element.type === 'radio') {
-          element.checked = element.value === sheetData[fieldName]
-        } else {
-          element.value = sheetData[fieldName]
-        }
-        // 觸發事件以更新 Vue 響應式數據
-        element.dispatchEvent(new Event('input', { bubbles: true }))
-      }
-    })
+    // 使用事件驅動方式載入角色表單數據
+    window.dispatchEvent(new CustomEvent('loadCharacterData', { 
+      detail: { characterSheet: sheetData }
+    }))
   }
 
   // 應用法術數據
@@ -218,13 +201,10 @@ export const useCharacterData = (customStorageKey = null) => {
 
   // 應用筆記數據
   const applyNotesData = (notesData) => {
-    Object.keys(notesData).forEach(fieldName => {
-      const element = document.querySelector(`[data-note-field="${fieldName}"]`)
-      if (element) {
-        element.value = notesData[fieldName]
-        element.dispatchEvent(new Event('input', { bubbles: true }))
-      }
-    })
+    // 使用事件驅動方式載入筆記數據
+    window.dispatchEvent(new CustomEvent('loadCharacterData', { 
+      detail: { notes: notesData }
+    }))
   }
 
   // 自動儲存函數（防抖處理）
@@ -239,10 +219,17 @@ export const useCharacterData = (customStorageKey = null) => {
     saveTimeout = setTimeout(() => {
       try {
         const data = getAllCharacterData()
-        saveToLocalStorage(data)
-        console.log('自動儲存完成')
+        const result = saveToLocalStorage(data)
+        if (result.success) {
+          console.log('自動儲存完成', { 
+            storageKey: STORAGE_KEY, 
+            dataSize: JSON.stringify(data).length 
+          })
+        } else {
+          console.warn('自動儲存失敗:', result.message)
+        }
       } catch (error) {
-        console.warn('自動儲存失敗:', error.message)
+        console.warn('自動儲存異常:', error.message)
       }
     }, 500)
   }

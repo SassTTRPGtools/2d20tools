@@ -153,10 +153,15 @@ const autoLoadData = () => {
     const result = loadFromLocalStorage()
     if (result.success) {
       applyDataToForm(result.data)
-      console.log('自動載入角色數據成功')
+      console.log('自動載入角色數據成功', { 
+        storageKey: computedStorageKey.value, 
+        dataKeys: Object.keys(result.data) 
+      })
+    } else {
+      console.log('沒有找到已儲存的資料或載入失敗:', result.message)
     }
   } catch (error) {
-    console.warn('自動載入失敗:', error.message)
+    console.warn('自動載入異常:', error.message)
   }
 }
 

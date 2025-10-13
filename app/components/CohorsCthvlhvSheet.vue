@@ -18,6 +18,7 @@
         </label>
         <input 
           type="text" 
+          v-model="characterName"
           class="border-2 border-red-900 p-2 bg-white font-serif"
         >
       </div>
@@ -27,6 +28,7 @@
         </label>
         <input 
           type="text" 
+          v-model="culture"
           class="border-2 border-red-900 p-2 bg-white font-serif"
         >
       </div>
@@ -36,6 +38,7 @@
         </label>
         <input 
           type="text" 
+          v-model="rank"
           class="border-2 border-red-900 p-2 bg-white font-serif"
         >
       </div>
@@ -45,6 +48,7 @@
         </label>
         <input 
           type="text" 
+          v-model="wealth"
           class="border-2 border-red-900 p-2 bg-white font-serif"
         >
       </div>
@@ -57,6 +61,7 @@
           原型
         </label>
         <textarea 
+          v-model="archetype"
           class="border-2 border-red-900 p-2 bg-white font-serif resize-none h-20"
         ></textarea>
       </div>
@@ -65,6 +70,7 @@
           背景
         </label>
         <textarea 
+          v-model="background"
           class="border-2 border-red-900 p-2 bg-white font-serif resize-none h-20"
         ></textarea>
       </div>
@@ -73,6 +79,7 @@
           特質
         </label>
         <textarea 
+          v-model="talent"
           class="border-2 border-red-900 p-2 bg-white font-serif resize-none h-20"
         ></textarea>
       </div>
