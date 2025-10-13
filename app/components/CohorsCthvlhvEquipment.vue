@@ -279,30 +279,64 @@
 
     <!-- TALENTS 天賦區域 -->
     <div class="mb-6">
-      <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-        TALENTS
-      </label>
+      <div class="flex items-center justify-between mb-2">
+        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block">
+          天賦
+        </label>
+        <button
+          @click="openTalentModal"
+          class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+        >
+          新增天賦
+        </button>
+      </div>
       <div class="overflow-x-auto">
         <table class="w-full border-collapse mt-2 min-w-max">
           <thead>
             <tr>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">NAME</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">KEYWORDS</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-96">DESCRIPTION</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-32">名稱</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-32">關鍵字</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-80">描述</th>
+              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-16">操作</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="n in 8" :key="`talent-${n}`" class="h-12">
+            <tr v-for="(talent, index) in talentList" :key="`talent-${index}`" class="min-h-16">
               <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
+                <div class="p-1 font-serif text-xs text-gray-700">
+                  {{ talent.name || '未選擇天賦' }}
+                </div>
               </td>
               <td class="p-1 border border-red-900 bg-white">
-                <input type="text" class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0">
+                <input 
+                  type="text" 
+                  v-model="talent.keywords"
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
+                  placeholder="關鍵字"
+                  :readonly="!talent.name"
+                  :class="talent.name ? '' : 'text-gray-400'"
+                >
               </td>
-              <td class="p-1 border border-red-900 bg-white">
-                <textarea 
-                  class="w-full p-1 border-0 bg-transparent font-serif text-xs resize-none h-10 min-w-0"
-                ></textarea>
+              <td class="p-1 border border-red-900 bg-white max-w-80">
+                <div 
+                  class="p-1 font-serif text-xs text-gray-700 min-h-16 leading-relaxed break-words word-wrap"
+                  style="word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap;"
+                  @mouseenter="(e) => showSpecialEffectTooltip(e, talent.content)"
+                  @mouseleave="hideSpecialEffectTooltip"
+                >
+                  {{ talent.content || '尚未選擇天賦' }}
+                </div>
+              </td>
+              <td class="p-1 border border-red-900 bg-white text-center">
+                <button
+                  @click="removeTalent(index)"
+                  class="text-red-600 hover:text-red-800 text-xs font-bold"
+                  type="button"
+                  :disabled="!talent.name"
+                  :class="talent.name ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'"
+                >
+                  清空
+                </button>
               </td>
             </tr>
           </tbody>
@@ -823,6 +857,186 @@
       ></div>
     </div>
 
+    <!-- 天賦選擇Modal -->
+    <div 
+      v-if="showTalentModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click="closeTalentModal"
+    >
+      <div 
+        class="bg-white rounded-lg shadow-2xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden"
+        @click.stop
+      >
+        <div class="bg-red-900 text-white p-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-bold">選擇天賦</h3>
+            <button 
+              @click="closeTalentModal"
+              class="text-white hover:text-gray-200 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          
+          <!-- 搜索框 -->
+          <div class="mt-4">
+            <input
+              v-model="talentSearchQuery"
+              type="text"
+              placeholder="搜索天賦名稱或關鍵字..."
+              class="w-full px-3 py-2 bg-white text-black rounded border border-red-700 text-sm focus:outline-none focus:border-red-500"
+            >
+          </div>
+          
+          <!-- Tab切換 -->
+          <div class="flex mt-3 border-b border-red-700 flex-wrap">
+            <button
+              @click="activeTalentTab = 'all'"
+              class="px-4 py-2 text-sm font-bold transition-colors"
+              :class="activeTalentTab === 'all' ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+            >
+              全部 ({{ getTotalTalentsCount() }})
+            </button>
+            <button
+              v-for="category in talentCategories"
+              :key="category"
+              @click="activeTalentTab = category"
+              class="px-4 py-2 text-sm font-bold transition-colors"
+              :class="activeTalentTab === category ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+            >
+              {{ category }} ({{ getTalentsByCategory(category).length }})
+            </button>
+          </div>
+        </div>
+        
+        <div class="p-4">
+          <div class="overflow-y-auto max-h-[60vh]">
+            <table class="w-full border-collapse text-xs">
+              <thead class="sticky top-0">
+                <tr>
+                  <th class="bg-gray-100 p-2 font-bold text-left border">天賦名稱</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border">分類</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border">關鍵字</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border">效果</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">選擇</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr 
+                  v-for="talent in filteredTalents" 
+                  :key="`${talent.category}-${talent.talent.englishName}`" 
+                  class="hover:bg-gray-50"
+                >
+                  <td class="p-2 border">
+                    <div class="font-bold text-blue-800">{{ talent.talent.chineseName }}</div>
+                    <div class="text-gray-600 text-xs italic">{{ talent.talent.englishName }}</div>
+                  </td>
+                  <td class="p-2 border text-center">
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">
+                      {{ talent.category }}
+                    </span>
+                  </td>
+                  <td class="p-2 border text-center">
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
+                      {{ talent.talent.keywords }}
+                    </span>
+                  </td>
+                  <td class="p-2 border">
+                    <div 
+                      class="text-sm cursor-help max-w-lg"
+                      @mouseenter="(e) => showTalentEffectTooltip(e, talent.talent)"
+                      @mouseleave="hideTalentEffectTooltip"
+                    >
+                      {{ truncateText(talent.talent.content, 100) }}
+                    </div>
+                  </td>
+                  <td class="p-2 border text-center">
+                    <button
+                      @click="selectTalent(talent.talent)"
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+                    >
+                      選擇
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!-- 沒有找到結果的提示 -->
+            <div v-if="filteredTalents.length === 0" class="text-center py-8">
+              <div class="text-gray-500 text-lg">沒有找到符合條件的天賦</div>
+              <div class="text-gray-400 text-sm mt-2">請嘗試調整搜索條件或選擇其他分類</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-100 p-4 text-right">
+          <button
+            @click="closeTalentModal"
+            class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 text-sm rounded mr-2 transition-colors"
+          >
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 天賦效果浮動提示框 -->
+    <div 
+      v-if="talentEffectTooltip.show"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-96 pointer-events-none"
+      :style="talentEffectTooltipStyle"
+    >
+      <div class="font-bold text-red-400 mb-2 text-base">
+        {{ talentEffectTooltip.talent?.chineseName }}
+      </div>
+      <div class="text-xs text-gray-300 mb-3 italic">
+        {{ talentEffectTooltip.talent?.englishName }}
+      </div>
+      <div class="text-yellow-300 text-xs font-bold mb-2">
+        關鍵字：{{ talentEffectTooltip.talent?.keywords }}
+      </div>
+      <div class="text-sm leading-relaxed whitespace-pre-line">
+        {{ talentEffectTooltip.talent?.content }}
+      </div>
+      
+      <!-- 箭頭指示器 -->
+      <div 
+        class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+        :class="talentEffectTooltip.arrowClass"
+        :style="talentEffectTooltip.arrowStyle"
+      ></div>
+    </div>
+
+    <!-- 特殊效果浮動提示框 -->
+    <div 
+      v-if="specialEffectTooltip.show"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+      :style="specialEffectTooltipStyle"
+    >
+      <div class="font-bold text-red-400 mb-3 text-base">
+        {{ specialEffectTooltip.effects?.length > 1 ? '特殊效果' : specialEffectTooltip.effects?.[0]?.name }}
+      </div>
+      
+      <div 
+        v-for="(effect, index) in specialEffectTooltip.effects" 
+        :key="effect.name"
+        :class="{ 'mb-3': index < specialEffectTooltip.effects.length - 1 }"
+      >
+        <div v-if="specialEffectTooltip.effects.length > 1" class="font-bold text-yellow-300 mb-1 text-sm">
+          {{ effect.name }}
+        </div>
+        <div class="text-sm leading-relaxed">{{ effect.description }}</div>
+      </div>
+      
+      <!-- 箭頭指示器 -->
+      <div 
+        class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+        :class="specialEffectTooltip.arrowClass"
+        :style="specialEffectTooltip.arrowStyle"
+      ></div>
+    </div>
+
     <!-- 新增物品成功提示 -->
     <div 
       v-if="itemAddedNotification.show"
@@ -833,15 +1047,30 @@
       </svg>
       <span class="font-bold text-sm">{{ itemAddedNotification.message }}</span>
     </div>
+
+    <!-- 新增天賦成功提示 -->
+    <div 
+      v-if="talentAddedNotification.show"
+      class="fixed top-16 right-4 bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center gap-2 animate-pulse"
+    >
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+      </svg>
+      <span class="font-bold text-sm">{{ talentAddedNotification.message }}</span>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useEquipmentData } from '~/composables/useEquipmentData'
+import { useTalentData } from '~/composables/useTalentData'
 
 // 引入裝備數據
 const { weaponsDatabase, armorsDatabase, skillToolsDatabase, miscellaneousDatabase, weaponSpecialAbilities } = useEquipmentData()
+
+// 引入天賦數據
+const { talentsDatabase, getCategories, getTalentsByCategory } = useTalentData()
 
 // 武器特性資料 - 使用外部數據模組
 const weaponQualities = ref(weaponSpecialAbilities)
@@ -987,6 +1216,91 @@ const itemAddedNotification = ref({
   message: ''
 })
 
+// 天賦新增成功提示
+const talentAddedNotification = ref({
+  show: false,
+  message: ''
+})
+
+// 天賦相關狀態
+const talentList = ref([
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' },
+  { name: '', keywords: '', content: '' }
+])
+
+const showTalentModal = ref(false)
+const activeTalentTab = ref('all')
+const talentSearchQuery = ref('')
+
+// 天賦分類
+const talentCategories = computed(() => getCategories())
+
+// 天賦效果浮動提示框
+const talentEffectTooltip = ref({
+  show: false,
+  talent: null,
+  x: 0,
+  y: 0,
+  arrowClass: '',
+  arrowStyle: {}
+})
+
+// 特殊效果浮動提示框
+const specialEffectTooltip = ref({
+  show: false,
+  effects: [],
+  x: 0,
+  y: 0,
+  arrowClass: '',
+  arrowStyle: {}
+})
+
+// 特殊效果數據庫（用於浮動提示）
+const specialEffectsDatabase = ref({
+  '穿透': {
+    name: '穿透 X',
+    description: '每擲出一個效果😈，忽略 X 點抗性。'
+  },
+  '震懾': {
+    name: '震懾',
+    description: '目標暫時無法行動，令其失去防備。若效果😈數 ≥ 目標的韌性等級，則其在下個回合無法採取任何行動。'
+  },
+  '兇猛': {
+    name: '兇猛',
+    description: '攻擊特別致命。每擲出一個效果😈，額外造成 +1 壓力。'
+  },
+  '擊倒': {
+    name: '擊倒',
+    description: '目標踉蹌或倒地。若效果😈數 ≥ 目標的運動技能等級，則目標倒地。此外也破除防備狀態。'
+  },
+  '持續': {
+    name: '持續 X',
+    description: '效果具延續性。若攻擊產生至少一個效果，目標在其回合開始時連續 X 輪擲挑戰骰🎲，承受擲骰產生的壓力。'
+  },
+  '纏縛': {
+    name: '纏縛',
+    description: '攻擊使目標糾纏束縛。目標無法執行除掙脫以外的行動。掙脫需進行一次（通常為體魄＋運動）技能檢定，難度等於效果😈數。'
+  },
+  '區域': {
+    name: '區域',
+    description: '每擲出一個效果😈，攻擊額外命中一名處於初始目標「近距」內的目標。次要目標承受完整效果。'
+  },
+  '消耗': {
+    name: '消耗',
+    description: '每擲出一個效果😈，目標承受 1 點疲勞。'
+  },
+  '強烈': {
+    name: '強烈',
+    description: '若攻擊造成傷勢且擲出效果😈，則額外造成一處傷勢。'
+  }
+})
+
 const tooltipStyle = computed(() => ({
   left: `${tooltip.value.x}px`,
   top: `${tooltip.value.y}px`
@@ -1005,6 +1319,16 @@ const overloadTooltipStyle = computed(() => ({
 const itemTooltipStyle = computed(() => ({
   left: `${itemTooltip.value.x}px`,
   top: `${itemTooltip.value.y}px`
+}))
+
+const talentEffectTooltipStyle = computed(() => ({
+  left: `${talentEffectTooltip.value.x}px`,
+  top: `${talentEffectTooltip.value.y}px`
+}))
+
+const specialEffectTooltipStyle = computed(() => ({
+  left: `${specialEffectTooltip.value.x}px`,
+  top: `${specialEffectTooltip.value.y}px`
 }))
 
 // 自動計算當前攜帶的物品數量
@@ -1071,6 +1395,40 @@ const isOverloaded = computed(() => {
   return calculatedMajorItems.value > maxMajorItems.value || 
          calculatedMinorItems.value > maxMinorItems.value
 })
+
+// 天賦相關計算屬性
+const filteredTalents = computed(() => {
+  let talents = []
+  
+  if (activeTalentTab.value === 'all') {
+    // 顯示所有天賦
+    for (const [category, categoryTalents] of Object.entries(talentsDatabase)) {
+      talents.push(...categoryTalents.map(talent => ({ category, talent })))
+    }
+  } else {
+    // 顯示特定分類的天賦
+    const categoryTalents = getTalentsByCategory(activeTalentTab.value)
+    talents = categoryTalents.map(talent => ({ category: activeTalentTab.value, talent }))
+  }
+  
+  // 搜索過濾
+  if (talentSearchQuery.value.trim()) {
+    const query = talentSearchQuery.value.toLowerCase().trim()
+    talents = talents.filter(item => 
+      item.talent.chineseName.toLowerCase().includes(query) ||
+      item.talent.englishName.toLowerCase().includes(query) ||
+      item.talent.keywords.toLowerCase().includes(query) ||
+      item.talent.content.toLowerCase().includes(query)
+    )
+  }
+  
+  return talents
+})
+
+// 獲取總天賦數量
+const getTotalTalentsCount = () => {
+  return Object.values(talentsDatabase).reduce((total, talents) => total + talents.length, 0)
+}
 
 // 提示框函數
 const showQualityTooltip = (event, qualityName, type = 'weapon') => {
@@ -1406,6 +1764,203 @@ const clearArmor = (index) => {
     resistance: '',
     qualities: []
   }
+}
+
+// 天賦相關方法
+const openTalentModal = () => {
+  showTalentModal.value = true
+  activeTalentTab.value = 'all'
+  talentSearchQuery.value = ''
+}
+
+const closeTalentModal = () => {
+  showTalentModal.value = false
+  hideTalentEffectTooltip()
+}
+
+const selectTalent = (talent) => {
+  // 找到第一個空的位置
+  let targetIndex = talentList.value.findIndex(t => !t.name)
+  
+  // 如果沒有空位置，新增一個
+  if (targetIndex === -1) {
+    talentList.value.push({
+      name: talent.chineseName,
+      keywords: talent.keywords,
+      content: talent.content
+    })
+  } else {
+    // 使用現有的空位置
+    talentList.value[targetIndex] = {
+      name: talent.chineseName,
+      keywords: talent.keywords,
+      content: talent.content
+    }
+  }
+  
+  // 顯示新增成功提示而不是直接關閉Modal
+  showTalentAddedNotification(talent.chineseName)
+}
+
+const showTalentAddedNotification = (talentName) => {
+  talentAddedNotification.value = {
+    show: true,
+    message: `已新增天賦「${talentName}」`
+  }
+  
+  // 3秒後自動隱藏
+  setTimeout(() => {
+    talentAddedNotification.value.show = false
+  }, 3000)
+}
+
+const removeTalent = (index) => {
+  talentList.value[index] = {
+    name: '',
+    keywords: '',
+    content: ''
+  }
+}
+
+const truncateText = (text, maxLength) => {
+  if (text.length <= maxLength) return text
+  return text.substring(0, maxLength) + '...'
+}
+
+// 天賦效果浮動提示框相關方法
+const showTalentEffectTooltip = (event, talent) => {
+  const rect = event.target.getBoundingClientRect()
+  const tooltipWidth = 384 // w-96
+  const tooltipHeight = 200
+  
+  let x = rect.right + 15
+  let y = rect.top + (rect.height / 2) - (tooltipHeight / 2)
+  let isOnRight = true
+  
+  // 如果右側空間不夠，顯示在左側
+  if (x + tooltipWidth > window.innerWidth - 20) {
+    x = rect.left - tooltipWidth - 15
+    isOnRight = false
+  }
+  
+  // 確保提示框不會超出視窗上下邊界
+  if (y + tooltipHeight > window.innerHeight - 20) {
+    y = window.innerHeight - tooltipHeight - 20
+  }
+  
+  if (y < 20) {
+    y = 20
+  }
+  
+  // 計算箭頭位置
+  const arrowY = rect.top + (rect.height / 2) - y - 6
+  
+  talentEffectTooltip.value = {
+    show: true,
+    talent: talent,
+    x: x,
+    y: y,
+    arrowClass: isOnRight ? '-left-1.5' : '-right-1.5',
+    arrowStyle: {
+      top: `${Math.max(12, Math.min(arrowY, tooltipHeight - 24))}px`,
+      transform: isOnRight ? 'rotate(-135deg)' : 'rotate(45deg)'
+    }
+  }
+}
+
+const hideTalentEffectTooltip = () => {
+  talentEffectTooltip.value.show = false
+}
+
+// 特殊效果浮動提示框相關方法
+const showSpecialEffectTooltip = (event, content) => {
+  if (!content) return
+  
+  // 檢查內容中是否包含傷害效果關鍵字（支持多個效果）
+  let foundEffects = []
+  const contentLower = content.toLowerCase()
+  
+  // 檢查所有可能的效果
+  for (const [effectKey, effectData] of Object.entries(specialEffectsDatabase.value)) {
+    let isMatch = false
+    
+    // 完全匹配
+    if (contentLower.includes(effectKey.toLowerCase())) {
+      isMatch = true
+    }
+    // 模糊匹配（至少2個字符）
+    else if (effectKey.length >= 2 && contentLower.includes(effectKey.toLowerCase())) {
+      isMatch = true
+    }
+    // 特殊處理：穿透和穿刺的相互匹配
+    else if ((effectKey === '穿透' && contentLower.includes('穿刺')) || 
+             (effectKey === '穿刺' && contentLower.includes('穿透'))) {
+      isMatch = true
+    }
+    // 特殊處理：震懾和震暈的相互匹配
+    else if ((effectKey === '震懾' && contentLower.includes('震暈')) || 
+             (effectKey === '震暈' && contentLower.includes('震懾'))) {
+      isMatch = true
+    }
+    
+    if (isMatch && !foundEffects.some(effect => effect.name === effectData.name)) {
+      foundEffects.push(effectData)
+    }
+  }
+  
+  // 只有找到傷害效果才顯示提示
+  if (foundEffects.length === 0) return
+  
+  const rect = event.target.getBoundingClientRect()
+  const tooltipWidth = 320
+  const tooltipHeight = 120
+  
+  let x = rect.right + 15
+  let y = rect.top + (rect.height / 2) - (tooltipHeight / 2)
+  let isOnRight = true
+  
+  // 如果右側空間不夠，顯示在左側
+  if (x + tooltipWidth > window.innerWidth - 20) {
+    x = rect.left - tooltipWidth - 15
+    isOnRight = false
+  }
+  
+  // 確保提示框不會超出視窗上下邊界
+  if (y + tooltipHeight > window.innerHeight - 20) {
+    y = window.innerHeight - tooltipHeight - 20
+  }
+  
+  if (y < 20) {
+    y = 20
+  }
+  
+  // 計算箭頭位置
+  const arrowY = rect.top + (rect.height / 2) - y - 6
+  
+  // 調整提示框高度以適應多個效果
+  const estimatedHeight = Math.max(120, foundEffects.length * 60 + 40)
+  
+  // 重新計算位置
+  if (y + estimatedHeight > window.innerHeight - 20) {
+    y = window.innerHeight - estimatedHeight - 20
+  }
+  
+  specialEffectTooltip.value = {
+    show: true,
+    effects: foundEffects, // 改為複數形式
+    x: x,
+    y: y,
+    arrowClass: isOnRight ? '-left-1.5' : '-right-1.5',
+    arrowStyle: {
+      top: `${Math.max(12, Math.min(arrowY, estimatedHeight - 24))}px`,
+      transform: isOnRight ? 'rotate(-135deg)' : 'rotate(45deg)'
+    }
+  }
+}
+
+const hideSpecialEffectTooltip = () => {
+  specialEffectTooltip.value.show = false
+  specialEffectTooltip.value.effects = []
 }
 
 // 解析特性文字並添加懸浮效果（用於未來功能）
