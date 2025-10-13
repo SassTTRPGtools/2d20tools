@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-10-12',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
   tailwindcss: { viewer: true, exposeConfig: true },
 
   app: {
@@ -31,7 +31,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'github-pages',
     prerender: {
-      routes: ['/', '/character', '/archetype', '/talent'],
+      routes: ['/', '/character', '/archetype', '/talent', '/pinia-test-basic'],
       crawlLinks: true,
       failOnError: false
     }

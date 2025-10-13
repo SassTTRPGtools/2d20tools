@@ -5,6 +5,7 @@
       <nav class="space-x-4">        
         <NuxtLink to="/" class="text-magnus-text hover:text-magnus-accent font-semibold transition duration-300">首頁</NuxtLink>
         <NuxtLink to="/character" class="text-magnus-text hover:text-magnus-accent font-semibold transition duration-300">角色表</NuxtLink>
+        <NuxtLink to="/pinia-test-basic" class="text-magnus-text hover:text-magnus-accent font-semibold transition duration-300">🧪 測試</NuxtLink>
       </nav>
     </header>
     <main class="flex-1 flex flex-col bg-magnus-bg">
