@@ -413,12 +413,138 @@
         </div>
         
         <div class="border-2 border-red-900">
-          <div class="bg-red-900 text-white p-2 text-xs font-bold">
-            經驗
+          <div class="bg-red-900 text-white p-2 text-xs font-bold flex justify-between items-center">
+            <span>經驗</span>
+            <button
+              @click="openExperienceModal"
+              class="bg-red-700 hover:bg-red-600 text-white px-2 py-1 text-xs rounded transition-colors"
+            >
+              記錄
+            </button>
           </div>
-          <textarea 
-            class="w-full p-2 bg-white font-serif resize-none h-20 border-0"
-          ></textarea>
+          <div class="bg-white h-20 flex items-center justify-center">
+            <input 
+              type="number"
+              v-model.number="currentExperience"
+              class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+              min="0" 
+              max="9999"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 經驗點記錄Modal -->
+    <div v-if="showExperienceModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+        <!-- Modal Header -->
+        <div class="bg-red-900 text-white p-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-bold">經驗點記錄</h3>
+            <button 
+              @click="closeExperienceModal"
+              class="text-white hover:text-gray-200 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-4">
+          <!-- 添加新記錄表單 -->
+          <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+            <h4 class="text-md font-bold text-red-900 mb-3">添加經驗點記錄</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+              <div>
+                <label class="block text-xs font-bold text-red-900 mb-1">增減數量</label>
+                <input 
+                  type="number" 
+                  v-model.number="newExperienceRecord.amount"
+                  class="w-full p-2 border border-red-900 rounded text-sm"
+                  placeholder="如: +50 或 -20"
+                >
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-red-900 mb-1">日期</label>
+                <input 
+                  type="date" 
+                  v-model="newExperienceRecord.date"
+                  class="w-full p-2 border border-red-900 rounded text-sm"
+                >
+              </div>
+              <div class="md:col-span-1">
+                <label class="block text-xs font-bold text-red-900 mb-1">說明</label>
+                <input 
+                  type="text" 
+                  v-model="newExperienceRecord.description"
+                  class="w-full p-2 border border-red-900 rounded text-sm"
+                  placeholder="經驗點變動原因"
+                >
+              </div>
+            </div>
+            <button
+              @click="addExperienceRecord"
+              class="bg-red-900 hover:bg-red-800 text-white px-4 py-2 text-sm font-bold rounded transition-colors"
+            >
+              添加記錄
+            </button>
+          </div>
+
+          <!-- 歷史記錄列表 -->
+          <div class="overflow-y-auto max-h-96">
+            <h4 class="text-md font-bold text-red-900 mb-3">歷史記錄</h4>
+            
+            <div v-if="experienceRecords.length === 0" class="text-center text-gray-500 py-8">
+              暫無經驗點記錄
+            </div>
+            
+            <div v-else class="space-y-2">
+              <div 
+                v-for="(record, index) in sortedExperienceRecords" 
+                :key="index"
+                class="flex items-center justify-between p-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                <div class="flex-1">
+                  <div class="flex items-center gap-4">
+                    <span 
+                      class="font-bold text-lg px-2 py-1 rounded"
+                      :class="record.amount >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'"
+                    >
+                      {{ record.amount >= 0 ? '+' : '' }}{{ record.amount }}
+                    </span>
+                    <span class="text-sm text-gray-600">{{ record.date }}</span>
+                    <span class="text-sm">{{ record.description }}</span>
+                  </div>
+                </div>
+                <button
+                  @click="removeExperienceRecord(index)"
+                  class="text-red-600 hover:text-red-800 text-sm font-bold px-2 py-1 rounded hover:bg-red-100 transition-colors"
+                >
+                  刪除
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 統計資訊 -->
+          <div class="mt-6 pt-4 border-t border-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <div class="text-lg font-bold text-green-600">{{ totalGained }}</div>
+                <div class="text-xs text-green-800">總獲得</div>
+              </div>
+              <div class="bg-red-100 p-3 rounded-lg">
+                <div class="text-lg font-bold text-red-600">{{ totalSpent }}</div>
+                <div class="text-xs text-red-800">總花費</div>
+              </div>
+              <div class="bg-blue-100 p-3 rounded-lg">
+                <div class="text-lg font-bold text-blue-600">{{ netExperience }}</div>
+                <div class="text-xs text-blue-800">淨經驗值</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -657,6 +783,16 @@ const focusTooltip = ref({
 
 const selectedFocuses = ref({})
 
+// 經驗點相關狀態
+const currentExperience = ref(0)
+const showExperienceModal = ref(false)
+const experienceRecords = ref([])
+const newExperienceRecord = ref({
+  amount: null,
+  date: new Date().toISOString().split('T')[0],
+  description: ''
+})
+
 const tooltipStyle = computed(() => ({
   left: `${tooltip.value.x}px`,
   top: `${tooltip.value.y}px`
@@ -671,6 +807,27 @@ const focusTooltipStyle = computed(() => ({
   left: `${focusTooltip.value.x}px`,
   top: `${focusTooltip.value.y}px`
 }))
+
+// 經驗點計算屬性
+const sortedExperienceRecords = computed(() => {
+  return [...experienceRecords.value].sort((a, b) => new Date(b.date) - new Date(a.date))
+})
+
+const totalGained = computed(() => {
+  return experienceRecords.value
+    .filter(record => record.amount > 0)
+    .reduce((sum, record) => sum + record.amount, 0)
+})
+
+const totalSpent = computed(() => {
+  return Math.abs(experienceRecords.value
+    .filter(record => record.amount < 0)
+    .reduce((sum, record) => sum + record.amount, 0))
+})
+
+const netExperience = computed(() => {
+  return experienceRecords.value.reduce((sum, record) => sum + record.amount, 0)
+})
 
 const toggleStress = (row, col) => {
   const clickedIndex = (row - 1) * 10 + (col - 1)
@@ -888,5 +1045,55 @@ const previewStress = (row, col) => {
 const clearPreview = () => {
   isHovering.value = false
   hoverIndex.value = -1
+}
+
+// 經驗點相關函數
+const openExperienceModal = () => {
+  showExperienceModal.value = true
+}
+
+const closeExperienceModal = () => {
+  showExperienceModal.value = false
+  // 重置表單
+  newExperienceRecord.value = {
+    amount: null,
+    date: new Date().toISOString().split('T')[0],
+    description: ''
+  }
+}
+
+const addExperienceRecord = () => {
+  if (!newExperienceRecord.value.amount || !newExperienceRecord.value.description) {
+    alert('請填寫完整的記錄資訊')
+    return
+  }
+  
+  experienceRecords.value.push({
+    amount: newExperienceRecord.value.amount,
+    date: newExperienceRecord.value.date,
+    description: newExperienceRecord.value.description
+  })
+  
+  // 自動更新當前經驗值
+  currentExperience.value = netExperience.value
+  
+  // 重置表單
+  newExperienceRecord.value = {
+    amount: null,
+    date: new Date().toISOString().split('T')[0],
+    description: ''
+  }
+}
+
+const removeExperienceRecord = (index) => {
+  const sortedIndex = experienceRecords.value.findIndex(record => 
+    record === sortedExperienceRecords.value[index]
+  )
+  
+  if (sortedIndex !== -1) {
+    experienceRecords.value.splice(sortedIndex, 1)
+    // 自動更新當前經驗值
+    currentExperience.value = netExperience.value
+  }
 }
 </script>
