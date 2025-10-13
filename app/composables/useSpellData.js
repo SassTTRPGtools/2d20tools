@@ -187,12 +187,12 @@ export const useSpellData = () => {
         cost: '2🎲消耗，穿透1',
         duration: '二十四小時',
         category: '祝福法術',
-        effect: '神諭者對近距離內一位盟友低語未來的徵兆。於法術期間內，該盟友每當消耗命運點時，可擲1🎲。若結果為😈，該命運點立即返還（每次僅能恢復1點）。',
+        effect: '神諭者對近距離內一位盟友低語未來的徵兆。於法術期間內，該盟友每當花費命運點時，可擲1🎲。若結果為😈，該命運點立即返還（每次僅能恢復1點）。',
         flawedSpell: null,
         momentumOptions: [
           {
             cost: 2,
-            effect: '延長持續時間二十四小時。'
+            effect: '延長時間至二十四小時。'
           },
           {
             cost: 2,
@@ -340,7 +340,7 @@ export const useSpellData = () => {
         englishName: 'Gaze of Balor',
         chineseName: '巴洛爾之眼',
         skill: '說服',
-        difficulty: '2（由目標的意志+韌性對抗）',
+        difficulty: '2 vs. 意志+韌性',
         cost: '5🎲消耗，震懾',
         duration: '即時',
         category: '攻擊法術',
@@ -485,7 +485,7 @@ export const useSpellData = () => {
         skill: '求生',
         difficulty: 4,
         cost: '6🎲消耗、穿透2',
-        duration: '永久（或直至施行相反儀式）',
+        duration: '永久（直到被反向）',
         category: '儀式',
         effect: '祝福：在受祝福的地區中，所有角色進行以「求生」為基礎的採集技能檢定時，其難度降低1。若使用「六角探索」規則，則該區域的六角資源數量加倍。\n詛咒：在受詛咒的地區中，所有角色進行以「求生」為基礎的採集技能檢定時，其難度增加+1。若使用「六角探索」規則，則該區域的六角資源數量減半。',
         flawedSpell: '若儀式施行者在進行祝福或詛咒土地的儀式時發生施法失誤，結果可能與原意相反。原欲使土地繁茂的「祝福大地」儀式，可能反令瘟疫或枯萎蔓延；反之，若「詛咒大地」儀式發生施法失誤，則其效果轉為「祝福大地」。',
@@ -562,7 +562,7 @@ export const useSpellData = () => {
         momentumOptions: [],
         requirements: '儀式工具',
         maxStress: 10,
-        steps: '1+（由遊戲主持人裁定）',
+        steps: '1+',
         description: '此儀式呼喚光輝凱爾特神祇「貝勒努斯」的治癒之力，用以療癒深重創傷、撫慰因大規模戰鬥而破碎的心靈，或修復被奧祕恐懼所摧殘的精神。'
       },
       {
