@@ -1174,6 +1174,16 @@ const tooltip = ref({
   arrowStyle: {}
 })
 
+// 選擇狀態變數
+const selectedWeapons = ref([])
+const selectedArmor = ref([])
+const customWeapons = ref([])
+const customArmor = ref([])
+const selectedSkillTools = ref([])
+const selectedMiscellaneous = ref([])
+const selectedTalents = ref([])
+const customTalents = ref([])
+
 // 物品限制相關狀態
 const currentMajorItems = ref(0)
 const maxMajorItems = ref(2)

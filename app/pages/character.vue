@@ -4,10 +4,20 @@
     <div class="container mx-auto px-4 py-8 max-w-6xl">
       <div class="bg-white shadow-2xl rounded-lg p-6 md:p-8">
         <!-- 直接渲染組件 -->
-        <CohorsCthvlhvSheet v-if="activeTab === 'basic'" />
-        <CohorsCthvlhvEquipment v-else-if="activeTab === 'equipment'" />
-        <CohorsCthvlhvSpells v-else-if="activeTab === 'spells'" />
-        <CohorsCthvlhvNotes v-else-if="activeTab === 'notes'" />
+        <div v-if="activeTab === 'basic'">
+          <CohorsCthvlhvSheet />
+        </div>
+        <div v-else-if="activeTab === 'equipment'">
+          <CohorsCthvlhvEquipment />
+        </div>
+        <div v-else-if="activeTab === 'spells'">
+          <CohorsCthvlhvSpells />
+        </div>
+        <div v-else-if="activeTab === 'notes'">
+          <CohorsCthvlhvNotes />
+        </div>
+        
+
       </div>
     </div>
 
