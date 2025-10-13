@@ -283,7 +283,8 @@
               >
                 <input 
                   type="number"
-                  v-model.number="sheetData.attributes[attribute.code]"
+                  :value="store.attributes[attribute.code]"
+                  @input="store.setAttribute(attribute.code, $event.target.value)"
                   class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
                   min="0" max="99"
                 >
@@ -300,7 +301,8 @@
               >
                 <input 
                   type="number"
-                  v-model.number="sheetData.attributeBonuses[attribute.code]"
+                  :value="store.attributeBonuses[attribute.code]"
+                  @input="store.setAttributeBonus(attribute.code, $event.target.value)"
                   class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
                   min="0" max="99"
                 >
@@ -357,7 +359,8 @@
                 <td class="border-l border-red-900 bg-white text-center">
                   <input 
                     type="number"
-                    v-model.number="sheetData.skills[skill.code]"
+                    :value="store.skills[skill.code]"
+                    @input="store.setSkill(skill.code, $event.target.value)"
                     class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
                     min="0" max="99"
                   >
@@ -571,168 +574,91 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
 
-// CohorsCthvlhvSheet 專用數據 - 基本資訊
-const sheetData = ref({
-  // 基本資訊
-  characterName: '',
-  culture: '',
-  rank: '',
-  wealth: '',
-  archetype: '',
-  background: '',
-  talent: '',
-  
-  // 個人真理與傷疤 (10個欄位)
-  personalTruths: Array(10).fill(''),
-  
-    // 屬性數值 (7個屬性)
-    attributes: {
-      AGI: 0,  // 敏捷
-      BRA: 0,  // 體魄
-      COO: 0,  // 協調  
-      GRA: 0,  // 威儀
-      INS: 0,  // 洞察
-      REA: 0,  // 智識
-      WIL: 0   // 意志
-    },
-    
-    // 屬性額外傷害
-    attributeBonuses: {
-      AGI: 0,
-      BRA: 0,
-      COO: 0,
-      GRA: 0,
-      INS: 0,
-      REA: 0,
-      WIL: 0
-    },  // 技能等級
-  skills: {
-    ACADEMIA: 0,
-    ATHLETICS: 0,
-    CRAFTING: 0,
-    ENGINEERING: 0,
-    FIGHTING: 0,
-    MEDICINE: 0,
-    OBSERVATION: 0,
-    PERSUASION: 0,
-    RESILIENCE: 0,
-    STEALTH: 0,
-    SURVIVAL: 0,
-    TACTICS: 0
-  },
-  
-  // 壓力相關
-  maxStressBoxes: 20,
-  stressBoxes: Array(2).fill().map(() => Array(10).fill(false)),
-  
-  // 勇氣與命運點
-  courage: 0,
-  fate: 0,
-  
-  // 護甲
-  baseArmor: 0,
-  totalArmor: 0,
-  injuries: '',
-  
-  // 語言與經驗
-  languages: '',
-  currentExperience: 0,
-  totalExperience: 0,
-  experienceRecords: [],
-  
-  // 技能專精選擇
-  selectedFocuses: {}
-})
+// 使用 Pinia store
+const store = useCohorsCthvlhvStore()
 
-// 為了向後兼容，創建引用到 sheetData 的別名
+// 基本資訊的 computed 屬性
 const characterName = computed({
-  get: () => sheetData.value.characterName,
-  set: (value) => sheetData.value.characterName = value
+  get: () => store.basicInfo.characterName,
+  set: (value) => store.updateBasicInfo({ characterName: value })
 })
 const culture = computed({
-  get: () => sheetData.value.culture,
-  set: (value) => sheetData.value.culture = value
+  get: () => store.basicInfo.culture,
+  set: (value) => store.updateBasicInfo({ culture: value })
 })
 const rank = computed({
-  get: () => sheetData.value.rank,
-  set: (value) => sheetData.value.rank = value
+  get: () => store.basicInfo.rank,
+  set: (value) => store.updateBasicInfo({ rank: value })
 })
 const wealth = computed({
-  get: () => sheetData.value.wealth,
-  set: (value) => sheetData.value.wealth = value
+  get: () => store.basicInfo.wealth,
+  set: (value) => store.updateBasicInfo({ wealth: value })
 })
 const archetype = computed({
-  get: () => sheetData.value.archetype,
-  set: (value) => sheetData.value.archetype = value
+  get: () => store.basicInfo.archetype,
+  set: (value) => store.updateBasicInfo({ archetype: value })
 })
 const background = computed({
-  get: () => sheetData.value.background,
-  set: (value) => sheetData.value.background = value
+  get: () => store.basicInfo.background,
+  set: (value) => store.updateBasicInfo({ background: value })
 })
 const talent = computed({
-  get: () => sheetData.value.talent,
-  set: (value) => sheetData.value.talent = value
+  get: () => store.basicInfo.talent,
+  set: (value) => store.updateBasicInfo({ talent: value })
 })
 
-// 壓力相關的別名
+// 壓力系統的 computed 屬性
 const maxStressBoxes = computed({
-  get: () => sheetData.value.maxStressBoxes,
-  set: (value) => sheetData.value.maxStressBoxes = value
+  get: () => store.stress.maxStressBoxes,
+  set: (value) => store.setMaxStressBoxes(value)
 })
-const stressBoxes = computed({
-  get: () => sheetData.value.stressBoxes,
-  set: (value) => sheetData.value.stressBoxes = value
-})
+const stressBoxes = computed(() => store.stress.stressBoxes)
 
-// 經驗相關的別名  
+// 經驗相關的 computed 屬性
 const currentExperience = computed({
-  get: () => sheetData.value.currentExperience,
-  set: (value) => sheetData.value.currentExperience = value
+  get: () => store.character.currentExperience,
+  set: (value) => store.character.currentExperience = Number(value) || 0
 })
 const totalExperience = computed({
-  get: () => sheetData.value.totalExperience,
-  set: (value) => sheetData.value.totalExperience = value
+  get: () => store.character.totalExperience,
+  set: (value) => store.character.totalExperience = Number(value) || 0
 })
-const experienceRecords = computed({
-  get: () => sheetData.value.experienceRecords,
-  set: (value) => sheetData.value.experienceRecords = value
-})
+const experienceRecords = computed(() => store.character.experienceRecords)
 
-// 個人真理與傷疤的別名
+// 個人真理的 computed 屬性
 const personalTruths = computed({
-  get: () => sheetData.value.personalTruths,
-  set: (value) => sheetData.value.personalTruths = value
+  get: () => store.personalTruths,
+  set: (value) => store.personalTruths = [...value]
 })
 
-// 勇氣與命運點的別名
+// 戰鬥屬性的 computed 屬性
 const courage = computed({
-  get: () => sheetData.value.courage,
-  set: (value) => sheetData.value.courage = value
+  get: () => store.combat.courage,
+  set: (value) => store.updateCombatStats({ courage: Number(value) || 0 })
 })
 const fate = computed({
-  get: () => sheetData.value.fate,
-  set: (value) => sheetData.value.fate = value
+  get: () => store.combat.fate,
+  set: (value) => store.updateCombatStats({ fate: Number(value) || 0 })
 })
-
-// 護甲相關的別名
 const baseArmor = computed({
-  get: () => sheetData.value.baseArmor,
-  set: (value) => sheetData.value.baseArmor = value
+  get: () => store.combat.baseArmor,
+  set: (value) => store.updateCombatStats({ baseArmor: Number(value) || 0 })
 })
 const totalArmor = computed({
-  get: () => sheetData.value.totalArmor,
-  set: (value) => sheetData.value.totalArmor = value
+  get: () => store.combat.totalArmor,
+  set: (value) => store.updateCombatStats({ totalArmor: Number(value) || 0 })
 })
 const injuries = computed({
-  get: () => sheetData.value.injuries,
-  set: (value) => sheetData.value.injuries = value
+  get: () => store.combat.injuries,
+  set: (value) => store.updateCombatStats({ injuries: value })
 })
 
-// 語言的別名
+// 語言的 computed 屬性
 const languages = computed({
-  get: () => sheetData.value.languages,
-  set: (value) => sheetData.value.languages = value
+  get: () => store.character.languages,
+  set: (value) => store.character.languages = value
 })
 
 const skillsData = ref([
@@ -979,11 +905,8 @@ const focusTooltip = ref({
   arrowStyle: {}
 })
 
-// 技能專精選擇的別名
-const selectedFocuses = computed({
-  get: () => sheetData.value.selectedFocuses,
-  set: (value) => sheetData.value.selectedFocuses = value
-})
+// 技能專精選擇的 computed 屬性
+const selectedFocuses = computed(() => store.selectedFocuses)
 
 // 經驗點 Modal 相關狀態
 const showExperienceModal = ref(false)
@@ -1013,65 +936,12 @@ const sortedExperienceRecords = computed(() => {
   return [...experienceRecords.value].sort((a, b) => new Date(b.date) - new Date(a.date))
 })
 
-const totalGained = computed(() => {
-  return experienceRecords.value
-    .filter(record => record.amount > 0)
-    .reduce((sum, record) => sum + record.amount, 0)
-})
-
-const totalSpent = computed(() => {
-  return Math.abs(experienceRecords.value
-    .filter(record => record.amount < 0)
-    .reduce((sum, record) => sum + record.amount, 0))
-})
-
-const netExperience = computed(() => {
-  return experienceRecords.value.reduce((sum, record) => sum + record.amount, 0)
-})
+const totalGained = computed(() => store.getTotalGainedExperience)
+const totalSpent = computed(() => store.getTotalSpentExperience)
+const netExperience = computed(() => store.getNetExperience)
 
 const toggleStress = (row, col) => {
-  const clickedIndex = (row - 1) * 10 + (col - 1)
-  
-  // 檢查點擊的格子是否在可用範圍內
-  if (clickedIndex >= maxStressBoxes.value) {
-    return
-  }
-  
-  // 計算當前已填滿的格子數
-  let currentFilledCount = 0
-  for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < 10; j++) {
-      const index = i * 10 + j
-      if (index >= maxStressBoxes.value) break
-      if (stressBoxes.value[i][j]) {
-        currentFilledCount = index + 1
-      } else {
-        break
-      }
-    }
-  }
-  
-  // 清空所有格子
-  for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < 10; j++) {
-      stressBoxes.value[i][j] = false
-    }
-  }
-  
-  // 如果點擊的位置等於當前填滿的位置，則清空（取消選擇）
-  if (clickedIndex + 1 === currentFilledCount) {
-    return
-  }
-  
-  // 填滿從第一格到點擊位置的所有格子
-  for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < 10; j++) {
-      const index = i * 10 + j
-      if (index <= clickedIndex && index < maxStressBoxes.value) {
-        stressBoxes.value[i][j] = true
-      }
-    }
-  }
+  store.toggleStress(row, col)
 }
 
 const showTooltip = (event, attribute) => {
@@ -1198,24 +1068,15 @@ const hideFocusTooltip = () => {
 }
 
 const toggleFocus = (skillCode, focusName) => {
-  if (!selectedFocuses.value[skillCode]) {
-    selectedFocuses.value[skillCode] = []
-  }
-  
-  const index = selectedFocuses.value[skillCode].indexOf(focusName)
-  if (index > -1) {
-    selectedFocuses.value[skillCode].splice(index, 1)
-  } else {
-    selectedFocuses.value[skillCode].push(focusName)
-  }
+  store.toggleSkillFocus(skillCode, focusName)
 }
 
 const isFocusActive = (skillCode, focusName) => {
-  return selectedFocuses.value[skillCode]?.includes(focusName) || false
+  return store.selectedFocuses[skillCode]?.includes(focusName) || false
 }
 
 const clearStress = () => {
-  stressBoxes.value = Array(2).fill().map(() => Array(10).fill(false))
+  store.clearStress()
 }
 
 const previewStress = (row, col) => {
@@ -1252,14 +1113,11 @@ const addExperienceRecord = () => {
     return
   }
   
-  experienceRecords.value.push({
+  store.addExperienceRecord({
     amount: newExperienceRecord.value.amount,
     date: newExperienceRecord.value.date,
     description: newExperienceRecord.value.description
   })
-  
-  // 自動更新當前經驗值
-  currentExperience.value = netExperience.value
   
   // 重置表單
   newExperienceRecord.value = {
@@ -1275,9 +1133,7 @@ const removeExperienceRecord = (index) => {
   )
   
   if (sortedIndex !== -1) {
-    experienceRecords.value.splice(sortedIndex, 1)
-    // 自動更新當前經驗值
-    currentExperience.value = netExperience.value
+    store.removeExperienceRecord(sortedIndex)
   }
 }
 
@@ -1285,150 +1141,30 @@ const removeExperienceRecord = (index) => {
 onMounted(() => {
   // 監聽載入數據事件
   window.addEventListener('loadCharacterData', (event) => {
-    if (event.detail && event.detail.characterSheet) {
-      loadCohorsCthvlhvSheetData(event.detail.characterSheet)
+    if (event.detail) {
+      store.loadCharacterData(event.detail)
     }
   })
   
   // 監聽清除數據事件
   window.addEventListener('clearCharacterData', () => {
-    clearCohorsCthvlhvSheetData()
+    store.clearAllData()
   })
 
   // 監聽獲取數據事件
   window.addEventListener('getSheetData', () => {
-    window.characterSheetData = getCohorsCthvlhvSheetData()
+    window.characterSheetData = store.getFullCharacterData
   })
 })
-
-// CohorsCthvlhvSheet 專用 - 獲取表單數據
-const getCohorsCthvlhvSheetData = () => {
-  console.log('CohorsCthvlhvSheet: 獲取表單數據', {
-    dataSize: JSON.stringify(sheetData.value).length,
-    basicInfo: {
-      name: sheetData.value.characterName,
-      culture: sheetData.value.culture
-    }
-  })
-  
-  return {
-    componentType: 'CohorsCthvlhvSheet',
-    timestamp: new Date().toISOString(),
-    data: { ...sheetData.value }
-  }
-}
-
-// CohorsCthvlhvSheet 專用 - 載入表單資料
-const loadCohorsCthvlhvSheetData = (inputData) => {
-  if (!inputData) return
-  
-  console.log('CohorsCthvlhvSheet: 載入表單資料', {
-    inputType: typeof inputData,
-    hasData: inputData.data ? '有 data 屬性' : '無 data 屬性'
-  })
-  
-  // 如果有包裝層 (componentType: 'CohorsCthvlhvSheet', data: {...})
-  const data = inputData.data || inputData
-  
-  // 直接更新 sheetData.value，使用 Object.assign 合併
-  Object.assign(sheetData.value, data)
-  
-  console.log('CohorsCthvlhvSheet: 資料載入完成', {
-    characterName: sheetData.value.characterName,
-    culture: sheetData.value.culture
-  })
-}
-
-// CohorsCthvlhvSheet 專用 - 清除表單資料
-const clearCohorsCthvlhvSheetData = () => {
-  console.log('CohorsCthvlhvSheet: 清除表單資料')
-  
-  // 重置整個 sheetData 為預設值
-  Object.assign(sheetData.value, {
-    // 基本角色資訊
-    characterName: '',
-    culture: '',
-    rank: '',
-    wealth: '',
-    archetype: '',
-    background: '',
-    talent: '',
-    
-    // 個人真理與傷疤 (10個欄位)
-    personalTruths: Array(10).fill(''),
-    
-    // 屬性數值 (7個屬性)
-    attributes: {
-      AGI: 0,  // 敏捷
-      BRA: 0,  // 體魄
-      COO: 0,  // 協調
-      GRA: 0,  // 威儀
-      INS: 0,  // 洞察
-      REA: 0,  // 智識
-      WIL: 0   // 意志
-    },
-    
-    // 屬性額外傷害
-    attributeBonuses: {
-      AGI: 0,
-      BRA: 0,
-      COO: 0,
-      GRA: 0,
-      INS: 0,
-      REA: 0,
-      WIL: 0
-    },
-    
-    // 技能等級
-    skills: {
-      ACADEMIA: 0,
-      ATHLETICS: 0,
-      CRAFTING: 0,
-      ENGINEERING: 0,
-      FIGHTING: 0,
-      MEDICINE: 0,
-      OBSERVATION: 0,
-      PERSUASION: 0,
-      RESILIENCE: 0,
-      STEALTH: 0,
-      SURVIVAL: 0,
-      TACTICS: 0
-    },
-    
-    // 壓力相關
-    maxStressBoxes: 20,
-    stressBoxes: Array(2).fill().map(() => Array(10).fill(false)),
-    
-    // 勇氣與命運點
-    courage: 0,
-    fate: 0,
-    
-    // 護甲
-    baseArmor: 0,
-    totalArmor: 0,
-    injuries: '',
-    
-    // 語言與經驗
-    languages: '',
-    currentExperience: 0,
-    totalExperience: 0,
-    experienceRecords: [],
-    
-    // 技能專精選擇
-    selectedFocuses: {}
-  })
-  
-  console.log('CohorsCthvlhvSheet: 資料清除完成')
-}
 
 // 觸發數據變更事件
 const triggerDataChange = () => {
   window.dispatchEvent(new CustomEvent('characterDataChanged'))
 }
 
-// CohorsCthvlhvSheet 專用 - 監聽資料變更以自動儲存
-watch(sheetData, () => {
-  console.log('CohorsCthvlhvSheet: 資料變更，觸發自動儲存')
-  window.dispatchEvent(new CustomEvent('characterDataChanged'))
+// 監聽 store 變更以觸發自動儲存
+watch(() => store.$state, () => {
+  console.log('CohorsCthvlhvSheet: Store 資料變更，觸發自動儲存')
+  triggerDataChange()
 }, { deep: true })
 </script>

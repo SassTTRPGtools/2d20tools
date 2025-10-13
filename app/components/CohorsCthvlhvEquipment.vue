@@ -33,7 +33,8 @@
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  v-model="weapon.name"
+                  :value="weapon.name"
+                  @input="updateWeaponField(index, 'name', $event.target.value)"
                   class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
                   placeholder="武器名稱"
                 >
@@ -41,7 +42,8 @@
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  v-model="weapon.focus"
+                  :value="weapon.focus"
+                  @input="updateWeaponField(index, 'focus', $event.target.value)"
                   class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
                   placeholder="專精"
                 >
@@ -49,7 +51,8 @@
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  v-model="weapon.reach"
+                  :value="weapon.reach"
+                  @input="updateWeaponField(index, 'reach', $event.target.value)"
                   class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0 text-center"
                   placeholder="距離"
                 >
@@ -57,17 +60,19 @@
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  v-model="weapon.damage"
-                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
+                  :value="weapon.damage"
+                  @input="updateWeaponField(index, 'damage', $event.target.value)"
                   @mouseenter="handleDamageEffectHover"
                   @mouseleave="hideQualityTooltip"
+                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
                   placeholder="傷害效果"
                 >
               </td>
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  v-model="weapon.size"
+                  :value="weapon.size"
+                  @input="updateWeaponField(index, 'size', $event.target.value)"
                   class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0 text-center"
                   placeholder="體積"
                 >
@@ -134,7 +139,8 @@
                 <td class="p-1 border border-red-900 bg-white">
                   <input 
                     type="text" 
-                    v-model="armor.name"
+                    :value="armor.name"
+                    @input="updateArmorField(index, 'name', $event.target.value)"
                     class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
                     placeholder="護甲名稱"
                   >
@@ -142,7 +148,8 @@
                 <td class="p-1 border border-red-900 bg-white">
                   <input 
                     type="text" 
-                    v-model="armor.resistance"
+                    :value="armor.resistance"
+                    @input="updateArmorField(index, 'resistance', $event.target.value)"
                     class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0 text-center"
                     placeholder="+1"
                   >
@@ -310,7 +317,8 @@
               <td class="p-1 border border-red-900 bg-white">
                 <input 
                   type="text" 
-                  v-model="talent.keywords"
+                  :value="talent.keywords"
+                  @input="updateTalentField(index, 'keywords', $event.target.value)"
                   class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
                   placeholder="關鍵字"
                   :readonly="!talent.name"
@@ -1065,6 +1073,10 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useEquipmentData } from '~/composables/useEquipmentData'
 import { useTalentData } from '~/composables/useTalentData'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+
+// 使用 Pinia store
+const store = useCohorsCthvlhvStore()
 
 // 引入裝備數據
 const { weaponsDatabase, armorsDatabase, skillToolsDatabase, miscellaneousDatabase, weaponSpecialAbilities } = useEquipmentData()
@@ -1142,25 +1154,13 @@ const skillTools = ref(skillToolsDatabase)
 const miscellaneousItems = ref(miscellaneousDatabase)
 
 
-// 武器列表和Modal狀態
-const weaponList = ref([
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' },
-  { name: '', focus: '', reach: '', damage: '', size: '', qualities: [], qualityInput: '' }
-])
+// 武器和護甲的 computed 屬性，直接引用 store
+const weaponList = computed(() => store.weapons)
+const armorList = computed(() => store.armors)
 
+// Modal狀態
 const showWeaponModal = ref(false)
 const selectedWeaponIndex = ref(0)
-
-// 護甲列表和Modal狀態
-const armorList = ref([
-  { name: '', resistance: '', qualities: [] },
-  { name: '', resistance: '', qualities: [] },
-  { name: '', resistance: '', qualities: [] }
-])
-
 const showArmorModal = ref(false)
 const selectedArmorIndex = ref(0)
 
@@ -1174,21 +1174,18 @@ const tooltip = ref({
   arrowStyle: {}
 })
 
-// 選擇狀態變數
-const selectedWeapons = ref([])
-const selectedArmor = ref([])
-const customWeapons = ref([])
-const customArmor = ref([])
-const selectedSkillTools = ref([])
-const selectedMiscellaneous = ref([])
-const selectedTalents = ref([])
-const customTalents = ref([])
 
-// 物品限制相關狀態
-const currentMajorItems = ref(0)
-const maxMajorItems = ref(2)
-const currentMinorItems = ref(0)
-const maxMinorItems = ref(3)
+
+// 物品限制相關狀態，直接引用 store 的 computed
+const maxMajorItems = computed({
+  get: () => store.items.maxMajorItems,
+  set: (value) => store.setItemLimits(value, store.items.maxMinorItems)
+})
+
+const maxMinorItems = computed({
+  get: () => store.items.maxMinorItems,
+  set: (value) => store.setItemLimits(store.items.maxMajorItems, value)
+})
 
 const itemLimitTooltip = ref({
   show: false,
@@ -1207,7 +1204,7 @@ const overloadTooltip = ref({
 })
 
 // 物品清單相關狀態
-const itemList = ref([])
+const itemList = computed(() => store.items.itemList)
 const showItemModal = ref(false)
 const activeItemTab = ref('weapons')
 
@@ -1233,17 +1230,7 @@ const talentAddedNotification = ref({
 })
 
 // 天賦相關狀態
-const talentList = ref([
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' },
-  { name: '', keywords: '', content: '' }
-])
-
+const talentList = computed(() => store.talents)
 const showTalentModal = ref(false)
 const activeTalentTab = ref('all')
 const talentSearchQuery = ref('')
@@ -1341,70 +1328,10 @@ const specialEffectTooltipStyle = computed(() => ({
   top: `${specialEffectTooltip.value.y}px`
 }))
 
-// 自動計算當前攜帶的物品數量
-const calculatedMajorItems = computed(() => {
-  let majorCount = 0
-  
-  // 計算武器的主要物品
-  weaponList.value.forEach(weapon => {
-    if (weapon.name && weapon.size === '主要') {
-      majorCount++
-    }
-  })
-  
-  // 計算護甲的主要物品（只計算有「沉重」特性的護甲）
-  armorList.value.forEach(armor => {
-    if (armor.name && armor.qualities.includes('沉重')) {
-      majorCount++
-    }
-  })
-  
-  // 計算物品清單中的主要物品
-  itemList.value.forEach(item => {
-    if (item.type === 'weapon' && item.size === '主要') {
-      majorCount++
-    } else if (item.type === 'armor' && item.qualities.includes('沉重')) {
-      majorCount++
-    } else if (item.type === 'tool' && item.size === '主要') {
-      majorCount++
-    } else if (item.type === 'miscellaneous' && item.size === '主要') {
-      majorCount++
-    }
-  })
-  
-  return majorCount
-})
-
-const calculatedMinorItems = computed(() => {
-  let minorCount = 0
-  
-  // 計算武器的次要物品
-  weaponList.value.forEach(weapon => {
-    if (weapon.name && weapon.size === '次要') {
-      minorCount++
-    }
-  })
-  
-  // 計算物品清單中的次要物品
-  itemList.value.forEach(item => {
-    if (item.type === 'weapon' && item.size === '次要') {
-      minorCount++
-    } else if (item.type === 'armor' && !item.qualities.includes('沉重')) {
-      minorCount++
-    } else if (item.type === 'tool' && item.size === '次要') {
-      minorCount++
-    } else if (item.type === 'miscellaneous' && item.size === '次要') {
-      minorCount++
-    }
-  })
-  
-  return minorCount
-})
-
-const isOverloaded = computed(() => {
-  return calculatedMajorItems.value > maxMajorItems.value || 
-         calculatedMinorItems.value > maxMinorItems.value
-})
+// 使用 store 中的 computed 屬性
+const calculatedMajorItems = computed(() => store.getCurrentMajorItems)
+const calculatedMinorItems = computed(() => store.getCurrentMinorItems)
+const isOverloaded = computed(() => store.isOverloaded)
 
 // 天賦相關計算屬性
 const filteredTalents = computed(() => {
@@ -1609,10 +1536,9 @@ const closeItemModal = () => {
 const addItemToList = (item, type) => {
   const newItem = {
     ...item,
-    type: type,
-    id: Date.now() + Math.random() // 簡單的唯一ID
+    type: type
   }
-  itemList.value.push(newItem)
+  store.addItem(newItem)
   
   // 顯示已新增提示
   showItemAddedNotification(item.name)
@@ -1633,7 +1559,7 @@ const showItemAddedNotification = (itemName) => {
 const removeItem = (index) => {
   // 隱藏浮動提示框，避免卡住
   hideItemTooltip()
-  itemList.value.splice(index, 1)
+  store.removeItem(index)
 }
 
 const showItemTooltip = (event, item) => {
@@ -1723,29 +1649,20 @@ const closeWeaponModal = () => {
 }
 
 const selectWeapon = (weapon) => {
-  weaponList.value[selectedWeaponIndex.value] = {
+  store.setWeapon(selectedWeaponIndex.value, {
     name: weapon.name,
     focus: weapon.focus,
     reach: weapon.reach,
     damage: weapon.damage,
     size: weapon.size,
-    qualities: [...weapon.qualities],
-    qualityInput: ''
-  }
+    qualities: [...weapon.qualities]
+  })
   closeWeaponModal()
 }
 
 // 清空武器
 const clearWeapon = (index) => {
-  weaponList.value[index] = {
-    name: '',
-    focus: '',
-    reach: '',
-    damage: '',
-    size: '',
-    qualities: [],
-    qualityInput: ''
-  }
+  store.clearWeapon(index)
 }
 
 // 護甲modal相關函數
@@ -1759,21 +1676,17 @@ const closeArmorModal = () => {
 }
 
 const selectArmor = (armor) => {
-  armorList.value[selectedArmorIndex.value] = {
+  store.setArmor(selectedArmorIndex.value, {
     name: armor.name,
     resistance: armor.resistance,
     qualities: [...armor.qualities]
-  }
+  })
   closeArmorModal()
 }
 
 // 清空護甲
 const clearArmor = (index) => {
-  armorList.value[index] = {
-    name: '',
-    resistance: '',
-    qualities: []
-  }
+  store.clearArmor(index)
 }
 
 // 天賦相關方法
@@ -1789,24 +1702,7 @@ const closeTalentModal = () => {
 }
 
 const selectTalent = (talent) => {
-  // 找到第一個空的位置
-  let targetIndex = talentList.value.findIndex(t => !t.name)
-  
-  // 如果沒有空位置，新增一個
-  if (targetIndex === -1) {
-    talentList.value.push({
-      name: talent.chineseName,
-      keywords: talent.keywords,
-      content: talent.content
-    })
-  } else {
-    // 使用現有的空位置
-    talentList.value[targetIndex] = {
-      name: talent.chineseName,
-      keywords: talent.keywords,
-      content: talent.content
-    }
-  }
+  store.addTalent(talent)
   
   // 顯示新增成功提示而不是直接關閉Modal
   showTalentAddedNotification(talent.chineseName)
@@ -1825,11 +1721,28 @@ const showTalentAddedNotification = (talentName) => {
 }
 
 const removeTalent = (index) => {
-  talentList.value[index] = {
-    name: '',
-    keywords: '',
-    content: ''
-  }
+  store.removeTalent(index)
+}
+
+// 武器欄位更新函數
+const updateWeaponField = (index, field, value) => {
+  const weapon = { ...store.weapons[index] }
+  weapon[field] = value
+  store.setWeapon(index, weapon)
+}
+
+// 護甲欄位更新函數
+const updateArmorField = (index, field, value) => {
+  const armor = { ...store.armors[index] }
+  armor[field] = value
+  store.setArmor(index, armor)
+}
+
+// 天賦欄位更新函數
+const updateTalentField = (index, field, value) => {
+  const talent = { ...store.talents[index] }
+  talent[field] = value
+  store.setTalent(index, talent)
 }
 
 const truncateText = (text, maxLength) => {
@@ -1992,73 +1905,38 @@ const parseQualities = (qualitiesText, type = 'weapon') => {
 // 監聽數據管理事件
 onMounted(() => {
   // 監聽載入裝備數據事件
-  window.addEventListener('loadEquipmentData', (event) => {
+  window.addEventListener('loadCharacterData', (event) => {
     if (event.detail) {
-      loadEquipmentData(event.detail)
+      store.loadCharacterData(event.detail)
     }
   })
   
   // 監聽清除裝備數據事件
   window.addEventListener('clearCharacterData', () => {
-    clearEquipmentData()
+    store.clearAllData()
   })
 
   // 監聽獲取裝備數據事件
   window.addEventListener('getEquipmentData', () => {
-    window.characterEquipmentData = getEquipmentData()
+    window.characterEquipmentData = {
+      weapons: store.weapons,
+      armors: store.armors,
+      items: store.items,
+      talents: store.talents
+    }
   })
 })
-
-// 獲取裝備數據
-const getEquipmentData = () => {
-  return {
-    selectedWeapons: selectedWeapons.value,
-    selectedArmor: selectedArmor.value,
-    customWeapons: customWeapons.value,
-    customArmor: customArmor.value,
-    selectedSkillTools: selectedSkillTools.value,
-    selectedMiscellaneous: selectedMiscellaneous.value,
-    selectedTalents: selectedTalents.value,
-    customTalents: customTalents.value
-  }
-}
-
-// 載入裝備數據
-const loadEquipmentData = (data) => {
-  if (!data) return
-  
-  if (data.selectedWeapons) selectedWeapons.value = [...data.selectedWeapons]
-  if (data.selectedArmor) selectedArmor.value = [...data.selectedArmor]
-  if (data.customWeapons) customWeapons.value = [...data.customWeapons]
-  if (data.customArmor) customArmor.value = [...data.customArmor]
-  if (data.selectedSkillTools) selectedSkillTools.value = [...data.selectedSkillTools]
-  if (data.selectedMiscellaneous) selectedMiscellaneous.value = [...data.selectedMiscellaneous]
-  if (data.selectedTalents) selectedTalents.value = [...data.selectedTalents]
-  if (data.customTalents) customTalents.value = [...data.customTalents]
-}
-
-// 清除裝備數據
-const clearEquipmentData = () => {
-  selectedWeapons.value = []
-  selectedArmor.value = []
-  customWeapons.value = []
-  customArmor.value = []
-  selectedSkillTools.value = []
-  selectedMiscellaneous.value = []
-  selectedTalents.value = []
-  customTalents.value = []
-}
 
 // 觸發數據變更事件
 const triggerDataChange = () => {
   window.dispatchEvent(new CustomEvent('characterDataChanged'))
 }
 
-// 監聽裝備數據變更
-watch([
-  selectedWeapons, selectedArmor, customWeapons, customArmor,
-  selectedSkillTools, selectedMiscellaneous, selectedTalents, customTalents
-], () => {
+// 監聽 store 變更以觸發自動儲存
+watch(() => store.$state, () => {
+  console.log('CohorsCthvlhvEquipment: Store 資料變更，觸發自動儲存')
   triggerDataChange()
 }, { deep: true })
+
+
 </script>

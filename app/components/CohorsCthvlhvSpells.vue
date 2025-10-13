@@ -24,7 +24,8 @@
           </span>
         </label>
         <select 
-          v-model="selectedCasterType"
+          :value="store.spells.selectedCasterType"
+          @input="store.setCasterType($event.target.value)"
           class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12"
         >
           <option value="">選擇施法類型</option>
@@ -38,10 +39,10 @@
           v-if="showTooltip" 
           class="absolute top-16 left-0 z-50 w-96 bg-white border-2 border-red-900 rounded-lg shadow-lg p-4"
         >
-          <div v-if="!selectedCasterType" class="text-sm text-gray-600">
+          <div v-if="!store.spells.selectedCasterType" class="text-sm text-gray-600">
             請選擇一種施法類型以查看詳細說明
           </div>
-          <div v-else-if="selectedCasterType === 'traditional'" class="text-sm">
+          <div v-else-if="store.spells.selectedCasterType === 'traditional'" class="text-sm">
             <h3 class="font-bold text-red-900 mb-2">傳統型</h3>
             <p class="mb-2">傳統施法者將一生大部分時間投入於特定的魔法傳統，如符文、神諭或凱爾特等體系。這些傳統由世代相傳的教義構成，需要多年研習方能精通。</p>
             <div class="bg-yellow-50 p-2 rounded">
@@ -49,7 +50,7 @@
             </div>
             <p class="mt-2 text-xs">傳統施法者僅能使用自己所屬傳統的法術，並可進行儀式性魔法。</p>
           </div>
-          <div v-else-if="selectedCasterType === 'research'" class="text-sm">
+          <div v-else-if="store.spells.selectedCasterType === 'research'" class="text-sm">
             <h3 class="font-bold text-red-900 mb-2">研究型</h3>
             <p class="mb-2">研究施法者透過研讀禁書、祕典與零散的古老知識片段，拼湊出對超常現象的理解。這種方法極為危險，因為這類施法者多為自學。</p>
             <div class="bg-yellow-50 p-2 rounded">
@@ -57,7 +58,7 @@
             </div>
             <p class="mt-2 text-xs">研究施法者可從任何魔法傳統的法術書中學習法術，並可施展儀式性魔法。</p>
           </div>
-          <div v-else-if="selectedCasterType === 'dabbling'" class="text-sm">
+          <div v-else-if="store.spells.selectedCasterType === 'dabbling'" class="text-sm">
             <h3 class="font-bold text-red-900 mb-2">涉獵型</h3>
             <p class="mb-2">涉獵施法者對祕學或奧祕懷有強烈興趣，甚至痴迷不已；他們可能以可疑的方式取得施法能力。由於知識來源不正統，他們常操縱著不完全或錯誤的法術版本。</p>
             <div class="bg-yellow-50 p-2 rounded">
@@ -84,7 +85,7 @@
             v-for="tradition in magicalTraditions" 
             :key="tradition.key"
             class="text-xs px-3 py-1 rounded-full border cursor-pointer transition-all duration-200 hover:shadow-sm"
-            :class="selectedTraditions.includes(tradition.key) 
+            :class="store.spells.selectedTraditions.includes(tradition.key) 
               ? 'bg-red-600 text-white border-red-600 font-medium' 
               : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'"
             @click="toggleTradition(tradition.key)"
@@ -129,12 +130,12 @@
         </label>
         <div 
           class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12 flex items-center"
-          :class="!selectedCasterType ? 'text-gray-400' : 'text-black'"
+          :class="!store.spells.selectedCasterType ? 'text-gray-400' : 'text-black'"
         >
-          <span v-if="!selectedCasterType">請先選擇施法類型</span>
-          <span v-else-if="selectedCasterType === 'traditional'" class="font-bold text-blue-900">洞察</span>
-          <span v-else-if="selectedCasterType === 'research'" class="font-bold text-purple-900">智識</span>
-          <span v-else-if="selectedCasterType === 'dabbling'" class="font-bold text-green-900">意志</span>
+          <span v-if="!store.spells.selectedCasterType">請先選擇施法類型</span>
+          <span v-else-if="store.spells.selectedCasterType === 'traditional'" class="font-bold text-blue-900">洞察</span>
+          <span v-else-if="store.spells.selectedCasterType === 'research'" class="font-bold text-purple-900">智識</span>
+          <span v-else-if="store.spells.selectedCasterType === 'dabbling'" class="font-bold text-green-900">意志</span>
         </div>
       </div>
       
@@ -235,7 +236,7 @@
       </div>
       
       <!-- 空狀態提示 -->
-      <div v-if="spellSlots.length === 0" class="text-center py-12 text-gray-500">
+      <div v-if="store.spells.spellSlots.length === 0" class="text-center py-12 text-gray-500">
         <div class="text-6xl mb-4">📜</div>
         <h3 class="text-xl font-bold mb-2">尚未新增任何法術</h3>
         <p class="text-sm">點擊上方「新增法術」按鈕開始添加法術到你的法術書中</p>
@@ -244,7 +245,7 @@
       <!-- 法術格子 - 響應式網格 -->
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         <div 
-          v-for="slot in spellSlots" 
+          v-for="slot in store.spells.spellSlots" 
           :key="slot.id"
           class="border-2 border-red-900 bg-white p-3 min-h-96 relative"
         >
@@ -535,20 +536,21 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useSpellData } from '~/composables/useSpellData'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+
+// 使用 Pinia store
+const store = useCohorsCthvlhvStore()
 
 // 響應式數據
-const selectedCasterType = ref('')
 const showTooltip = ref(false)
 const showTraditionTooltip = ref(false)
 const showBasePowerTooltip = ref(false)
-const selectedTraditions = ref([])
 
 // 法術 Modal 相關
 const showSpellModal = ref(false)
 const spellSearchTerm = ref('')
 const activeSpellbook = ref('符文法典')
 const selectedSpellSlot = ref(null)
-const spellSlots = ref([])
 
 // 成功提示相關
 const showSuccessMessage = ref(false)
@@ -655,12 +657,7 @@ const filteredSpells = computed(() => {
 
 // 切換魔法傳統選取狀態
 const toggleTradition = (traditionKey) => {
-  const index = selectedTraditions.value.indexOf(traditionKey)
-  if (index > -1) {
-    selectedTraditions.value.splice(index, 1)
-  } else {
-    selectedTraditions.value.push(traditionKey)
-  }
+  store.toggleMagicalTradition(traditionKey)
 }
 
 // 打開法術 Modal
@@ -672,8 +669,8 @@ const openSpellModal = (slotId) => {
 // 為新增法術按鈕打開 Modal（動態創建新槽位）
 const openSpellModalForNewSpell = () => {
   // 創建新的槽位
-  const newSlotId = spellSlots.value.length + 1
-  spellSlots.value.push({
+  const newSlotId = store.spells.spellSlots.length + 1
+  store.spells.spellSlots.push({
     id: newSlotId,
     spell: null
   })
@@ -685,7 +682,7 @@ const openSpellModalForNewSpell = () => {
 // 選擇法術
 const selectSpell = (spell) => {
   if (selectedSpellSlot.value) {
-    const slot = spellSlots.value.find(s => s.id === selectedSpellSlot.value)
+    const slot = store.spells.spellSlots.find(s => s.id === selectedSpellSlot.value)
     if (slot) {
       slot.spell = spell
       // 顯示成功提示
@@ -698,52 +695,30 @@ const selectSpell = (spell) => {
       }, 3000)
       
       // 自動創建新的空槽位供下次選擇
-      const newSlotId = spellSlots.value.length + 1
-      spellSlots.value.push({
+      const newSlotId = store.spells.spellSlots.length + 1
+      store.spells.spellSlots.push({
         id: newSlotId,
         spell: null
       })
       
       // 將新槽位設為選中狀態，讓用戶可以繼續選擇
       selectedSpellSlot.value = newSlotId
-      
-      // 觸發自動儲存
-      triggerDataChange()
     }
   }
 }
 
 // 清除法術
 const clearSpell = (slotId) => {
-  const slotIndex = spellSlots.value.findIndex(s => s.id === slotId)
-  if (slotIndex !== -1) {
-    // 移除整個槽位
-    spellSlots.value.splice(slotIndex, 1)
-    
-    // 重新編號剩餘的槽位
-    spellSlots.value.forEach((slot, index) => {
-      slot.id = index + 1
-    })
-    
-    // 觸發自動儲存
-    triggerDataChange()
-  }
+  store.removeSpellSlot(slotId)
 }
 
 // 關閉法術 Modal
 const closeSpellModal = () => {
   // 如果有選中的空槽位，將其移除
   if (selectedSpellSlot.value) {
-    const slot = spellSlots.value.find(s => s.id === selectedSpellSlot.value)
+    const slot = store.spells.spellSlots.find(s => s.id === selectedSpellSlot.value)
     if (slot && !slot.spell) {
-      const slotIndex = spellSlots.value.findIndex(s => s.id === selectedSpellSlot.value)
-      if (slotIndex !== -1) {
-        spellSlots.value.splice(slotIndex, 1)
-        // 重新編號剩餘的槽位
-        spellSlots.value.forEach((remainingSlot, index) => {
-          remainingSlot.id = index + 1
-        })
-      }
+      store.removeSpellSlot(selectedSpellSlot.value)
     }
   }
   
@@ -796,86 +771,31 @@ if (typeof window !== 'undefined') {
 // 監聽數據管理事件
 onMounted(() => {
   // 監聽載入法術數據事件
-  window.addEventListener('loadSpellData', (event) => {
+  window.addEventListener('loadCharacterData', (event) => {
     if (event.detail) {
-      loadSpellData(event.detail)
+      store.loadCharacterData(event.detail)
     }
   })
   
   // 監聽清除法術數據事件
   window.addEventListener('clearCharacterData', () => {
-    clearSpellData()
+    store.clearAllData()
   })
 
   // 監聽獲取法術數據事件
   window.addEventListener('getSpellData', () => {
-    window.characterSpellData = getSpellData()
+    window.characterSpellData = store.spells
   })
 })
-
-// 獲取法術數據
-const getSpellData = () => {
-  return {
-    selectedCasterType: selectedCasterType.value,
-    selectedTraditions: selectedTraditions.value,
-    spellSlots: spellSlots.value.map(slot => ({
-      id: slot.id,
-      spellId: slot.spell?.id,
-      spellName: slot.spell?.name,
-      spellbook: slot.spell?.spellbook
-    }))
-  }
-}
-
-// 載入法術數據
-const loadSpellData = (data) => {
-  if (!data) return
-  
-  if (data.selectedCasterType !== undefined) {
-    selectedCasterType.value = data.selectedCasterType
-  }
-  
-  if (data.selectedTraditions) {
-    selectedTraditions.value = [...data.selectedTraditions]
-  }
-  
-  if (data.spellSlots && Array.isArray(data.spellSlots)) {
-    // 重建法術槽位
-    spellSlots.value = data.spellSlots.map(slotData => {
-      const slot = {
-        id: slotData.id || Date.now() + Math.random()
-      }
-      
-      if (slotData.spellId) {
-        // 根據法術 ID 查找完整的法術數據
-        const allSpells = spellbooks.flatMap(spellbook => getSpellsBySpellbook(spellbook))
-        const spell = allSpells.find(s => s.id === slotData.spellId)
-        if (spell) {
-          slot.spell = spell
-        }
-      }
-      
-      return slot
-    })
-  }
-}
-
-// 清除法術數據
-const clearSpellData = () => {
-  selectedCasterType.value = ''
-  selectedTraditions.value = []
-  spellSlots.value = []
-  showSpellModal.value = false
-  spellSearchTerm.value = ''
-}
 
 // 觸發數據變更事件
 const triggerDataChange = () => {
   window.dispatchEvent(new CustomEvent('characterDataChanged'))
 }
 
-// 監聽法術數據變更
-watch([selectedCasterType, selectedTraditions, spellSlots], () => {
+// 監聽 store 變更以觸發自動儲存
+watch(() => store.$state, () => {
+  console.log('CohorsCthvlhvSpells: Store 資料變更，觸發自動儲存')
   triggerDataChange()
 }, { deep: true })
 </script>

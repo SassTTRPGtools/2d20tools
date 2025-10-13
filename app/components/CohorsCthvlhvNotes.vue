@@ -108,77 +108,66 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
 
-// 響應式數據
-const traits = ref('')
-const history = ref('')
-const personalAgenda = ref('')
-const contacts = ref('')
-const factions = ref('')
-const journal = ref('')
+// 使用 Pinia store
+const store = useCohorsCthvlhvStore()
+
+// 響應式數據，使用 computed 雙向綁定
+const traits = computed({
+  get: () => store.notes.traits,
+  set: (value) => store.updateNotes({ traits: value })
+})
+const history = computed({
+  get: () => store.notes.history,
+  set: (value) => store.updateNotes({ history: value })
+})
+const personalAgenda = computed({
+  get: () => store.notes.personalAgenda,
+  set: (value) => store.updateNotes({ personalAgenda: value })
+})
+const contacts = computed({
+  get: () => store.notes.contacts,
+  set: (value) => store.updateNotes({ contacts: value })
+})
+const factions = computed({
+  get: () => store.notes.factions,
+  set: (value) => store.updateNotes({ factions: value })
+})
+const journal = computed({
+  get: () => store.notes.journal,
+  set: (value) => store.updateNotes({ journal: value })
+})
 
 // 監聽數據管理事件
 onMounted(() => {
   // 監聽載入筆記數據事件
   window.addEventListener('loadCharacterData', (event) => {
-    if (event.detail && event.detail.notes) {
-      loadNotesData(event.detail.notes)
+    if (event.detail) {
+      store.loadCharacterData(event.detail)
     }
   })
   
   // 監聽清除筆記數據事件
   window.addEventListener('clearCharacterData', () => {
-    clearNotesData()
+    store.clearAllData()
   })
 
   // 監聽獲取筆記數據事件
   window.addEventListener('getNotesData', () => {
-    window.characterNotesData = getNotesData()
+    window.characterNotesData = store.notes
   })
 })
-
-// 獲取筆記數據
-const getNotesData = () => {
-  return {
-    traits: traits.value,
-    history: history.value,
-    personalAgenda: personalAgenda.value,
-    contacts: contacts.value,
-    factions: factions.value,
-    journal: journal.value
-  }
-}
-
-// 載入筆記數據
-const loadNotesData = (data) => {
-  if (!data) return
-  
-  if (data.traits !== undefined) traits.value = data.traits
-  if (data.history !== undefined) history.value = data.history
-  if (data.personalAgenda !== undefined) personalAgenda.value = data.personalAgenda
-  if (data.contacts !== undefined) contacts.value = data.contacts
-  if (data.factions !== undefined) factions.value = data.factions
-  if (data.journal !== undefined) journal.value = data.journal
-}
-
-// 清除筆記數據
-const clearNotesData = () => {
-  traits.value = ''
-  history.value = ''
-  personalAgenda.value = ''
-  contacts.value = ''
-  factions.value = ''
-  journal.value = ''
-}
 
 // 觸發數據變更事件
 const triggerDataChange = () => {
   window.dispatchEvent(new CustomEvent('characterDataChanged'))
 }
 
-// 監聽筆記數據變更
-watch([traits, history, personalAgenda, contacts, factions, journal], () => {
+// 監聽 store 變更以觸發自動儲存
+watch(() => store.$state, () => {
+  console.log('CohorsCthvlhvNotes: Store 資料變更，觸發自動儲存')
   triggerDataChange()
 }, { deep: true })
 </script>
