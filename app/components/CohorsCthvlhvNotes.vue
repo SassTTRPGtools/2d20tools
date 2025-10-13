@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 // 響應式數據
 const traits = ref('')
@@ -171,4 +171,14 @@ const clearNotesData = () => {
   factions.value = ''
   journal.value = ''
 }
+
+// 觸發數據變更事件
+const triggerDataChange = () => {
+  window.dispatchEvent(new CustomEvent('characterDataChanged'))
+}
+
+// 監聽筆記數據變更
+watch([traits, history, personalAgenda, contacts, factions, journal], () => {
+  triggerDataChange()
+}, { deep: true })
 </script>

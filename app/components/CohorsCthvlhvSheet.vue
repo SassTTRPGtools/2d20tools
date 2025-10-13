@@ -552,7 +552,43 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+
+// 基本資訊變數
+const characterName = ref('')
+const culture = ref('')
+const rank = ref('')
+const wealth = ref('')
+const archetype = ref('')
+const background = ref('')
+const talent = ref('')
+
+// 屬性變數
+const might = ref(0)
+const agility = ref(0)
+const reason = ref(0)
+const personality = ref(0)
+
+// 技能變數
+const skills = ref({
+  ACADEMIA: 0,
+  ATHLETICS: 0,
+  CRAFTING: 0,
+  ENGINEERING: 0,
+  FIGHTING: 0,
+  MEDICINE: 0,
+  OBSERVATION: 0,
+  PERSUASION: 0,
+  RESILIENCE: 0,
+  STEALTH: 0,
+  SURVIVAL: 0,
+  TACTICS: 0
+})
+
+// 其他變數
+const notes = ref('')
+const sanity = ref(10)
+const totalExperience = ref(0)
 
 const skillsData = ref([
   {
@@ -762,6 +798,23 @@ const tooltip = ref({
   arrowClass: '',
   arrowStyle: {}
 })
+
+// 壓力格樣式函數
+const getStressBoxClasses = (row, col) => {
+  const boxIndex = (row - 1) * 10 + (col - 1)
+  const isAvailable = boxIndex < maxStressBoxes.value
+  const isChecked = stressBoxes.value[row - 1] && stressBoxes.value[row - 1][col - 1]
+  
+  if (!isAvailable) {
+    return 'border-gray-400 bg-gray-200 cursor-not-allowed'
+  }
+  
+  if (isChecked) {
+    return 'border-red-900 bg-red-900 cursor-pointer hover:bg-red-700'
+  }
+  
+  return 'border-red-900 bg-white cursor-pointer hover:bg-red-100'
+}
 
 const skillTooltip = ref({
   show: false,
@@ -1014,22 +1067,6 @@ const isFocusActive = (skillCode, focusName) => {
   return selectedFocuses.value[skillCode]?.includes(focusName) || false
 }
 
-const getStressBoxClasses = (row, col) => {
-  const boxIndex = (row - 1) * 10 + (col - 1)
-  const isAvailable = boxIndex < maxStressBoxes.value
-  const isChecked = stressBoxes.value[row - 1] && stressBoxes.value[row - 1][col - 1]
-  
-  if (!isAvailable) {
-    return 'border-gray-400 bg-gray-200 cursor-not-allowed'
-  }
-  
-  if (isChecked) {
-    return 'border-red-900 bg-red-900 cursor-pointer hover:bg-red-700'
-  }
-  
-  return 'border-red-900 bg-white cursor-pointer hover:bg-red-100'
-}
-
 const clearStress = () => {
   stressBoxes.value = Array(2).fill().map(() => Array(10).fill(false))
 }
@@ -1213,4 +1250,18 @@ const clearCharacterSheetData = () => {
   notes.value = ''
   sanity.value = 10
 }
+
+// 觸發數據變更事件
+const triggerDataChange = () => {
+  window.dispatchEvent(new CustomEvent('characterDataChanged'))
+}
+
+// 監聽數據變更
+watch([
+  characterName, culture, rank, wealth, archetype, background, talent,
+  might, agility, reason, personality, skills, currentExperience, 
+  totalExperience, experienceRecords, notes, sanity
+], () => {
+  triggerDataChange()
+}, { deep: true })
 </script>

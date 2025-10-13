@@ -16,35 +16,7 @@
       v-if="showMenu" 
       class="flex flex-col space-y-2 animate-fade-in"
     >
-      <!-- 儲存按鈕 -->
-      <button 
-        @click="handleSave"
-        class="text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-colors group relative"
-        :class="currentTheme.save"
-        title="儲存到瀏覽器"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"></path>
-        </svg>
-        <span class="absolute left-14 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          儲存
-        </span>
-      </button>
 
-      <!-- 載入按鈕 -->
-      <button 
-        @click="handleLoad"
-        class="text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-colors group relative"
-        :class="currentTheme.load"
-        title="從瀏覽器載入"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-        </svg>
-        <span class="absolute left-14 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          載入
-        </span>
-      </button>
 
       <!-- 匯出 JSON -->
       <button 
@@ -166,12 +138,34 @@ const {
   exportToJSON, 
   importFromJSON, 
   clearAllData,
-  applyDataToForm 
+  applyDataToForm,
+  autoSaveData 
 } = useCharacterData(computedStorageKey.value)
 
 // 切換菜單
 const toggleMenu = () => {
   showMenu.value = !showMenu.value
+}
+
+// 自動載入數據
+const autoLoadData = () => {
+  try {
+    const result = loadFromLocalStorage()
+    if (result.success) {
+      applyDataToForm(result.data)
+      console.log('自動載入角色數據成功')
+    }
+  } catch (error) {
+    console.warn('自動載入失敗:', error.message)
+  }
+}
+
+// 監聽數據變更並自動儲存
+const setupAutoSave = () => {
+  // 監聽任何數據變更事件
+  window.addEventListener('characterDataChanged', () => {
+    autoSaveData()
+  })
 }
 
 // 顯示通知
@@ -185,34 +179,7 @@ const showNotification = (message, type = 'success') => {
   }, 3000)
 }
 
-// 儲存到瀏覽器
-const handleSave = async () => {
-  try {
-    const data = getAllCharacterData()
-    const result = saveToLocalStorage(data)
-    showNotification(result.message, result.success ? 'success' : 'error')
-  } catch (error) {
-    showNotification(`儲存失敗: ${error.message}`, 'error')
-  }
-  showMenu.value = false
-}
 
-// 從瀏覽器載入
-const handleLoad = async () => {
-  try {
-    const result = loadFromLocalStorage()
-    if (result.success) {
-      // 使用新的數據應用函數
-      const applyResult = applyDataToForm(result.data)
-      showNotification(result.message, applyResult.success ? 'success' : 'error')
-    } else {
-      showNotification(result.message, 'error')
-    }
-  } catch (error) {
-    showNotification(`載入失敗: ${error.message}`, 'error')
-  }
-  showMenu.value = false
-}
 
 // 匯出 JSON
 const handleExport = async () => {
@@ -258,13 +225,20 @@ const handleClear = async () => {
   showMenu.value = false
 }
 
-// 點擊外部關閉菜單
+// 初始化自動功能和事件監聽
 onMounted(() => {
+  // 點擊外部關閉菜單
   document.addEventListener('click', (event) => {
     if (!event.target.closest('.fixed.top-1\\/2.left-4')) {
       showMenu.value = false
     }
   })
+  
+  // 設置自動儲存監聽器
+  setupAutoSave()
+  
+  // 頁面載入時自動載入數據
+  setTimeout(autoLoadData, 500) // 延遲載入確保組件都已初始化
 })
 </script>
 

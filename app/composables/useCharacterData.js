@@ -227,6 +227,26 @@ export const useCharacterData = (customStorageKey = null) => {
     })
   }
 
+  // 自動儲存函數（防抖處理）
+  let saveTimeout = null
+  const autoSaveData = () => {
+    // 清除之前的計時器
+    if (saveTimeout) {
+      clearTimeout(saveTimeout)
+    }
+    
+    // 設置新的計時器（防抖 500ms）
+    saveTimeout = setTimeout(() => {
+      try {
+        const data = getAllCharacterData()
+        saveToLocalStorage(data)
+        console.log('自動儲存完成')
+      } catch (error) {
+        console.warn('自動儲存失敗:', error.message)
+      }
+    }, 500)
+  }
+
   return {
     getAllCharacterData,
     saveToLocalStorage,
@@ -234,6 +254,7 @@ export const useCharacterData = (customStorageKey = null) => {
     exportToJSON,
     importFromJSON,
     clearAllData,
-    applyDataToForm
+    applyDataToForm,
+    autoSaveData
   }
 }

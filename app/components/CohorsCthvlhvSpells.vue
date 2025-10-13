@@ -533,7 +533,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useSpellData } from '~/composables/useSpellData'
 
 // 響應式數據
@@ -706,6 +706,9 @@ const selectSpell = (spell) => {
       
       // 將新槽位設為選中狀態，讓用戶可以繼續選擇
       selectedSpellSlot.value = newSlotId
+      
+      // 觸發自動儲存
+      triggerDataChange()
     }
   }
 }
@@ -721,6 +724,9 @@ const clearSpell = (slotId) => {
     spellSlots.value.forEach((slot, index) => {
       slot.id = index + 1
     })
+    
+    // 觸發自動儲存
+    triggerDataChange()
   }
 }
 
@@ -862,4 +868,14 @@ const clearSpellData = () => {
   showSpellModal.value = false
   spellSearchTerm.value = ''
 }
+
+// 觸發數據變更事件
+const triggerDataChange = () => {
+  window.dispatchEvent(new CustomEvent('characterDataChanged'))
+}
+
+// 監聽法術數據變更
+watch([selectedCasterType, selectedTraditions, spellSlots], () => {
+  triggerDataChange()
+}, { deep: true })
 </script>

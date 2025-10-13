@@ -1062,7 +1062,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useEquipmentData } from '~/composables/useEquipmentData'
 import { useTalentData } from '~/composables/useTalentData'
 
@@ -2038,4 +2038,17 @@ const clearEquipmentData = () => {
   selectedTalents.value = []
   customTalents.value = []
 }
+
+// 觸發數據變更事件
+const triggerDataChange = () => {
+  window.dispatchEvent(new CustomEvent('characterDataChanged'))
+}
+
+// 監聽裝備數據變更
+watch([
+  selectedWeapons, selectedArmor, customWeapons, customArmor,
+  selectedSkillTools, selectedMiscellaneous, selectedTalents, customTalents
+], () => {
+  triggerDataChange()
+}, { deep: true })
 </script>
