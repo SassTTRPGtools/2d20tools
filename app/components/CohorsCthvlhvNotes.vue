@@ -3,11 +3,8 @@
     <!-- 標題 -->
     <div class="text-center mb-6">
       <h1 class="text-3xl font-bold mb-2 text-red-900 tracking-widest">
-        COHORS CTHVLHV
+        《臨戰克蘇魯—角色表》
       </h1>
-      <div class="text-sm font-bold text-red-900 tracking-wider">
-        CHARACTER RECORD SHEET
-      </div>
     </div>
 
     <!-- 上半部分 - TRAITS, HISTORY, PERSONAL AGENDA -->

@@ -125,7 +125,9 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
     spells: {
       selectedCasterType: '',
       selectedTraditions: [],
-      spellSlots: []
+      spellSlots: [],
+      powerValue: '',      // 威能值
+      basePower: ''        // 基礎威能
     },
 
     // 元數據
@@ -504,11 +506,21 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
       }
     },
 
-    addSpellSlot(spell) {
+    setPowerValue(value) {
+      this.spells.powerValue = value
+    },
+
+    setBasePower(value) {
+      this.spells.basePower = value
+    },
+
+    addSpellSlot(spell, casterLevel = 1, difficulty = 'D1') {
       const newSlotId = this.spells.spellSlots.length + 1
       this.spells.spellSlots.push({
         id: newSlotId,
-        spell: spell
+        spell: spell || '',
+        casterLevel: casterLevel,
+        difficulty: difficulty
       })
     },
 
@@ -697,7 +709,9 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
       Object.assign(this.spells, {
         selectedCasterType: '',
         selectedTraditions: [],
-        spellSlots: []
+        spellSlots: [],
+        powerValue: '',
+        basePower: ''
       })
 
       this.metadata.lastSaved = new Date().toISOString()
@@ -707,5 +721,9 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
     updateLastSaved() {
       this.metadata.lastSaved = new Date().toISOString()
     }
+  },
+  persist: {
+    key: 'cohors-cthvlhv-character-v2',
+    storage: process.client ? localStorage : undefined
   }
 })

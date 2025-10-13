@@ -77,7 +77,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import { useCharacterData } from '~/composables/useCharacterData'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
 
 // Props 定義，支援不同角色卡類型
 const props = defineProps({
@@ -130,48 +130,15 @@ const computedStorageKey = computed(() => {
   return props.storageKey || `${props.characterType}-character-data`
 })
 
-// 使用角色數據管理
-const { 
-  getAllCharacterData, 
-  saveToLocalStorage, 
-  loadFromLocalStorage, 
-  exportToJSON, 
-  importFromJSON, 
-  clearAllData,
-  applyDataToForm,
-  autoSaveData 
-} = useCharacterData(computedStorageKey.value)
+// 使用 Pinia Store
+const store = useCohorsCthvlhvStore()
 
 // 切換菜單
 const toggleMenu = () => {
   showMenu.value = !showMenu.value
 }
 
-// 自動載入數據
-const autoLoadData = () => {
-  try {
-    const result = loadFromLocalStorage()
-    if (result.success) {
-      applyDataToForm(result.data)
-      console.log('自動載入角色數據成功', { 
-        storageKey: computedStorageKey.value, 
-        dataKeys: Object.keys(result.data) 
-      })
-    } else {
-      console.log('沒有找到已儲存的資料或載入失敗:', result.message)
-    }
-  } catch (error) {
-    console.warn('自動載入異常:', error.message)
-  }
-}
-
-// 監聽數據變更並自動儲存
-const setupAutoSave = () => {
-  // 監聽任何數據變更事件
-  window.addEventListener('characterDataChanged', () => {
-    autoSaveData()
-  })
-}
+// Pinia Store 已自動處理持久化，無需手動載入
 
 // 顯示通知
 const showNotification = (message, type = 'success') => {
@@ -184,14 +151,23 @@ const showNotification = (message, type = 'success') => {
   }, 3000)
 }
 
-
-
 // 匯出 JSON
 const handleExport = async () => {
   try {
-    const data = getAllCharacterData()
-    const result = exportToJSON(data)
-    showNotification(result.message, result.success ? 'success' : 'error')
+    const data = store.getFullCharacterData
+    const jsonStr = JSON.stringify(data, null, 2)
+    const blob = new Blob([jsonStr], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `cohors-character-${new Date().toISOString().split('T')[0]}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    
+    showNotification('角色資料已匯出', 'success')
   } catch (error) {
     showNotification(`匯出失敗: ${error.message}`, 'error')
   }
@@ -201,14 +177,28 @@ const handleExport = async () => {
 // 載入 JSON
 const handleImport = async () => {
   try {
-    const result = await importFromJSON()
-    if (result.success) {
-      // 使用新的數據應用函數
-      const applyResult = applyDataToForm(result.data)
-      showNotification(result.message, applyResult.success ? 'success' : 'error')
-    } else {
-      showNotification(result.message, 'error')
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.json'
+    
+    input.onchange = (event) => {
+      const file = event.target.files[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result)
+            store.loadCharacterData(data)
+            showNotification('角色資料載入成功', 'success')
+          } catch (error) {
+            showNotification(`檔案格式錯誤: ${error.message}`, 'error')
+          }
+        }
+        reader.readAsText(file)
+      }
     }
+    
+    input.click()
   } catch (error) {
     showNotification(`載入失敗: ${error.message}`, 'error')
   }
@@ -219,10 +209,8 @@ const handleImport = async () => {
 const handleClear = async () => {
   if (confirm('確定要清除所有資料嗎？此操作無法復原。')) {
     try {
-      const result = clearAllData()
-      // 觸發自定義事件讓各個組件清除數據
-      window.dispatchEvent(new CustomEvent('clearCharacterData'))
-      showNotification(result.message, result.success ? 'success' : 'error')
+      store.resetStore()
+      showNotification('所有資料已清除', 'success')
     } catch (error) {
       showNotification(`清除失敗: ${error.message}`, 'error')
     }
@@ -239,11 +227,7 @@ onMounted(() => {
     }
   })
   
-  // 設置自動儲存監聽器
-  setupAutoSave()
-  
-  // 頁面載入時自動載入數據
-  setTimeout(autoLoadData, 500) // 延遲載入確保組件都已初始化
+  // Pinia Store 自動處理持久化
 })
 </script>
 

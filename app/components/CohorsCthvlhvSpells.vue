@@ -3,11 +3,8 @@
     <!-- 標題 -->
     <div class="text-center mb-6">
       <h1 class="text-3xl font-bold mb-2 text-red-900 tracking-widest">
-        COHORS CTHVLHV
+        《臨戰克蘇魯—角色表》
       </h1>
-      <div class="text-sm font-bold text-red-900 tracking-wider">
-        CHARACTER RECORD SHEET
-      </div>
     </div>
 
     <!-- 上方法術屬性欄位 -->
@@ -145,7 +142,10 @@
         </label>
         <input 
           type="text" 
+          :value="store.spells.powerValue"
+          @input="store.setPowerValue($event.target.value)"
           class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12"
+          placeholder="輸入威能值"
         >
       </div>
       
@@ -162,7 +162,10 @@
         </label>
         <input 
           type="text" 
+          :value="store.spells.basePower"
+          @input="store.setBasePower($event.target.value)"
           class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12"
+          placeholder="輸入基礎威能"
         >
         
         <!-- 基礎威能浮動提示視窗 -->
