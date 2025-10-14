@@ -869,10 +869,12 @@
       @click="closeTalentModal"
     >
       <div 
-        class="bg-white rounded-lg shadow-2xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden"
+        class="bg-white rounded-lg shadow-2xl max-w-6xl w-full mx-4 flex flex-col"
+        style="max-height: 85vh;"
         @click.stop
       >
-        <div class="bg-red-900 text-white p-4">
+        <!-- Header - 固定高度 -->
+        <div class="bg-red-900 text-white p-4 flex-shrink-0">
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">選擇天賦</h3>
             <button 
@@ -893,37 +895,36 @@
             >
           </div>
           
-          <!-- Tab切換 -->
-          <div class="flex mt-3 border-b border-red-700 flex-wrap">
-            <button
-              @click="activeTalentTab = 'all'"
-              class="px-4 py-2 text-sm font-bold transition-colors"
-              :class="activeTalentTab === 'all' ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+          <!-- 分類選擇器 -->
+          <div class="mt-4 flex items-center gap-4">
+            <label class="text-white text-sm font-bold whitespace-nowrap">篩選分類：</label>
+            <select 
+              v-model="activeTalentTab"
+              class="flex-1 px-3 py-2 bg-white text-black rounded border border-red-700 text-sm focus:outline-none focus:border-red-500"
             >
-              全部 ({{ getTotalTalentsCount() }})
-            </button>
-            <button
-              v-for="category in talentCategories"
-              :key="category"
-              @click="activeTalentTab = category"
-              class="px-4 py-2 text-sm font-bold transition-colors"
-              :class="activeTalentTab === category ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
-            >
-              {{ category }} ({{ getTalentsByCategory(category).length }})
-            </button>
+              <option value="all">全部 ({{ getTotalTalentsCount() }})</option>
+              <option
+                v-for="category in talentCategories"
+                :key="category"
+                :value="category"
+              >
+                {{ category }} ({{ getTalentsByCategory(category).length }})
+              </option>
+            </select>            
           </div>
         </div>
         
-        <div class="p-4">
-          <div class="overflow-y-auto max-h-[60vh]">
+        <!-- Body - 可滾動內容 -->
+        <div class="p-4 flex-1 min-h-0">
+          <div class="overflow-y-auto modal-scrollable" style="max-height: 50vh; min-height: 400px;">
             <table class="w-full border-collapse text-xs">
-              <thead class="sticky top-0">
+              <thead class="sticky top-0 bg-white z-10">
                 <tr>
-                  <th class="bg-gray-100 p-2 font-bold text-left border">天賦名稱</th>
-                  <th class="bg-gray-100 p-2 font-bold text-left border">分類</th>
-                  <th class="bg-gray-100 p-2 font-bold text-left border">關鍵字</th>
-                  <th class="bg-gray-100 p-2 font-bold text-left border">效果</th>
-                  <th class="bg-gray-100 p-2 font-bold text-center border">選擇</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border" style="width: 180px;">天賦名稱</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border" style="width: 120px;">分類</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border" style="width: 130px;">關鍵字</th>
+                  <th class="bg-gray-100 p-2 font-bold text-left border" style="min-width: 300px;">效果</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border" style="width: 80px;">選擇</th>
                 </tr>
               </thead>
               <tbody>
@@ -932,33 +933,33 @@
                   :key="`${talent.category}-${talent.talent.englishName}`" 
                   class="hover:bg-gray-50"
                 >
-                  <td class="p-2 border">
-                    <div class="font-bold text-blue-800">{{ talent.talent.chineseName }}</div>
-                    <div class="text-gray-600 text-xs italic">{{ talent.talent.englishName }}</div>
+                  <td class="p-2 border" style="width: 180px;">
+                    <div class="font-bold text-blue-800 text-sm leading-tight">{{ talent.talent.chineseName }}</div>
+                    <div class="text-gray-600 text-xs italic leading-tight">{{ talent.talent.englishName }}</div>
                   </td>
-                  <td class="p-2 border text-center">
-                    <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">
+                  <td class="p-2 border text-center" style="width: 120px;">
+                    <span class="px-1 py-1 bg-purple-100 text-purple-800 rounded text-xs font-bold block truncate">
                       {{ talent.category }}
                     </span>
                   </td>
-                  <td class="p-2 border text-center">
-                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
+                  <td class="p-2 border text-center" style="width: 130px;">
+                    <span class="px-1 py-1 bg-yellow-100 text-yellow-800 rounded text-xs block truncate">
                       {{ talent.talent.keywords }}
                     </span>
                   </td>
-                  <td class="p-2 border">
+                  <td class="p-2 border" style="min-width: 300px;">
                     <div 
-                      class="text-sm cursor-help max-w-lg"
+                      class="text-sm cursor-help leading-relaxed"
                       @mouseenter="(e) => showTalentEffectTooltip(e, talent.talent)"
                       @mouseleave="hideTalentEffectTooltip"
                     >
-                      {{ truncateText(talent.talent.content, 100) }}
+                      {{ truncateText(talent.talent.content, 120) }}
                     </div>
                   </td>
-                  <td class="p-2 border text-center">
+                  <td class="p-2 border text-center" style="width: 80px;">
                     <button
                       @click="selectTalent(talent.talent)"
-                      class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 text-xs font-bold rounded transition-colors"
                     >
                       選擇
                     </button>
@@ -975,7 +976,8 @@
           </div>
         </div>
         
-        <div class="bg-gray-100 p-4 text-right">
+        <!-- Footer - 固定在底部 -->
+        <div class="bg-gray-100 p-4 text-right flex-shrink-0 border-t">
           <button
             @click="closeTalentModal"
             class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 text-sm rounded mr-2 transition-colors"
@@ -1937,3 +1939,68 @@ watch(() => store.$state, () => {
 
 
 </script>
+
+<style scoped>
+/* 自定義滾動條樣式 */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* 確保表格內容區域的滾動條 */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 12px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 6px;
+  border: 2px solid #f1f1f1;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 強制顯示滾動條 */
+.modal-scrollable {
+  overflow-y: scroll !important;
+  scrollbar-width: thin;
+}
+
+/* 確保模態框在不同螢幕高度下的顯示 */
+@media (max-height: 700px) {
+  .talent-modal {
+    max-height: 90vh;
+  }
+}
+
+@media (max-height: 500px) {
+  .talent-modal {
+    max-height: 95vh;
+  }
+}
+</style>
