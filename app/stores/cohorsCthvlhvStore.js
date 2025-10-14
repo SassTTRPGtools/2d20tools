@@ -63,6 +63,13 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
       stressBoxes: Array(2).fill().map(() => Array(10).fill(false))
     },
 
+    // 傷勢系統
+    wounds: {
+      maxWounds: 3,
+      woundBoxes: Array(3).fill(''), // 每個傷勢格可以輸入影響內容
+      isWounded: Array(3).fill(false) // 傷勢格是否已標記
+    },
+
     // 戰鬥相關屬性
     combat: {
       courage: 0,
@@ -168,6 +175,22 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
         }
       }
       return currentStress
+    },
+
+    // 傷勢系統 getters
+    getWounds: (state) => state.wounds,
+    getWoundBoxes: (state) => state.wounds.woundBoxes,
+    getActiveWounds: (state) => {
+      return state.wounds.woundBoxes
+        .map((description, index) => ({
+          index,
+          description,
+          isActive: state.wounds.isWounded[index]
+        }))
+        .filter(wound => wound.isActive)
+    },
+    getCurrentWoundCount: (state) => {
+      return state.wounds.isWounded.filter(Boolean).length
     },
 
     // 戰鬥相關 getters
@@ -276,6 +299,7 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
         skills: state.skills,
         selectedFocuses: state.selectedFocuses,
         stress: state.stress,
+        wounds: state.wounds,
         combat: state.combat,
         character: state.character,
         weapons: state.weapons,
@@ -386,6 +410,35 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
 
     setMaxStressBoxes(value) {
       this.stress.maxStressBoxes = Math.max(1, Math.min(20, Number(value) || 20))
+    },
+
+    // 傷勢系統 actions
+    toggleWound(woundIndex) {
+      if (woundIndex >= 0 && woundIndex < this.wounds.maxWounds) {
+        this.wounds.isWounded[woundIndex] = !this.wounds.isWounded[woundIndex]
+        // 如果取消傷勢，清空描述
+        if (!this.wounds.isWounded[woundIndex]) {
+          this.wounds.woundBoxes[woundIndex] = ''
+        }
+      }
+    },
+
+    setWoundDescription(woundIndex, description) {
+      if (woundIndex >= 0 && woundIndex < this.wounds.maxWounds) {
+        this.wounds.woundBoxes[woundIndex] = description
+      }
+    },
+
+    clearWound(woundIndex) {
+      if (woundIndex >= 0 && woundIndex < this.wounds.maxWounds) {
+        this.wounds.isWounded[woundIndex] = false
+        this.wounds.woundBoxes[woundIndex] = ''
+      }
+    },
+
+    clearAllWounds() {
+      this.wounds.isWounded = Array(3).fill(false)
+      this.wounds.woundBoxes = Array(3).fill('')
     },
 
     // 戰鬥屬性 actions
@@ -589,6 +642,11 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
         Object.assign(this.stress, data.stress)
       }
 
+      // 傷勢系統
+      if (data.wounds) {
+        Object.assign(this.wounds, data.wounds)
+      }
+
       // 戰鬥屬性
       if (data.combat) {
         Object.assign(this.combat, data.combat)
@@ -662,6 +720,12 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
       this.stress = {
         maxStressBoxes: 20,
         stressBoxes: Array(2).fill().map(() => Array(10).fill(false))
+      }
+
+      this.wounds = {
+        maxWounds: 3,
+        woundBoxes: Array(3).fill(''),
+        isWounded: Array(3).fill(false)
       }
 
       Object.assign(this.combat, {

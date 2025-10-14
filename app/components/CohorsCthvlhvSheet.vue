@@ -113,53 +113,102 @@
       </div>
     </div>
 
-    <!-- 壓力與護甲區域 -->
-    <div class="flex flex-col lg:flex-row gap-6 mb-6">
-      <!-- 左側：壓力與勇氣財富 -->
-      <div class="flex flex-col lg:w-1/2">
-        <!-- 壓力區域 -->
-        <div class="mb-4">
-          <div class="flex items-center gap-4 mb-2">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm">
-              壓力
-            </label>
-            <div class="flex items-center gap-2">
-              <label class="text-xs font-bold text-red-900">上限:</label>
-              <input 
-                type="number" 
-                v-model.number="maxStressBoxes"
-                min="1" 
-                max="20"
-                class="border border-red-900 px-2 py-1 text-xs w-12 text-center bg-white font-serif"
-              >
-              <span class="text-xs text-red-900">/ 20</span>
-            </div>
-            <button 
-              @click="clearStress"
-              class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
-            >
-              清空
-            </button>
-          </div>
-          <div class="border-2 border-red-900 p-3 bg-white">
-            <div class="flex flex-col gap-1">
-              <div class="flex gap-1" v-for="row in 2" :key="row">
-                <div 
-                  v-for="col in 10" 
-                  :key="col"
-                  class="w-6 h-6 border-2 transition-colors relative group"
-                  :class="getStressBoxClasses(row, col)"
-                  @click="toggleStress(row, col)"
-                  @mouseenter="previewStress(row, col)"
-                  @mouseleave="clearPreview"
+    <!-- 壓力、傷勢與護甲區域 -->
+    <div class="flex flex-col xl:flex-row gap-6 mb-6">
+      <!-- 左側：壓力、傷勢與勇氣財富 -->
+      <div class="flex flex-col xl:w-1/2">
+        <!-- 壓力與傷勢區域 -->
+        <div class="flex flex-col lg:flex-row gap-4 mb-4">
+          <!-- 壓力區域 -->
+          <div class="flex-1">
+            <div class="flex items-center gap-4 mb-2">
+              <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm">
+                壓力
+              </label>
+              <div class="flex items-center gap-2">
+                <label class="text-xs font-bold text-red-900">上限:</label>
+                <input 
+                  type="number" 
+                  v-model.number="maxStressBoxes"
+                  min="1" 
+                  max="20"
+                  class="border border-red-900 px-2 py-1 text-xs w-12 text-center bg-white font-serif"
                 >
-                  <!-- 懸停提示 -->
+                <span class="text-xs text-red-900">/ 20</span>
+              </div>
+              <button 
+                @click="clearStress"
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+              >
+                清空
+              </button>
+            </div>
+            <div class="border-2 border-red-900 p-3 bg-white">
+              <div class="flex flex-col gap-1">
+                <div class="flex gap-1" v-for="row in 2" :key="row">
                   <div 
-                    v-if="isHovering && (row - 1) * 10 + (col - 1) < maxStressBoxes"
-                    class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
+                    v-for="col in 10" 
+                    :key="col"
+                    class="w-6 h-6 border-2 transition-colors relative group"
+                    :class="getStressBoxClasses(row, col)"
+                    @click="toggleStress(row, col)"
+                    @mouseenter="previewStress(row, col)"
+                    @mouseleave="clearPreview"
                   >
-                    {{ (row - 1) * 10 + col }}
+                    <!-- 懸停提示 -->
+                    <div 
+                      v-if="isHovering && (row - 1) * 10 + (col - 1) < maxStressBoxes"
+                      class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
+                    >
+                      {{ (row - 1) * 10 + col }}
+                    </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 傷勢區域 -->
+          <div class="flex-shrink-0 w-full lg:w-48">
+            <div class="flex items-center gap-2 mb-2">
+              <label 
+                class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm cursor-help"
+                @mouseenter="showWoundTooltip"
+                @mouseleave="hideWoundTooltip"
+              >
+                傷勢 ({{ currentWoundCount }}/3)
+              </label>
+              <button 
+                @click="clearAllWounds"
+                class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs font-bold rounded transition-colors"
+              >
+                清空
+              </button>
+            </div>
+            <div class="border-2 border-red-900 bg-white">
+              <div 
+                v-for="(wound, index) in wounds.woundBoxes" 
+                :key="index"
+                class="border-b border-red-900 last:border-b-0"
+              >
+                <div class="flex items-center">
+                  <!-- 傷勢格子 -->
+                  <div 
+                    class="w-6 h-8 border-r-2 border-red-900 transition-colors cursor-pointer flex items-center justify-center"
+                    :class="wounds.isWounded[index] ? 'bg-red-900' : 'bg-white hover:bg-red-100'"
+                    @click="toggleWound(index)"
+                  >
+                    <span v-if="wounds.isWounded[index]" class="text-white font-bold text-xs">✗</span>
+                  </div>
+                  <!-- 傷勢描述輸入框 -->
+                  <input 
+                    v-model="wounds.woundBoxes[index]"
+                    :disabled="!wounds.isWounded[index]"
+                    class="flex-1 px-2 py-1 text-xs bg-transparent border-0 font-serif"
+                    :class="wounds.isWounded[index] ? 'text-black' : 'text-gray-400'"
+                    placeholder="傷勢影響描述..."
+                    @input="setWoundDescription(index, $event.target.value)"
+                  >
                 </div>
               </div>
             </div>
@@ -200,7 +249,7 @@
       </div>
       
       <!-- 右側：護甲區域 -->
-      <div class="flex gap-4 lg:w-1/2">
+      <div class="flex gap-4 xl:w-1/2">
         <!-- 左側：BASE ARMOR 和 TOTAL ARMOR -->
         <div class="flex flex-col w-32 gap-4">
           <div class="flex flex-col">
@@ -222,7 +271,7 @@
             <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               總護甲
             </label>
-            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+            <div class="border-2 border-red-900 bg-white h-24 flex items-center justify-center">
               <input 
                 type="number"
                 v-model.number="totalArmor"
@@ -367,6 +416,42 @@
           class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
           :class="bonusTooltip.arrowClass"
           :style="bonusTooltip.arrowStyle"
+        ></div>
+      </div>
+
+      <!-- 傷勢提示框 -->
+      <div 
+        v-if="woundTooltip.show"
+        ref="woundTooltipRef"
+        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-96 pointer-events-none"
+        :style="woundTooltipStyle"
+      >
+        <div class="font-bold text-red-400 mb-2 text-base">傷勢系統</div>
+        <div class="text-sm leading-relaxed mb-3">
+          每個傷勢會對角色造成以下影響：
+        </div>
+        <div class="bg-slate-700 p-3 rounded text-xs space-y-2">
+          <div><span class="text-red-400">🎲 糾葛範圍：</span>每個傷勢使糾葛範圍 +1</div>
+          <div><span class="text-yellow-400">⚡ 暫時創傷：</span>傷勢會成為暫時創傷</div>
+          <div><span class="text-blue-400">💎 真理援引：</span>主持人或玩家可援引傷勢作為真理</div>
+        </div>
+        <div class="mt-3 p-2 bg-green-900/30 rounded text-xs">
+          <div class="text-green-400 font-bold mb-1">援引獎勵：</div>
+          <div>• 獲得 1 點臨時命運點</div>
+          <div>• 獲得 1 點經驗點</div>
+          <div>• 立刻發生糾葛</div>
+        </div>
+        <div class="pt-2 border-t border-slate-600 mt-3">
+          <div class="text-xs text-slate-300">
+            點擊 ✗ 標記傷勢，輸入具體影響描述
+          </div>
+        </div>
+        
+        <!-- 小三角箭頭指示器 -->
+        <div 
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          :class="woundTooltip.arrowClass"
+          :style="woundTooltip.arrowStyle"
         ></div>
       </div>
     </div>
@@ -698,6 +783,10 @@ const languages = computed({
   set: (value) => store.character.languages = value
 })
 
+// 傷勢系統的 computed 屬性
+const wounds = computed(() => store.wounds)
+const currentWoundCount = computed(() => store.getCurrentWoundCount)
+
 const skillsData = ref([
   {
     code: 'ACADEMIA',
@@ -869,6 +958,14 @@ const bonusTooltip = ref({
   arrowStyle: {}
 })
 
+const woundTooltip = ref({
+  show: false,
+  x: 0,
+  y: 0,
+  arrowClass: '',
+  arrowStyle: {}
+})
+
 // 屬性資料定義
 const attributes = ref([
   {
@@ -979,6 +1076,11 @@ const focusTooltipStyle = computed(() => ({
 const bonusTooltipStyle = computed(() => ({
   left: `${bonusTooltip.value.x}px`,
   top: `${bonusTooltip.value.y}px`
+}))
+
+const woundTooltipStyle = computed(() => ({
+  left: `${woundTooltip.value.x}px`,
+  top: `${woundTooltip.value.y}px`
 }))
 
 // 經驗點計算屬性
@@ -1229,6 +1331,63 @@ const removeExperienceRecord = (index) => {
   if (sortedIndex !== -1) {
     store.removeExperienceRecord(sortedIndex)
   }
+}
+
+// 傷勢相關函數
+const toggleWound = (index) => {
+  store.toggleWound(index)
+}
+
+const setWoundDescription = (index, description) => {
+  store.setWoundDescription(index, description)
+}
+
+const clearAllWounds = () => {
+  store.clearAllWounds()
+}
+
+const showWoundTooltip = (event) => {
+  const rect = event.target.getBoundingClientRect()
+  const tooltipWidth = 380
+  const tooltipHeight = 300
+  
+  // 計算提示框的位置，優先顯示在右側
+  let x = rect.right + 15
+  let y = rect.top + (rect.height / 2) - (tooltipHeight / 2)
+  let isOnRight = true
+  
+  // 如果右側空間不夠，顯示在左側
+  if (x + tooltipWidth > window.innerWidth - 20) {
+    x = rect.left - tooltipWidth - 15
+    isOnRight = false
+  }
+  
+  // 確保提示框不會超出視窗上下邊界
+  if (y + tooltipHeight > window.innerHeight - 20) {
+    y = window.innerHeight - tooltipHeight - 20
+  }
+  
+  if (y < 20) {
+    y = 20
+  }
+  
+  // 計算箭頭位置
+  const arrowY = rect.top + (rect.height / 2) - y - 6
+  
+  woundTooltip.value = {
+    show: true,
+    x: x,
+    y: y,
+    arrowClass: isOnRight ? '-left-1.5' : '-right-1.5',
+    arrowStyle: {
+      top: `${Math.max(12, Math.min(arrowY, tooltipHeight - 24))}px`,
+      transform: isOnRight ? 'rotate(-135deg)' : 'rotate(45deg)'
+    }
+  }
+}
+
+const hideWoundTooltip = () => {
+  woundTooltip.value.show = false
 }
 
 // 監聽數據載入和清除事件
