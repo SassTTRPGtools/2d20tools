@@ -644,7 +644,7 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
       this.personalTruths = Array(10).fill('')
 
       Object.assign(this.attributes, {
-        AGI: 0, BRA: 0, COO: 0, GRA: 0, INS: 0, REA: 0, WIL: 0
+        AGI: 6, BRA: 6, COO: 6, GRA: 6, INS: 6, REA: 6, WIL: 6
       })
 
       Object.assign(this.attributeBonuses, {

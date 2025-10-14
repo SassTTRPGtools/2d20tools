@@ -288,21 +288,28 @@
               </td>
             </tr>
             <tr>
-              <td class="bg-red-900 text-white font-bold text-xs p-2 border-t border-red-900 text-left">
+              <td 
+                class="bg-red-900 text-white font-bold text-xs p-2 border-t border-red-900 text-left relative cursor-help"
+                @mouseenter="showBonusTooltip"
+                @mouseleave="hideBonusTooltip"
+              >
                 額外傷害
               </td>
               <td 
                 v-for="attribute in attributes" 
                 :key="`bonus-${attribute.code}`"
-                class="p-0 border-l border-t border-red-900 text-center bg-white"
+                class="p-0 border-l border-t border-red-900 text-center"
+                :class="['BRA', 'INS', 'WIL'].includes(attribute.code) ? 'bg-white' : 'bg-gray-200'"
               >
                 <input 
+                  v-if="['BRA', 'INS', 'WIL'].includes(attribute.code)"
                   type="number"
                   :value="store.attributeBonuses[attribute.code]"
                   @input="store.setAttributeBonus(attribute.code, $event.target.value)"
                   class="w-full p-2 text-center border-0 bg-transparent font-serif text-sm"
-                  min="0" max="99"
+                  min="0" max="5"
                 >
+                <span v-else class="w-full p-2 text-center text-gray-500 text-sm">—</span>
               </td>
             </tr>
           </tbody>
@@ -327,6 +334,39 @@
           class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
           :class="tooltip.arrowClass"
           :style="tooltip.arrowStyle"
+        ></div>
+      </div>
+
+      <!-- 額外傷害提示框 -->
+      <div 
+        v-if="bonusTooltip.show"
+        ref="bonusTooltipRef"
+        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+        :style="bonusTooltipStyle"
+      >
+        <div class="font-bold text-red-400 mb-2 text-base">額外挑戰骰</div>
+        <div class="text-sm leading-relaxed mb-3">
+          根據屬性數值獲得的額外挑戰骰數量：
+        </div>
+        <div class="bg-slate-700 p-3 rounded text-xs font-mono space-y-1">
+          <div>8 或以下：—</div>
+          <div>9：+1🎲</div>
+          <div>10–11：+2🎲</div>
+          <div>12–13：+3🎲</div>
+          <div>14–15：+4🎲</div>
+          <div>16 或以上：+5🎲</div>
+        </div>
+        <div class="pt-2 border-t border-slate-600 mt-3">
+          <div class="text-xs text-slate-300">
+            只有<span class="text-red-400">體魄</span>、<span class="text-red-400">洞察</span>、<span class="text-red-400">意志</span>提供額外傷害
+          </div>
+        </div>
+        
+        <!-- 小三角箭頭指示器 -->
+        <div 
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          :class="bonusTooltip.arrowClass"
+          :style="bonusTooltip.arrowStyle"
         ></div>
       </div>
     </div>
@@ -821,6 +861,14 @@ const tooltip = ref({
   arrowStyle: {}
 })
 
+const bonusTooltip = ref({
+  show: false,
+  x: 0,
+  y: 0,
+  arrowClass: '',
+  arrowStyle: {}
+})
+
 // 屬性資料定義
 const attributes = ref([
   {
@@ -928,6 +976,11 @@ const focusTooltipStyle = computed(() => ({
   top: `${focusTooltip.value.y}px`
 }))
 
+const bonusTooltipStyle = computed(() => ({
+  left: `${bonusTooltip.value.x}px`,
+  top: `${bonusTooltip.value.y}px`
+}))
+
 // 經驗點計算屬性
 const sortedExperienceRecords = computed(() => {
   return [...experienceRecords.value].sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -984,6 +1037,50 @@ const showTooltip = (event, attribute) => {
 
 const hideTooltip = () => {
   tooltip.value.show = false
+}
+
+const showBonusTooltip = (event) => {
+  const rect = event.target.getBoundingClientRect()
+  const tooltipWidth = 320
+  const tooltipHeight = 280
+  
+  // 計算提示框的位置，優先顯示在右側
+  let x = rect.right + 15
+  let y = rect.top + (rect.height / 2) - (tooltipHeight / 2)
+  let isOnRight = true
+  
+  // 如果右側空間不夠，顯示在左側
+  if (x + tooltipWidth > window.innerWidth - 20) {
+    x = rect.left - tooltipWidth - 15
+    isOnRight = false
+  }
+  
+  // 確保提示框不會超出視窗上下邊界
+  if (y + tooltipHeight > window.innerHeight - 20) {
+    y = window.innerHeight - tooltipHeight - 20
+  }
+  
+  if (y < 20) {
+    y = 20
+  }
+  
+  // 計算箭頭位置
+  const arrowY = rect.top + (rect.height / 2) - y - 6
+  
+  bonusTooltip.value = {
+    show: true,
+    x: x,
+    y: y,
+    arrowClass: isOnRight ? '-left-1.5' : '-right-1.5',
+    arrowStyle: {
+      top: `${Math.max(12, Math.min(arrowY, tooltipHeight - 24))}px`,
+      transform: isOnRight ? 'rotate(-135deg)' : 'rotate(45deg)'
+    }
+  }
+}
+
+const hideBonusTooltip = () => {
+  bonusTooltip.value.show = false
 }
 
 const showSkillTooltip = (event, skill) => {
