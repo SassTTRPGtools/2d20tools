@@ -35,7 +35,7 @@ export const useEquipmentData = () => {
     //手榴彈與炸彈
   {
     "name": "1½ 磅／3 磅 標準裝藥",
-    "focus": "拆除",
+    "focus": "爆裂物學",
     "reach": "近距",
     "damage": "10🎲",
     "salvo": ["區域", "震懾"],
@@ -119,8 +119,8 @@ export const useEquipmentData = () => {
     "name": "M1A1 火箭筒",
     "focus": "重型武器",
     "reach": "中距",
-    "damage": "6🎲",
-    "salvo": ["兇猛"],
+    "damage": "6🎲兇猛",
+    "salvo": [],
     "size": "主要",
     "qualities": ["笨重", "局勢升高", "巨物殺手", "重型", "彈藥型"]
   },
@@ -137,8 +137,8 @@ export const useEquipmentData = () => {
     "name": "M9 火箭筒",
     "focus": "重型武器",
     "reach": "中距",
-    "damage": "6🎲",
-    "salvo": ["穿透1", "兇猛"],
+    "damage": "6🎲穿透1, 兇猛",
+    "salvo": [],
     "size": "主要",
     "qualities": ["笨重", "局勢升高", "巨物殺手", "重型", "不精準", "彈藥型"]
   },
@@ -146,8 +146,8 @@ export const useEquipmentData = () => {
     "name": "PIAT 反坦克武器",
     "focus": "重型武器",
     "reach": "中距",
-    "damage": "6🎲",
-    "salvo": ["穿透1", "兇猛"],
+    "damage": "6🎲穿透1, 兇猛",
+    "salvo": [],
     "size": "主要",
     "qualities": ["笨重", "局勢升高", "重型", "不精準", "彈藥型"]
   },

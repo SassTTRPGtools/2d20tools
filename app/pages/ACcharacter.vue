@@ -5,16 +5,16 @@
       <div class="bg-white shadow-2xl rounded-lg p-6 md:p-8">
         <!-- 直接渲染組件 -->
         <div v-if="activeTab === 'basic'">
-          <CohorsCthvlhvSheet />
+          <AchtungCthulhuSheet />
         </div>
         <div v-else-if="activeTab === 'equipment'">
-          <CohorsCthvlhvEquipment />
+          <AchtungCthulhuEquipment />
         </div>
         <div v-else-if="activeTab === 'spells'">
-          <CohorsCthvlhvSpells />
+          <AchtungCthulhuSpells />
         </div>
         <div v-else-if="activeTab === 'notes'">
-          <CohorsCthvlhvNotes />
+          <AchtungCthulhuNotes />
         </div>
         
 
@@ -76,7 +76,7 @@
         <!-- 底部裝飾 -->
         <div class="px-3 py-2 border-t border-red-900/30">
           <div class="text-red-400/60 text-xs text-center leading-tight">
-            COHORS<br>CTHVLHV
+            Achtung<br>Cthulhu
           </div>
         </div>
       </div>

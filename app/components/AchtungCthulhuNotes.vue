@@ -1,9 +1,9 @@
 <template>
-  <div class="character-form cthulhu-sheet bg-amber-50 text-black font-serif">
+  <div class="character-form cthulhu-sheet bg-slate-100 text-black font-serif">
     <!-- 標題 -->
     <div class="text-center mb-6">
-      <h1 class="text-3xl font-bold mb-2 text-red-900 tracking-widest">
-        《臨戰克蘇魯—角色表》
+      <h1 class="text-3xl font-bold mb-2 text-slate-700 tracking-widest">
+        《克蘇魯來襲—角色表》
       </h1>
     </div>
 
@@ -11,10 +11,10 @@
     <div class="flex flex-col lg:flex-row gap-4 mb-6">
       <!-- 左側 TRAITS -->
       <div class="flex flex-col lg:w-1/2">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
           特質
         </label>
-        <div class="border-2 border-red-900 bg-white flex-1 min-h-64">
+        <div class="border-2 border-slate-700 bg-white flex-1 min-h-64">
           <textarea 
             v-model="traits"
             class="w-full h-full p-3 border-0 bg-transparent font-serif text-sm resize-none"
@@ -28,10 +28,10 @@
       <div class="flex flex-col lg:w-1/2 gap-4">
         <!-- HISTORY -->
         <div class="flex flex-col">
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+          <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
             歷史
           </label>
-          <div class="border-2 border-red-900 bg-white">
+          <div class="border-2 border-slate-700 bg-white">
             <textarea 
               v-model="history"
               class="w-full p-3 border-0 bg-transparent font-serif text-sm resize-none h-32"
@@ -42,10 +42,10 @@
 
         <!-- PERSONAL AGENDA -->
         <div class="flex flex-col">
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+          <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
             個人目標
           </label>
-          <div class="border-2 border-red-900 bg-white">
+          <div class="border-2 border-slate-700 bg-white">
             <textarea 
               v-model="personalAgenda"
               class="w-full p-3 border-0 bg-transparent font-serif text-sm resize-none h-32"
@@ -60,10 +60,10 @@
     <div class="flex flex-col lg:flex-row gap-4 mb-6">
       <!-- 左側 CONTACTS -->
       <div class="flex flex-col lg:w-1/2">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
           聯絡人
         </label>
-        <div class="border-2 border-red-900 bg-white">
+        <div class="border-2 border-slate-700 bg-white">
           <textarea 
             v-model="contacts"
             class="w-full p-3 border-0 bg-transparent font-serif text-sm resize-none h-40"
@@ -74,10 +74,10 @@
 
       <!-- 右側 FACTIONS -->
       <div class="flex flex-col lg:w-1/2">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
           派系
         </label>
-        <div class="border-2 border-red-900 bg-white">
+        <div class="border-2 border-slate-700 bg-white">
           <textarea 
             v-model="factions"
             class="w-full p-3 border-0 bg-transparent font-serif text-sm resize-none h-40"
@@ -89,10 +89,10 @@
 
     <!-- 底部 JOURNAL/NOTES -->
     <div class="flex flex-col">
-      <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+      <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
         日誌/筆記
       </label>
-      <div class="border-2 border-red-900 bg-white">
+      <div class="border-2 border-slate-700 bg-white">
         <textarea 
           v-model="journal"
           class="w-full p-3 border-0 bg-transparent font-serif text-sm resize-none"
@@ -106,10 +106,10 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 // 使用 Pinia store
-const store = useCohorsCthvlhvStore()
+const store = useAchtungCthulhuStore()
 
 // 響應式數據，使用 computed 雙向綁定
 const traits = computed({

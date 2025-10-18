@@ -1,33 +1,34 @@
 <template>
-  <div class="character-form cthulhu-sheet bg-amber-50 text-black font-serif">
+  <div class="character-form cthulhu-sheet bg-slate-100 text-black font-serif">
     <!-- 標題 -->
     <div class="text-center mb-6">
-      <h1 class="text-3xl font-bold mb-2 text-red-900 tracking-widest">
-        《臨戰克蘇魯—角色表》
+      <h1 class="text-3xl font-bold mb-2 text-slate-800 tracking-widest">
+        《克蘇魯來襲—角色表》
       </h1>
     </div>
 
     <!-- WEAPONS 武器區域 -->
     <div class="mb-6">
-      <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+      <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
         武器
       </label>
       <div class="overflow-x-auto">
         <table class="w-full border-collapse mt-2 min-w-max">
           <thead>
             <tr>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-24">名稱</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-20">專精</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-28">距離</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">傷害&效果</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-16">體積</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">特性</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-20">操作</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 min-w-24">名稱</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-16">專精</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-16">距離</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-36">傷害&效果</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-32">齊射</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-16">體積</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 min-w-32">特性</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-20">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(weapon, index) in weaponList" :key="`weapon-${index}`" class="h-12">
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
                 <input 
                   type="text" 
                   :value="weapon.name"
@@ -36,7 +37,7 @@
                   placeholder="武器名稱"
                 >
               </td>
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
                 <input 
                   type="text" 
                   :value="weapon.focus"
@@ -45,7 +46,7 @@
                   placeholder="專精"
                 >
               </td>
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
                 <input 
                   type="text" 
                   :value="weapon.reach"
@@ -54,18 +55,40 @@
                   placeholder="距離"
                 >
               </td>
-              <td class="p-1 border border-red-900 bg-white">
-                <input 
-                  type="text" 
-                  :value="weapon.damage"
-                  @input="updateWeaponField(index, 'damage', $event.target.value)"
-                  @mouseenter="handleDamageEffectHover"
-                  @mouseleave="hideQualityTooltip"
-                  class="w-full p-1 border-0 bg-transparent font-serif text-xs min-w-0"
-                  placeholder="傷害效果"
-                >
+              <td class="p-1 border border-slate-700 bg-white">
+                <div class="flex flex-wrap gap-1 p-1 min-h-8 justify-center items-center">
+                  <span class="font-mono text-xs">{{ parseDamageEffects(weapon.damage).baseDamage }}</span>
+                  <span
+                    v-for="(effect, eIndex) in parseDamageEffects(weapon.damage).effects"
+                    :key="`weapon-damage-effect-${eIndex}`"
+                    class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full border border-red-300 cursor-help"
+                    @mouseenter="(e) => showDamageEffectTooltip(e, effect)"
+                    @mouseleave="hideQualityTooltip"
+                  >
+                    {{ effect }}
+                  </span>
+                  <span v-if="!weapon.damage || parseDamageEffects(weapon.damage).effects.length === 0" class="text-gray-400 text-xs italic">
+                    {{ weapon.damage || '無傷害' }}
+                  </span>
+                </div>
               </td>
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
+                <div class="flex flex-wrap gap-1 p-1 min-h-8 justify-center">
+                  <span
+                    v-for="(salvo, sIndex) in weapon.salvo"
+                    :key="`weapon-salvo-${sIndex}`"
+                    class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full border border-green-300 cursor-help"
+                    @mouseenter="(e) => showQualityTooltip(e, salvo, 'salvo')"
+                    @mouseleave="hideQualityTooltip"
+                  >
+                    {{ salvo }}
+                  </span>
+                  <span v-if="!weapon.salvo || weapon.salvo.length === 0" class="text-gray-400 text-xs italic">
+                    無齊射
+                  </span>
+                </div>
+              </td>
+              <td class="p-1 border border-slate-700 bg-white">
                 <input 
                   type="text" 
                   :value="weapon.size"
@@ -74,12 +97,12 @@
                   placeholder="體積"
                 >
               </td>
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
                 <div class="flex flex-wrap gap-1 p-1 min-h-8">
                   <span
                     v-for="(quality, qIndex) in weapon.qualities"
                     :key="`weapon-quality-${qIndex}`"
-                    class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full border border-blue-300 cursor-help"
+                    class="inline-flex items-center px-2 py-1 bg-slate-100 text-slate-800 text-xs rounded-full border border-slate-300 cursor-help"
                     @mouseenter="(e) => showQualityTooltip(e, quality, 'weapon')"
                     @mouseleave="hideQualityTooltip"
                   >
@@ -90,18 +113,18 @@
                   </span>
                 </div>
               </td>
-              <td class="p-1 border border-red-900 bg-white text-center">
+              <td class="p-1 border border-slate-700 bg-white text-center">
                 <div class="flex flex-col gap-1">
                   <button
                     @click="openWeaponModal(index)"
-                    class="text-blue-600 hover:text-blue-800 text-xs font-bold"
+                    class="text-slate-600 hover:text-slate-800 text-xs font-bold"
                     type="button"
                   >
                     選擇
                   </button>
                   <button
                     @click="clearWeapon(index)"
-                    class="text-red-600 hover:text-red-800 text-xs font-bold"
+                    class="text-slate-600 hover:text-slate-800 text-xs font-bold"
                     type="button"
                   >
                     清空
@@ -118,22 +141,22 @@
     <div class="flex flex-col lg:flex-row gap-6 mb-6">
       <!-- ARMOR 護甲區域 -->
       <div class="lg:w-1/2">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
           護甲
         </label>
         <div class="overflow-x-auto">
           <table class="w-full border-collapse mt-2 min-w-max">
             <thead>
               <tr>
-                <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-24">名稱</th>
-                <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-20">抗性</th>
-                <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 min-w-32">特性</th>
-                <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-20">操作</th>
+                <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 min-w-24">名稱</th>
+                <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 min-w-20">抗性</th>
+                <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 min-w-32">特性</th>
+                <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-20">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(armor, index) in armorList" :key="`armor-${index}`" class="h-12">
-                <td class="p-1 border border-red-900 bg-white">
+                <td class="p-1 border border-slate-700 bg-white">
                   <input 
                     type="text" 
                     :value="armor.name"
@@ -142,7 +165,7 @@
                     placeholder="護甲名稱"
                   >
                 </td>
-                <td class="p-1 border border-red-900 bg-white">
+                <td class="p-1 border border-slate-700 bg-white">
                   <input 
                     type="text" 
                     :value="armor.resistance"
@@ -151,12 +174,12 @@
                     placeholder="+1"
                   >
                 </td>
-                <td class="p-1 border border-red-900 bg-white">
+                <td class="p-1 border border-slate-700 bg-white">
                   <div class="flex flex-wrap gap-1 p-1 min-h-8">
                     <span
                       v-for="(quality, qIndex) in armor.qualities"
                       :key="`quality-${qIndex}`"
-                      class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full border border-red-300 cursor-help"
+                      class="inline-flex items-center px-2 py-1 bg-slate-100 text-slate-800 text-xs rounded-full border border-slate-300 cursor-help"
                       @mouseenter="(e) => showQualityTooltip(e, quality, 'armor')"
                       @mouseleave="hideQualityTooltip"
                     >
@@ -167,18 +190,18 @@
                     </span>
                   </div>
                 </td>
-                <td class="p-1 border border-red-900 bg-white text-center">
+                <td class="p-1 border border-slate-700 bg-white text-center">
                   <div class="flex flex-col gap-1">
                     <button
                       @click="openArmorModal(index)"
-                      class="text-blue-600 hover:text-blue-800 text-xs font-bold"
+                      class="text-slate-600 hover:text-slate-800 text-xs font-bold"
                       type="button"
                     >
                       選擇
                     </button>
                     <button
                       @click="clearArmor(index)"
-                      class="text-red-600 hover:text-red-800 text-xs font-bold"
+                      class="text-slate-600 hover:text-slate-800 text-xs font-bold"
                       type="button"
                     >
                       清空
@@ -196,7 +219,7 @@
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-3">
             <label 
-              class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block cursor-help"
+              class="bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block cursor-help"
               @mouseenter="showItemLimitTooltip"
               @mouseleave="hideItemLimitTooltip"
             >
@@ -205,7 +228,7 @@
             <!-- 超載提示 -->
             <div 
               v-if="isOverloaded"
-              class="bg-red-600 text-white px-2 py-1 text-xs font-bold rounded-sm cursor-help animate-pulse"
+              class="bg-amber-600 text-white px-2 py-1 text-xs font-bold rounded-sm cursor-help animate-pulse"
               @mouseenter="showOverloadTooltip"
               @mouseleave="hideOverloadTooltip"
             >
@@ -214,48 +237,48 @@
           </div>
           <div class="flex gap-4 text-xs">
             <div class="flex items-center gap-2">
-              <span class="text-red-900 font-bold">主要物品:</span>
+              <span class="text-slate-700 font-bold">主要物品:</span>
               <span 
-                class="px-2 py-1 border border-red-900 text-center text-xs bg-white font-serif min-w-8"
-                :class="calculatedMajorItems > maxMajorItems ? 'bg-red-100 text-red-700 font-bold' : ''"
+                class="px-2 py-1 border border-slate-700 text-center text-xs bg-white font-serif min-w-8"
+                :class="calculatedMajorItems > maxMajorItems ? 'bg-amber-100 text-amber-700 font-bold' : ''"
               >
                 {{ calculatedMajorItems }}
               </span>
-              <span class="text-red-900">/</span>
+              <span class="text-slate-700">/</span>
               <input 
                 type="number" 
                 v-model.number="maxMajorItems"
                 min="0" 
                 max="99"
-                class="w-12 p-1 border border-red-900 text-center text-xs bg-white font-serif"
+                class="w-12 p-1 border border-slate-700 text-center text-xs bg-white font-serif"
               >
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-red-900 font-bold">次要物品:</span>
+              <span class="text-slate-700 font-bold">次要物品:</span>
               <span 
-                class="px-2 py-1 border border-red-900 text-center text-xs bg-white font-serif min-w-8"
-                :class="calculatedMinorItems > maxMinorItems ? 'bg-red-100 text-red-700 font-bold' : ''"
+                class="px-2 py-1 border border-slate-700 text-center text-xs bg-white font-serif min-w-8"
+                :class="calculatedMinorItems > maxMinorItems ? 'bg-amber-100 text-amber-700 font-bold' : ''"
               >
                 {{ calculatedMinorItems }}
               </span>
-              <span class="text-red-900">/</span>
+              <span class="text-slate-700">/</span>
               <input 
                 type="number" 
                 v-model.number="maxMinorItems"
                 min="0" 
                 max="99"
-                class="w-12 p-1 border border-red-900 text-center text-xs bg-white font-serif"
+                class="w-12 p-1 border border-slate-700 text-center text-xs bg-white font-serif"
               >
               <button
                 @click="openItemModal"
-                class="ml-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs font-bold rounded transition-colors"
+                class="ml-2 bg-slate-600 hover:bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded transition-colors"
               >
                 新增物品
               </button>
             </div>
           </div>
         </div>
-        <div class="border-2 border-red-900 bg-white p-2" style="min-height: 180px;">
+        <div class="border-2 border-slate-700 bg-white p-2" style="min-height: 180px;">
           <div class="flex flex-wrap gap-2">
             <span
               v-for="(item, index) in itemList"
@@ -268,7 +291,7 @@
               <button
                 @click="removeItem(index)"
                 @mouseenter.stop="hideItemTooltip"
-                class="ml-1 text-red-600 hover:text-red-800 font-bold hover:bg-red-100 rounded-full w-4 h-4 flex items-center justify-center transition-colors"
+                class="ml-1 text-slate-600 hover:text-slate-800 font-bold hover:bg-slate-100 rounded-full w-4 h-4 flex items-center justify-center transition-colors"
               >
                 ×
               </button>
@@ -284,12 +307,12 @@
     <!-- TALENTS 天賦區域 -->
     <div class="mb-6">
       <div class="flex items-center justify-between mb-2">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block">
           天賦
         </label>
         <button
           @click="openTalentModal"
-          class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+          class="bg-slate-600 hover:bg-slate-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
         >
           新增天賦
         </button>
@@ -298,20 +321,20 @@
         <table class="w-full border-collapse mt-2 min-w-max">
           <thead>
             <tr>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-32">名稱</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-32">關鍵字</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-80">描述</th>
-              <th class="bg-red-900 text-white p-1 text-xs font-bold border border-red-900 w-16">操作</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-32">名稱</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-32">關鍵字</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-80">描述</th>
+              <th class="bg-slate-700 text-white p-1 text-xs font-bold border border-slate-700 w-16">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(talent, index) in talentList" :key="`talent-${index}`" class="min-h-16">
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
                 <div class="p-1 font-serif text-xs text-gray-700">
                   {{ talent.name || '未選擇天賦' }}
                 </div>
               </td>
-              <td class="p-1 border border-red-900 bg-white">
+              <td class="p-1 border border-slate-700 bg-white">
                 <input 
                   type="text" 
                   :value="talent.keywords"
@@ -322,7 +345,7 @@
                   :class="talent.name ? '' : 'text-gray-400'"
                 >
               </td>
-              <td class="p-1 border border-red-900 bg-white max-w-80">
+              <td class="p-1 border border-slate-700 bg-white max-w-80">
                 <div 
                   class="p-1 font-serif text-xs text-gray-700 min-h-16 leading-relaxed break-words word-wrap"
                   style="word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap;"
@@ -332,10 +355,10 @@
                   {{ talent.content || '尚未選擇天賦' }}
                 </div>
               </td>
-              <td class="p-1 border border-red-900 bg-white text-center">
+              <td class="p-1 border border-slate-700 bg-white text-center">
                 <button
                   @click="removeTalent(index)"
-                  class="text-red-600 hover:text-red-800 text-xs font-bold"
+                  class="text-slate-600 hover:text-slate-800 text-xs font-bold"
                   type="button"
                   :disabled="!talent.name"
                   :class="talent.name ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'"
@@ -352,15 +375,15 @@
     <!-- 特性浮動提示框 -->
     <div 
       v-if="tooltip.show"
-      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
       :style="tooltipStyle"
     >
-      <div class="font-bold text-red-400 mb-2 text-base">{{ tooltip.quality?.name }}</div>
+      <div class="font-bold text-slate-300 mb-2 text-base">{{ tooltip.quality?.name }}</div>
       <div class="text-sm leading-relaxed">{{ tooltip.quality?.description }}</div>
       
       <!-- 箭頭指示器 -->
       <div 
-        class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+        class="absolute w-3 h-3 bg-slate-800 border-l border-t border-slate-600/30 transform rotate-45"
         :class="tooltip.arrowClass"
         :style="tooltip.arrowStyle"
       ></div>
@@ -376,7 +399,7 @@
         class="bg-white rounded-lg shadow-2xl max-w-6xl w-full mx-4 max-h-96 overflow-hidden"
         @click.stop
       >
-        <div class="bg-red-900 text-white p-4">
+        <div class="bg-slate-700 text-white p-4">
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">選擇武器</h3>
             <button 
@@ -384,6 +407,25 @@
               class="text-white hover:text-gray-200 text-2xl font-bold"
             >
               ×
+            </button>
+          </div>
+        </div>
+        
+        <!-- 專精頁籤 -->
+        <div class="border-b border-gray-200">
+          <div class="flex overflow-x-auto">
+            <button
+              v-for="focus in weaponFocusTypes"
+              :key="focus"
+              @click="selectedWeaponFocus = focus"
+              :class="[
+                'px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap',
+                selectedWeaponFocus === focus
+                  ? 'border-slate-500 text-slate-600 bg-slate-50'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              ]"
+            >
+              {{ focus }}
             </button>
           </div>
         </div>
@@ -397,17 +439,47 @@
                   <th class="bg-gray-100 p-2 font-bold text-center border">專精</th>
                   <th class="bg-gray-100 p-2 font-bold text-center border">距離</th>
                   <th class="bg-gray-100 p-2 font-bold text-center border">傷害</th>
+                  <th class="bg-gray-100 p-2 font-bold text-center border">齊射</th>
                   <th class="bg-gray-100 p-2 font-bold text-center border">體積</th>
                   <th class="bg-gray-100 p-2 font-bold text-left border">特性</th>
                   <th class="bg-gray-100 p-2 font-bold text-center border">選擇</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="weapon in defaultWeapons" :key="weapon.name" class="hover:bg-gray-50">
+                <tr v-for="weapon in filteredWeapons" :key="weapon.name" class="hover:bg-gray-50">
                   <td class="p-2 border">{{ weapon.name }}</td>
                   <td class="p-2 border text-center">{{ weapon.focus }}</td>
                   <td class="p-2 border text-center">{{ weapon.reach }}</td>
-                  <td class="p-2 border text-center font-mono">{{ weapon.damage }}</td>
+                  <td class="p-2 border text-center">
+                    <div class="flex flex-wrap gap-1 justify-center items-center">
+                      <span class="font-mono text-sm">{{ parseDamageEffects(weapon.damage).baseDamage }}</span>
+                      <span
+                        v-for="effect in parseDamageEffects(weapon.damage).effects"
+                        :key="effect"
+                        class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full border border-red-300 cursor-help"
+                        @mouseenter="(e) => showDamageEffectTooltip(e, effect)"
+                        @mouseleave="hideQualityTooltip"
+                      >
+                        {{ effect }}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="p-2 border">
+                    <div class="flex flex-wrap gap-1 justify-center">
+                      <span
+                        v-for="salvo in weapon.salvo"
+                        :key="salvo"
+                        class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full border border-green-300 cursor-help"
+                        @mouseenter="(e) => showQualityTooltip(e, salvo, 'salvo')"
+                        @mouseleave="hideQualityTooltip"
+                      >
+                        {{ salvo }}
+                      </span>
+                      <span v-if="weapon.salvo.length === 0" class="text-gray-400 text-xs italic">
+                        無齊射
+                      </span>
+                    </div>
+                  </td>
                   <td class="p-2 border text-center">{{ weapon.size }}</td>
                   <td class="p-2 border">
                     <div class="flex flex-wrap gap-1">
@@ -460,7 +532,7 @@
         class="bg-white rounded-lg shadow-2xl max-w-2xl w-full mx-4 max-h-96 overflow-hidden"
         @click.stop
       >
-        <div class="bg-red-900 text-white p-4">
+        <div class="bg-slate-700 text-white p-4">
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">選擇護甲</h3>
             <button 
@@ -531,10 +603,10 @@
     <!-- 物品限制浮動提示框 -->
     <div 
       v-if="itemLimitTooltip.show"
-      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
       :style="itemLimitTooltipStyle"
     >
-      <div class="font-bold text-red-400 mb-2 text-base">物品攜帶限制</div>
+      <div class="font-bold text-slate-300 mb-2 text-base">物品攜帶限制</div>
       <div class="text-sm leading-relaxed mb-3">
         <div class="mb-2">
           <span class="text-yellow-300 font-semibold">預設限制：</span><br>
@@ -562,7 +634,7 @@
     <!-- 超載提示浮動框 -->
     <div 
       v-if="overloadTooltip.show"
-      class="fixed z-50 bg-red-800 text-white p-4 rounded-lg shadow-2xl border border-red-600/50 w-80 pointer-events-none"
+      class="fixed z-50 bg-amber-800 text-white p-4 rounded-lg shadow-2xl border border-amber-600/50 w-80 pointer-events-none"
       :style="overloadTooltipStyle"
     >
       <div class="font-bold text-yellow-300 mb-2 text-base">超載狀態</div>
@@ -580,7 +652,7 @@
       
       <!-- 小三角箭頭指示器 -->
       <div 
-        class="absolute w-3 h-3 bg-red-800 border-l border-t border-red-600/50 transform rotate-45"
+        class="absolute w-3 h-3 bg-amber-800 border-l border-t border-amber-600/50 transform rotate-45"
         :class="overloadTooltip.arrowClass"
         :style="overloadTooltip.arrowStyle"
       ></div>
@@ -590,7 +662,7 @@
     <div v-if="showItemModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         <!-- Modal Header -->
-        <div class="bg-red-900 text-white p-4">
+        <div class="bg-slate-700 text-white p-4">
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">新增物品到清單</h3>
             <button 
@@ -601,32 +673,32 @@
             </button>
           </div>
           <!-- Tab切換 -->
-          <div class="flex mt-3 border-b border-red-700">
+          <div class="flex mt-3 border-b border-slate-600">
             <button
               @click="activeItemTab = 'weapons'"
               class="px-4 py-2 text-sm font-bold transition-colors"
-              :class="activeItemTab === 'weapons' ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+              :class="activeItemTab === 'weapons' ? 'bg-slate-600 text-white' : 'text-slate-300 hover:text-white'"
             >
               武器
             </button>
             <button
               @click="activeItemTab = 'armors'"
               class="px-4 py-2 text-sm font-bold transition-colors"
-              :class="activeItemTab === 'armors' ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+              :class="activeItemTab === 'armors' ? 'bg-slate-600 text-white' : 'text-slate-300 hover:text-white'"
             >
               護甲
             </button>
             <button
               @click="activeItemTab = 'tools'"
               class="px-4 py-2 text-sm font-bold transition-colors"
-              :class="activeItemTab === 'tools' ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+              :class="activeItemTab === 'tools' ? 'bg-slate-600 text-white' : 'text-slate-300 hover:text-white'"
             >
               技能工具組
             </button>
             <button
               @click="activeItemTab = 'miscellaneous'"
               class="px-4 py-2 text-sm font-bold transition-colors"
-              :class="activeItemTab === 'miscellaneous' ? 'bg-red-700 text-white' : 'text-red-200 hover:text-white'"
+              :class="activeItemTab === 'miscellaneous' ? 'bg-slate-600 text-white' : 'text-slate-300 hover:text-white'"
             >
               其他裝備
             </button>
@@ -644,6 +716,7 @@
                   <th class="bg-gray-100 p-2 text-xs font-bold text-center border">專精</th>
                   <th class="bg-gray-100 p-2 text-xs font-bold text-center border">距離</th>
                   <th class="bg-gray-100 p-2 text-xs font-bold text-center border">傷害&效果</th>
+                  <th class="bg-gray-100 p-2 text-xs font-bold text-center border">齊射</th>
                   <th class="bg-gray-100 p-2 text-xs font-bold text-center border">體積</th>
                   <th class="bg-gray-100 p-2 text-xs font-bold text-left border">特性</th>
                   <th class="bg-gray-100 p-2 text-xs font-bold text-center border">選擇</th>
@@ -654,7 +727,36 @@
                   <td class="p-2 border text-sm">{{ weapon.name }}</td>
                   <td class="p-2 border text-sm text-center">{{ weapon.focus }}</td>
                   <td class="p-2 border text-sm text-center">{{ weapon.reach }}</td>
-                  <td class="p-2 border text-sm text-center">{{ weapon.damage }}</td>
+                  <td class="p-2 border text-sm text-center">
+                    <div class="flex flex-wrap gap-1 justify-center items-center">
+                      <span class="font-mono text-sm">{{ parseDamageEffects(weapon.damage).baseDamage }}</span>
+                      <span
+                        v-for="effect in parseDamageEffects(weapon.damage).effects"
+                        :key="effect"
+                        class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full border border-red-300 cursor-help"
+                        @mouseenter="(e) => showDamageEffectTooltip(e, effect)"
+                        @mouseleave="hideQualityTooltip"
+                      >
+                        {{ effect }}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="p-2 border">
+                    <div class="flex flex-wrap gap-1 justify-center">
+                      <span
+                        v-for="salvo in weapon.salvo"
+                        :key="salvo"
+                        class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full border border-green-300 cursor-help"
+                        @mouseenter="(e) => showQualityTooltip(e, salvo, 'salvo')"
+                        @mouseleave="hideQualityTooltip"
+                      >
+                        {{ salvo }}
+                      </span>
+                      <span v-if="weapon.salvo.length === 0" class="text-gray-400 text-xs italic">
+                        無齊射
+                      </span>
+                    </div>
+                  </td>
                   <td class="p-2 border text-sm text-center font-bold">{{ weapon.size }}</td>
                   <td class="p-2 border">
                     <div class="flex flex-wrap gap-1">
@@ -812,10 +914,10 @@
     <!-- 物品詳細資訊浮動框 -->
     <div 
       v-if="itemTooltip.show"
-      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
       :style="itemTooltipStyle"
     >
-      <div class="font-bold text-red-400 mb-2 text-base">{{ itemTooltip.item?.name }}</div>
+      <div class="font-bold text-slate-300 mb-2 text-base">{{ itemTooltip.item?.name }}</div>
       <div class="text-sm leading-relaxed">
         <div v-if="itemTooltip.item?.type === 'weapon'" class="space-y-1">
           <div><span class="text-yellow-300">專精：</span>{{ itemTooltip.item.focus }}</div>
@@ -874,7 +976,7 @@
         @click.stop
       >
         <!-- Header - 固定高度 -->
-        <div class="bg-red-900 text-white p-4 flex-shrink-0">
+        <div class="bg-slate-700 text-white p-4 flex-shrink-0">
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">選擇天賦</h3>
             <button 
@@ -891,7 +993,7 @@
               v-model="talentSearchQuery"
               type="text"
               placeholder="搜索天賦名稱或關鍵字..."
-              class="w-full px-3 py-2 bg-white text-black rounded border border-red-700 text-sm focus:outline-none focus:border-red-500"
+              class="w-full px-3 py-2 bg-white text-black rounded border border-slate-600 text-sm focus:outline-none focus:border-slate-500"
             >
           </div>
           
@@ -900,7 +1002,7 @@
             <label class="text-white text-sm font-bold whitespace-nowrap">篩選分類：</label>
             <select 
               v-model="activeTalentTab"
-              class="flex-1 px-3 py-2 bg-white text-black rounded border border-red-700 text-sm focus:outline-none focus:border-red-500"
+              class="flex-1 px-3 py-2 bg-white text-black rounded border border-slate-600 text-sm focus:outline-none focus:border-slate-500"
             >
               <option value="all">全部 ({{ getTotalTalentsCount() }})</option>
               <option
@@ -991,10 +1093,10 @@
     <!-- 天賦效果浮動提示框 -->
     <div 
       v-if="talentEffectTooltip.show"
-      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-96 pointer-events-none"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-96 pointer-events-none"
       :style="talentEffectTooltipStyle"
     >
-      <div class="font-bold text-red-400 mb-2 text-base">
+      <div class="font-bold text-slate-300 mb-2 text-base">
         {{ talentEffectTooltip.talent?.chineseName }}
       </div>
       <div class="text-xs text-gray-300 mb-3 italic">
@@ -1018,10 +1120,10 @@
     <!-- 特殊效果浮動提示框 -->
     <div 
       v-if="specialEffectTooltip.show"
-      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+      class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
       :style="specialEffectTooltipStyle"
     >
-      <div class="font-bold text-red-400 mb-3 text-base">
+      <div class="font-bold text-slate-300 mb-3 text-base">
         {{ specialEffectTooltip.effects?.length > 1 ? '特殊效果' : specialEffectTooltip.effects?.[0]?.name }}
       </div>
       
@@ -1070,12 +1172,12 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useEquipmentData } from '~/composables/useEquipmentDataCC'
-import { useTalentData } from '~/composables/useTalentDataCC'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useEquipmentData } from '~/composables/useEquipmentDataAC'
+import { useTalentData } from '~/composables/useTalentDataAC'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 // 使用 Pinia store
-const store = useCohorsCthvlhvStore()
+const store = useAchtungCthulhuStore()
 
 // 引入裝備數據
 const { weaponsDatabase, armorsDatabase, skillToolsDatabase, miscellaneousDatabase, weaponSpecialAbilities } = useEquipmentData()
@@ -1145,6 +1247,20 @@ const armorQualities = ref({
 // 預設武器資料 - 使用外部數據模組
 const defaultWeapons = ref(weaponsDatabase)
 
+// 武器專精類型
+const weaponFocusTypes = computed(() => {
+  const focuses = [...new Set(weaponsDatabase.map(weapon => weapon.focus))]
+  return ['全部', ...focuses.sort()]
+})
+
+// 根據選擇的專精過濾武器
+const filteredWeapons = computed(() => {
+  if (selectedWeaponFocus.value === '全部') {
+    return weaponsDatabase
+  }
+  return weaponsDatabase.filter(weapon => weapon.focus === selectedWeaponFocus.value)
+})
+
 // 預設護甲資料 - 使用外部數據模組
 const defaultArmors = ref(armorsDatabase)
 
@@ -1166,6 +1282,7 @@ const showWeaponModal = ref(false)
 const selectedWeaponIndex = ref(0)
 const showArmorModal = ref(false)
 const selectedArmorIndex = ref(0)
+const selectedWeaponFocus = ref('全部')
 
 // 提示框狀態
 const tooltip = ref({
@@ -1339,6 +1456,8 @@ const showQualityTooltip = (event, qualityName, type = 'weapon') => {
     qualities = armorQualities.value
   } else if (type === 'damage') {
     qualities = damageEffects.value
+  } else if (type === 'salvo') {
+    qualities = damageEffects.value  // 齊射效果使用傷害效果資料
   }
   
   // 先嘗試精確比對
@@ -1599,11 +1718,68 @@ const handleDamageEffectHover = (event) => {
   }
 }
 
+// 解析傷害字串中的效果
+const parseDamageEffects = (damageString) => {
+  if (!damageString) return { baseDamage: '', effects: [] }
+  
+  const effectKeys = Object.keys(damageEffects.value).sort((a, b) => b.length - a.length)
+  const foundEffects = []
+  
+  // 提取基礎傷害（數字+🎲的部分）
+  const baseDamageMatch = damageString.match(/\d+🎲/)
+  const baseDamage = baseDamageMatch ? baseDamageMatch[0] : ''
+  
+  // 移除基礎傷害部分，剩下的就是效果部分
+  let effectsString = damageString.replace(/\d+🎲/, '').trim()
+  
+  // 先按逗號分割
+  const parts = effectsString.split(/[,，]/).map(part => part.trim()).filter(part => part.length > 0)
+  
+  if (parts.length > 0) {
+    // 處理逗號分隔的每個部分
+    parts.forEach(part => {
+      // 檢查這個部分是否是已知效果
+      const matchedEffect = effectKeys.find(effect => part === effect || part.startsWith(effect))
+      if (matchedEffect) {
+        foundEffects.push(part) // 保留原始形式（包含數字）
+      }
+    })
+  } else {
+    // 沒有逗號分隔，直接在整個效果字串中查找
+    effectKeys.forEach(effect => {
+      if (effectsString.includes(effect)) {
+        // 嘗試匹配帶數字的版本
+        const regex = new RegExp(effect + '\\d*')
+        const match = effectsString.match(regex)
+        if (match) {
+          foundEffects.push(match[0])
+          effectsString = effectsString.replace(match[0], '').trim()
+        }
+      }
+    })
+  }
+  
+  return {
+    baseDamage: baseDamage || damageString,
+    effects: [...new Set(foundEffects)] // 去重
+  }
+}
 
+// 顯示傷害效果提示
+const showDamageEffectTooltip = (event, effectText) => {
+  // 從效果文字中提取基本效果名稱（去除數字）
+  const effectKeys = Object.keys(damageEffects.value)
+  const baseEffect = effectKeys.find(effect => effectText.startsWith(effect))
+  
+  if (baseEffect) {
+    showQualityTooltip(event, baseEffect, 'damage')
+  }
+}
 
 // 武器modal相關函數
 const openWeaponModal = (index) => {
   selectedWeaponIndex.value = index
+  selectedWeaponFocus.value = '全部'  // 重置專精選擇
   showWeaponModal.value = true
 }
 
@@ -1617,6 +1793,7 @@ const selectWeapon = (weapon) => {
     focus: weapon.focus,
     reach: weapon.reach,
     damage: weapon.damage,
+    salvo: [...weapon.salvo],  // 包含齊射欄位
     size: weapon.size,
     qualities: [...weapon.qualities]
   })
@@ -1859,7 +2036,7 @@ const parseQualities = (qualitiesText, type = 'weapon') => {
   // 替換已知的特性名稱為可點擊的 span
   Object.keys(qualities).forEach(qualityName => {
     const regex = new RegExp(`\\b${qualityName}\\b`, 'g')
-    result = result.replace(regex, `<span class="quality-link cursor-help text-red-600 hover:text-red-800 font-semibold border-b border-dashed border-red-600" data-quality="${qualityName}" data-type="${type}">${qualityName}</span>`)
+    result = result.replace(regex, `<span class="quality-link cursor-help text-slate-600 hover:text-slate-800 font-semibold border-b border-dashed border-slate-600" data-quality="${qualityName}" data-type="${type}">${qualityName}</span>`)
   })
   
   return result

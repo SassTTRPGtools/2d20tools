@@ -1,16 +1,16 @@
 <template>
-  <div class="character-form cthulhu-sheet bg-amber-50 text-black font-serif">
+  <div class="character-form cthulhu-sheet bg-slate-100 text-black font-serif">
     <!-- 標題 -->
     <div class="text-center mb-6">
-      <h1 class="text-3xl font-bold mb-2 text-red-900 tracking-widest">
-        《臨戰克蘇魯—角色表》
+      <h1 class="text-3xl font-bold mb-2 text-slate-700 tracking-widest">
+        《克蘇魯來襲—角色表》
       </h1>
     </div>
 
     <!-- 上方法術屬性欄位 -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
       <div class="flex flex-col relative">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           施法類型
           <span 
             class="ml-1 cursor-help text-yellow-300"
@@ -23,7 +23,7 @@
         <select 
           :value="store.spells.selectedCasterType"
           @input="store.setCasterType($event.target.value)"
-          class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12"
+          class="border-2 border-slate-700 p-2 bg-white font-serif text-sm h-12"
         >
           <option value="">選擇施法類型</option>
           <option value="traditional">傳統型</option>
@@ -34,13 +34,13 @@
         <!-- 浮動提示視窗 -->
         <div 
           v-if="showTooltip" 
-          class="absolute top-16 left-0 z-50 w-96 bg-white border-2 border-red-900 rounded-lg shadow-lg p-4"
+          class="absolute top-16 left-0 z-50 w-96 bg-white border-2 border-slate-700 rounded-lg shadow-lg p-4"
         >
           <div v-if="!store.spells.selectedCasterType" class="text-sm text-gray-600">
             請選擇一種施法類型以查看詳細說明
           </div>
           <div v-else-if="store.spells.selectedCasterType === 'traditional'" class="text-sm">
-            <h3 class="font-bold text-red-900 mb-2">傳統型</h3>
+            <h3 class="font-bold text-slate-700 mb-2">傳統型</h3>
             <p class="mb-2">傳統施法者將一生大部分時間投入於特定的魔法傳統，如符文、神諭或凱爾特等體系。這些傳統由世代相傳的教義構成，需要多年研習方能精通。</p>
             <div class="bg-yellow-50 p-2 rounded">
               <strong>✦ 傳統施法者以洞察進行施法。</strong>
@@ -48,7 +48,7 @@
             <p class="mt-2 text-xs">傳統施法者僅能使用自己所屬傳統的法術，並可進行儀式性魔法。</p>
           </div>
           <div v-else-if="store.spells.selectedCasterType === 'research'" class="text-sm">
-            <h3 class="font-bold text-red-900 mb-2">研究型</h3>
+            <h3 class="font-bold text-slate-700 mb-2">研究型</h3>
             <p class="mb-2">研究施法者透過研讀禁書、祕典與零散的古老知識片段，拼湊出對超常現象的理解。這種方法極為危險，因為這類施法者多為自學。</p>
             <div class="bg-yellow-50 p-2 rounded">
               <strong>✦ 研究施法者以智識進行施法。</strong>
@@ -56,7 +56,7 @@
             <p class="mt-2 text-xs">研究施法者可從任何魔法傳統的法術書中學習法術，並可施展儀式性魔法。</p>
           </div>
           <div v-else-if="store.spells.selectedCasterType === 'dabbling'" class="text-sm">
-            <h3 class="font-bold text-red-900 mb-2">涉獵型</h3>
+            <h3 class="font-bold text-slate-700 mb-2">涉獵型</h3>
             <p class="mb-2">涉獵施法者對祕學或奧祕懷有強烈興趣，甚至痴迷不已；他們可能以可疑的方式取得施法能力。由於知識來源不正統，他們常操縱著不完全或錯誤的法術版本。</p>
             <div class="bg-yellow-50 p-2 rounded">
               <strong>✦ 涉獵施法者以意志進行施法。</strong>
@@ -67,7 +67,7 @@
       </div>
       
       <div class="flex flex-col relative">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           魔法傳統
           <span 
             class="ml-1 cursor-help text-yellow-300"
@@ -77,7 +77,7 @@
             ❓
           </span>
         </label>
-        <div class="border-2 border-red-900 p-2 bg-white min-h-12 flex flex-wrap gap-2 items-center">
+        <div class="border-2 border-slate-700 p-2 bg-white min-h-12 flex flex-wrap gap-2 items-center">
           <label 
             v-for="tradition in magicalTraditions" 
             :key="tradition.key"
@@ -94,9 +94,9 @@
         <!-- 魔法傳統浮動提示視窗 -->
         <div 
           v-if="showTraditionTooltip" 
-          class="absolute top-16 left-0 z-50 w-96 bg-white border-2 border-red-900 rounded-lg shadow-lg p-4"
+          class="absolute top-16 left-0 z-50 w-96 bg-white border-2 border-slate-700 rounded-lg shadow-lg p-4"
         >
-          <h3 class="font-bold text-red-900 mb-3 text-center">魔法傳統說明</h3>
+          <h3 class="font-bold text-slate-700 mb-3 text-center">魔法傳統說明</h3>
           
           <!-- 符文魔法 -->
           <div class="mb-4 p-3 bg-blue-50 rounded">
@@ -122,11 +122,11 @@
       </div>
       
       <div class="flex flex-col">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           施法屬性
         </label>
         <div 
-          class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12 flex items-center"
+          class="border-2 border-slate-700 p-2 bg-white font-serif text-sm h-12 flex items-center"
           :class="!store.spells.selectedCasterType ? 'text-gray-400' : 'text-black'"
         >
           <span v-if="!store.spells.selectedCasterType">請先選擇施法類型</span>
@@ -137,20 +137,20 @@
       </div>
       
       <div class="flex flex-col">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           威能值
         </label>
         <input 
           type="text" 
           :value="store.spells.powerValue"
           @input="store.setPowerValue($event.target.value)"
-          class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12"
+          class="border-2 border-slate-700 p-2 bg-white font-serif text-sm h-12"
           placeholder="輸入威能值"
         >
       </div>
       
       <div class="flex flex-col relative">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           基礎威能
           <span 
             class="ml-1 cursor-help text-yellow-300"
@@ -164,16 +164,16 @@
           type="text" 
           :value="store.spells.basePower"
           @input="store.setBasePower($event.target.value)"
-          class="border-2 border-red-900 p-2 bg-white font-serif text-sm h-12"
+          class="border-2 border-slate-700 p-2 bg-white font-serif text-sm h-12"
           placeholder="輸入基礎威能"
         >
         
         <!-- 基礎威能浮動提示視窗 -->
         <div 
           v-if="showBasePowerTooltip" 
-          class="absolute top-16 right-0 z-50 w-96 bg-white border-2 border-red-900 rounded-lg shadow-lg p-4"
+          class="absolute top-16 right-0 z-50 w-96 bg-white border-2 border-slate-700 rounded-lg shadow-lg p-4"
         >
-          <h3 class="font-bold text-red-900 mb-3 text-center">基礎威能說明</h3>
+          <h3 class="font-bold text-slate-700 mb-3 text-center">基礎威能說明</h3>
           
           <!-- 不同施法類型的威能說明 -->
           <div class="mb-4">
@@ -227,7 +227,7 @@
     <!-- SPELLS 法術區域 -->
     <div>
       <div class="flex items-center justify-between mb-4">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded-sm inline-block">
           法術
         </label>
         <button 
@@ -250,7 +250,7 @@
         <div 
           v-for="slot in store.spells.spellSlots" 
           :key="slot.id"
-          class="border-2 border-red-900 bg-white p-3 min-h-96 relative"
+          class="border-2 border-slate-700 bg-white p-3 min-h-96 relative"
         >
           <!-- 法術選擇按鈕（當沒有法術時顯示） -->
           <div v-if="!slot.spell" class="absolute inset-0 flex items-center justify-center">
@@ -275,14 +275,14 @@
             <!-- 第一行：NAME, SKILL -->
             <div class="flex gap-2 mb-2">
               <div class="flex flex-col flex-1">
-                <label class="text-xs font-bold text-red-900 mb-1">名稱:</label>
-                <div class="border border-red-900 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
+                <label class="text-xs font-bold text-slate-700 mb-1">名稱:</label>
+                <div class="border border-slate-700 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
                   {{ slot.spell.chineseName }}
                 </div>
               </div>
               <div class="flex flex-col flex-1">
-                <label class="text-xs font-bold text-red-900 mb-1">技能:</label>
-                <div class="border border-red-900 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
+                <label class="text-xs font-bold text-slate-700 mb-1">技能:</label>
+                <div class="border border-slate-700 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
                   {{ slot.spell.skill }}
                 </div>
               </div>
@@ -291,14 +291,14 @@
             <!-- 第二行：DIFFICULTY, COST -->
             <div class="flex gap-2 mb-2">
               <div class="flex flex-col flex-1">
-                <label class="text-xs font-bold text-red-900 mb-1">難度:</label>
-                <div class="border border-red-900 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
+                <label class="text-xs font-bold text-slate-700 mb-1">難度:</label>
+                <div class="border border-slate-700 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
                   {{ slot.spell.difficulty }}
                 </div>
               </div>
               <div class="flex flex-col flex-1">
-                <label class="text-xs font-bold text-red-900 mb-1">代價:</label>
-                <div class="border border-red-900 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
+                <label class="text-xs font-bold text-slate-700 mb-1">代價:</label>
+                <div class="border border-slate-700 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
                   {{ slot.spell.cost }}
                 </div>
               </div>
@@ -307,14 +307,14 @@
             <!-- 第三行：DURATION, CATEGORY -->
             <div class="flex gap-2 mb-2">
               <div class="flex flex-col flex-1">
-                <label class="text-xs font-bold text-red-900 mb-1">持續時間:</label>
-                <div class="border border-red-900 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
+                <label class="text-xs font-bold text-slate-700 mb-1">持續時間:</label>
+                <div class="border border-slate-700 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
                   {{ slot.spell.duration }}
                 </div>
               </div>
               <div class="flex flex-col flex-1">
-                <label class="text-xs font-bold text-red-900 mb-1">分類:</label>
-                <div class="border border-red-900 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
+                <label class="text-xs font-bold text-slate-700 mb-1">分類:</label>
+                <div class="border border-slate-700 p-1 bg-gray-50 font-serif text-xs h-6 flex items-center">
                   {{ slot.spell.category }}
                 </div>
               </div>
@@ -324,14 +324,14 @@
             <div v-if="slot.spell.category === '儀式'" class="mb-2">
               <div class="flex gap-2 mb-1">
                 <div class="flex flex-col flex-1">
-                  <label class="text-xs font-bold text-red-900 mb-1">步驟:</label>
-                  <div class="border border-red-900 p-1 bg-purple-50 font-serif text-xs h-6 flex items-center">
+                  <label class="text-xs font-bold text-slate-700 mb-1">步驟:</label>
+                  <div class="border border-slate-700 p-1 bg-purple-50 font-serif text-xs h-6 flex items-center">
                     {{ slot.spell.steps }}
                   </div>
                 </div>
                 <div class="flex flex-col flex-1">
-                  <label class="text-xs font-bold text-red-900 mb-1">壓力上限:</label>
-                  <div class="border border-red-900 p-1 bg-purple-50 font-serif text-xs h-6 flex items-center">
+                  <label class="text-xs font-bold text-slate-700 mb-1">壓力上限:</label>
+                  <div class="border border-slate-700 p-1 bg-purple-50 font-serif text-xs h-6 flex items-center">
                     {{ slot.spell.maxStress }}
                   </div>
                 </div>
@@ -339,16 +339,16 @@
               
               <!-- 需求資訊 -->
               <div class="flex flex-col mb-1">
-                <label class="text-xs font-bold text-red-900 mb-1">需求:</label>
-                <div class="border border-red-900 p-1 bg-purple-50 font-serif text-xs min-h-8 text-wrap">
+                <label class="text-xs font-bold text-slate-700 mb-1">需求:</label>
+                <div class="border border-slate-700 p-1 bg-purple-50 font-serif text-xs min-h-8 text-wrap">
                   {{ slot.spell.requirements }}
                 </div>
               </div>
               
               <!-- 缺陷法術 -->
               <div v-if="slot.spell.flawedSpell" class="flex flex-col">
-                <label class="text-xs font-bold text-red-900 mb-1">缺陷法術:</label>
-                <div class="border border-red-900 p-1 bg-red-50 font-serif text-xs min-h-8 text-wrap">
+                <label class="text-xs font-bold text-slate-700 mb-1">缺陷法術:</label>
+                <div class="border border-slate-700 p-1 bg-red-50 font-serif text-xs min-h-8 text-wrap">
                   <div v-html="formatSpellEffect(slot.spell.flawedSpell)"></div>
                 </div>
               </div>
@@ -357,9 +357,9 @@
             <!-- SPELL EFFECT 大區域 -->
             <div class="flex flex-col mb-2">
               <div class="bg-gray-200 text-center py-1 mb-1">
-                <span class="text-xs font-bold text-red-900">法術效果</span>
+                <span class="text-xs font-bold text-slate-700">法術效果</span>
               </div>
-              <div class="border border-red-900 p-2 bg-gray-50 font-serif text-xs min-h-32">
+              <div class="border border-slate-700 p-2 bg-gray-50 font-serif text-xs min-h-32">
                 <div v-html="formatSpellEffect(slot.spell.effect)"></div>
               </div>
             </div>
@@ -367,9 +367,9 @@
             <!-- MOMENTUM 區域 -->
             <div class="flex flex-col">
               <div class="text-left">
-                <span class="text-xs font-bold text-red-900">動力點選項</span>
+                <span class="text-xs font-bold text-slate-700">動力點選項</span>
               </div>
-              <div class="border border-red-900 bg-gray-50 min-h-8 p-1">
+              <div class="border border-slate-700 bg-gray-50 min-h-8 p-1">
                 <div v-if="slot.spell.momentumOptions && slot.spell.momentumOptions.length > 0" class="text-xs">
                   <div v-for="(option, index) in slot.spell.momentumOptions" :key="index" class="mb-1">
                     <strong>{{ option.cost }}：</strong><span v-html="formatSpellEffect(option.effect)"></span>
@@ -384,10 +384,10 @@
       <!-- 傷害效果 Tooltip -->
       <div 
         v-if="showDamageTooltip && currentDamageEffect" 
-        class="fixed z-50 bg-white border-2 border-red-900 rounded-lg shadow-lg p-4 w-80"
+        class="fixed z-50 bg-white border-2 border-slate-700 rounded-lg shadow-lg p-4 w-80"
         :style="{ left: tooltipPosition.x + 'px', top: tooltipPosition.y + 'px' }"
       >
-        <h3 class="font-bold text-red-900 mb-2">{{ currentDamageEffect.name }}</h3>
+        <h3 class="font-bold text-slate-700 mb-2">{{ currentDamageEffect.name }}</h3>
         <p class="text-sm text-gray-700">{{ currentDamageEffect.description }}</p>
         <div v-if="currentDamageEffect.examples" class="mt-2 text-xs text-gray-600">
           <strong>範例：</strong>{{ currentDamageEffect.examples }}
@@ -403,7 +403,7 @@
     >
       <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-6xl h-4/5 overflow-hidden flex flex-col">
         <!-- Modal Header -->
-        <div class="bg-red-900 text-white px-6 py-4 flex justify-between items-center">
+        <div class="bg-slate-700 text-white px-6 py-4 flex justify-between items-center">
           <h2 class="text-xl font-bold">選擇法術</h2>
           <button 
             @click="closeSpellModal"
@@ -482,7 +482,7 @@
             >
               <div class="flex justify-between items-start mb-2">
                 <div>
-                  <h3 class="font-bold text-red-900">{{ spell.chineseName }}</h3>
+                  <h3 class="font-bold text-slate-700">{{ spell.chineseName }}</h3>
                   <p class="text-sm text-gray-600">{{ spell.englishName }}</p>
                 </div>
                 <div class="text-right text-xs">
@@ -538,11 +538,11 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useSpellData } from '~/composables/useSpellDataCC'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useSpellData } from '~/composables/useSpellDataAC'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 // 使用 Pinia store
-const store = useCohorsCthvlhvStore()
+const store = useAchtungCthulhuStore()
 
 // 響應式數據
 const showTooltip = ref(false)

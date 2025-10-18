@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
+export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
   state: () => ({
     // 基本角色資訊
     basicInfo: {
@@ -787,7 +787,7 @@ export const useCohorsCthvlhvStore = defineStore('cohorsCthvlhvCharacter', {
     }
   },
   persist: {
-    key: 'cohors-cthvlhv-character-v2',
+    key: 'achtung-cthulhu-character-v2',
     storage: process.client ? localStorage : undefined
   }
 })

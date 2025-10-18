@@ -76,7 +76,7 @@ export const useSpellData = () => {
       skill: '觀察',
       difficulty: 2,
       cost: '3🎲消耗，穿透1',
-      duration: '等同靈能者威能值的回合數',
+      duration: '等同威能值的回合數',
       category: '祝福法術',
       effect: '在短時間內，靈能者能預測敵方行動。所有針對其的近戰攻擊難度+2，且靈能者自身的近戰攻擊額外造成+2🎲物理壓力。',
       momentumOptions: [
@@ -91,7 +91,7 @@ export const useSpellData = () => {
       skill: '觀察',
       difficulty: 2,
       cost: '3🎲消耗',
-      duration: '等同靈能者威能值的回合數',
+      duration: '等同威能值的回合數',
       category: '祝福法術',
       effect: '影響施法者或近距離內一名盟友。受影響者無視武器射程帶來的攻擊難度提升，且攻擊額外獲得穿透1效果。',
       momentumOptions: [
@@ -105,7 +105,7 @@ export const useSpellData = () => {
       skill: '韌性',
       difficulty: 2,
       cost: '3🎲消耗',
-      duration: '等同靈能者威能值的回合數',
+      duration: '等同威能值的回合數',
       category: '結界法術',
       effect: '影響施法者與近距離內的盟友，總數不超過施法者威能值。受影響者獲得額外掩護，數值為靈能者威能值的一半（向上取整）。此外，每回合開始時，受影響者恢復等同自身韌性的壓力。',
       momentumOptions: [
@@ -136,7 +136,7 @@ export const useSpellData = () => {
       skill: '觀察',
       difficulty: 2,
       cost: '2🎲消耗，穿透1',
-      duration: '等同靈能者威能值的回合數',
+      duration: '等同威能值的回合數',
       category: '占卜法術',
       effect: '靈能者選擇一件其已知且位於近距離內的物件，能精確觀察該物之所有部分，即使被遮蔽或封閉。施法期間，靈能者可持續觀察該物件，或每回合更換一次目標。此期間內以「獲取情報」所花的動力，能揭示常人肉眼無法見之事物。',
       momentumOptions: [
@@ -269,7 +269,7 @@ export const useSpellData = () => {
         skill: '生存',
         difficulty: 1,
         cost: '4🎲消耗',
-        duration: '等同施法者威能值的回合數',
+        duration: '等同威能值的回合數',
         category: '詛咒法術',
         effect: '詛咒法術。以施法者為中心，中距離內所有敵對生物為目標。施法者擲威能值🎲，將產生的效果數與每個目標的運動值比較（大型生物額外加上其體型等級）。凡運動值低於效果數的目標皆被纏縛，無法執行除掙脫以外的物理行動。掙脫需進行敏捷+運動或體魄+運動檢定，難度等同效果數。法術結束時，所有被纏縛者自動獲釋。',
         momentumOptions: [
@@ -284,7 +284,7 @@ export const useSpellData = () => {
         skill: '生存',
         difficulty: 2,
         cost: '4🎲消耗，穿透1',
-        duration: '等同施法者威能值的回合數',
+        duration: '等同威能值的回合數',
         category: '召喚法術',
         effect: '召喚法術。於中距離內召喚出一個風之颶風，該颶風在行動順序中獲得自身的回合，但無法被攻擊或造成傷害。每當其回合開始時，對近距離內的所有生物與可損毀物體造成施法者威能值+1🎲的物理壓力，附帶穿透1與震懾效果；若對超自然生物造成傷害，則額外具兇猛效果。之後颶風會移動至相鄰區域。若施法者位於中距內，可選擇颶風移動方向；若超出此範圍，颶風停滯，主持人可花費1威脅令其移動。',
         flawedSpell: '缺陷版法術無法由施法者控制颶風，且主持人移動颶風時不需花費威脅。',
@@ -330,7 +330,7 @@ export const useSpellData = () => {
         skill: '學識',
         difficulty: 2,
         cost: '4🎲消耗，穿透1',
-        duration: '等同施法者威能值的回合數',
+        duration: '等同威能值的回合數',
         category: '結界法術',
         effect: '在法術持續期間，施法者所有近距離內的盟友獲得額外士氣，數值等同施法者的威能值。',
         momentumOptions: [
@@ -391,7 +391,7 @@ export const useSpellData = () => {
         skill: '韌性',
         difficulty: 2,
         cost: '3🎲消耗',
-        duration: '等同施法者威能值的回合數',
+        duration: '等同威能值的回合數',
         category: '結界法術',
         effect: '在法術持續期間，所有針對施法者及近距離內盟友的攻擊，其難度提升+2。',
         momentumOptions: [

@@ -1,52 +1,52 @@
 <template>
-  <div class="character-form cthulhu-sheet bg-amber-50 text-black font-serif">
+  <div class="character-form cthulhu-sheet bg-slate-100 text-black font-serif">
     <!-- 標題 -->
     <div class="text-center mb-6">
-      <h1 class="text-3xl font-bold mb-2 text-red-900 tracking-widest">
-        《臨戰克蘇魯—角色表》
+      <h1 class="text-3xl font-bold mb-2 text-slate-800 tracking-widest">
+        《克蘇魯來襲—角色表》
       </h1>
     </div>
 
     <!-- 第一行：基本資訊 -->
     <div class="flex flex-col md:flex-row gap-4 mb-4">
       <div class="flex flex-col flex-grow">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           姓名
         </label>
         <input 
           type="text" 
           v-model="characterName"
-          class="border-2 border-red-900 p-2 bg-white font-serif"
+          class="border-2 border-slate-700 p-2 bg-white font-serif"
         >
       </div>
       <div class="flex flex-col md:w-32">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           文化
         </label>
         <input 
           type="text" 
           v-model="culture"
-          class="border-2 border-red-900 p-2 bg-white font-serif"
+          class="border-2 border-slate-700 p-2 bg-white font-serif"
         >
       </div>
       <div class="flex flex-col md:w-32">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           階級
         </label>
         <input 
           type="text" 
           v-model="rank"
-          class="border-2 border-red-900 p-2 bg-white font-serif"
+          class="border-2 border-slate-700 p-2 bg-white font-serif"
         >
       </div>
       <div class="flex flex-col md:w-32">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           財富          
         </label>
         <input 
           type="text" 
           v-model="wealth"
-          class="border-2 border-red-900 p-2 bg-white font-serif"
+          class="border-2 border-slate-700 p-2 bg-white font-serif"
         >
       </div>
     </div>
@@ -54,37 +54,37 @@
     <!-- 第二行：職業背景 -->
     <div class="flex flex-col lg:flex-row gap-4 mb-4">
       <div class="flex flex-col flex-1">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           原型
         </label>
         <textarea 
           v-model="archetype"
-          class="border-2 border-red-900 p-2 bg-white font-serif resize-none h-20"
+          class="border-2 border-slate-700 p-2 bg-white font-serif resize-none h-20"
         ></textarea>
       </div>
       <div class="flex flex-col flex-1">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           背景
         </label>
         <textarea 
           v-model="background"
-          class="border-2 border-red-900 p-2 bg-white font-serif resize-none h-20"
+          class="border-2 border-slate-700 p-2 bg-white font-serif resize-none h-20"
         ></textarea>
       </div>
       <div class="flex flex-col flex-1">
-        <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
+        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
           特質
         </label>
         <textarea 
           v-model="talent"
-          class="border-2 border-red-900 p-2 bg-white font-serif resize-none h-20"
+          class="border-2 border-slate-700 p-2 bg-white font-serif resize-none h-20"
         ></textarea>
       </div>
     </div>
 
     <!-- 個人真相與疤痕 -->
     <div class="mb-6">
-      <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+      <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
         個人真理&傷疤
       </label>
       <div class="grid grid-cols-5 gap-2 mt-2">
@@ -96,7 +96,7 @@
         >
           <textarea 
             v-model="personalTruths[n - 1]"
-            class="w-full border-2 border-red-900 p-2 h-20 bg-white font-serif resize-none text-sm"
+            class="w-full border-2 border-slate-700 p-2 h-20 bg-white font-serif resize-none text-sm"
           ></textarea>
         </div>
         <!-- 第二行 -->
@@ -107,7 +107,7 @@
         >
           <textarea 
             v-model="personalTruths[n + 4]"
-            class="w-full border-2 border-red-900 p-2 h-20 bg-white font-serif resize-none text-sm"
+            class="w-full border-2 border-slate-700 p-2 h-20 bg-white font-serif resize-none text-sm"
           ></textarea>
         </div>
       </div>
@@ -122,28 +122,28 @@
           <!-- 壓力區域 -->
           <div class="flex-1">
             <div class="flex items-center gap-4 mb-2">
-              <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm">
+              <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded-sm">
                 壓力
               </label>
               <div class="flex items-center gap-2">
-                <label class="text-xs font-bold text-red-900">上限:</label>
+                <label class="text-xs font-bold text-slate-700">上限:</label>
                 <input 
                   type="number" 
                   v-model.number="maxStressBoxes"
                   min="1" 
                   max="20"
-                  class="border border-red-900 px-2 py-1 text-xs w-12 text-center bg-white font-serif"
+                  class="border border-slate-700 px-2 py-1 text-xs w-12 text-center bg-white font-serif"
                 >
-                <span class="text-xs text-red-900">/ 20</span>
+                <span class="text-xs text-slate-700">/ 20</span>
               </div>
               <button 
                 @click="clearStress"
-                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
+                class="bg-slate-600 hover:bg-slate-700 text-white px-3 py-1 text-xs font-bold rounded transition-colors"
               >
                 清空
               </button>
             </div>
-            <div class="border-2 border-red-900 p-3 bg-white">
+            <div class="border-2 border-slate-700 p-3 bg-white">
               <div class="flex flex-col gap-1">
                 <div class="flex gap-1" v-for="row in 2" :key="row">
                   <div 
@@ -172,7 +172,7 @@
           <div class="flex-shrink-0 w-full lg:w-48">
             <div class="flex items-center gap-2 mb-2">
               <label 
-                class="bg-red-900 text-white px-2 py-1 text-xs font-bold rounded-sm cursor-help"
+                class="bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded-sm cursor-help"
                 @mouseenter="showWoundTooltip"
                 @mouseleave="hideWoundTooltip"
               >
@@ -180,22 +180,22 @@
               </label>
               <button 
                 @click="clearAllWounds"
-                class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs font-bold rounded transition-colors"
+                class="bg-slate-600 hover:bg-slate-700 text-white px-2 py-1 text-xs font-bold rounded transition-colors"
               >
                 清空
               </button>
             </div>
-            <div class="border-2 border-red-900 bg-white">
+            <div class="border-2 border-slate-700 bg-white">
               <div 
                 v-for="(wound, index) in wounds.woundBoxes" 
                 :key="index"
-                class="border-b border-red-900 last:border-b-0"
+                class="border-b border-slate-700 last:border-b-0"
               >
                 <div class="flex items-center">
                   <!-- 傷勢格子 -->
                   <div 
-                    class="w-6 h-8 border-r-2 border-red-900 transition-colors cursor-pointer flex items-center justify-center"
-                    :class="wounds.isWounded[index] ? 'bg-red-900' : 'bg-white hover:bg-red-100'"
+                    class="w-6 h-8 border-r-2 border-slate-700 transition-colors cursor-pointer flex items-center justify-center"
+                    :class="wounds.isWounded[index] ? 'bg-slate-700' : 'bg-white hover:bg-slate-100'"
                     @click="toggleWound(index)"
                   >
                     <span v-if="wounds.isWounded[index]" class="text-white font-bold text-xs">✗</span>
@@ -218,28 +218,28 @@
         <!-- 勇氣與財富 -->
         <div class="flex gap-4">
           <div class="flex flex-col flex-1">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+            <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               勇氣
             </label>
-            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+            <div class="border-2 border-slate-700 bg-white h-20 flex items-center justify-center">
               <input 
                 type="number"
                 v-model.number="courage"
-                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
                 min="0" 
                 max="99"
               >
             </div>
           </div>
           <div class="flex flex-col flex-1">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+            <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               命運點
             </label>
-            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+            <div class="border-2 border-slate-700 bg-white h-20 flex items-center justify-center">
               <input 
                 type="number"
                 v-model.number="fate"
-                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
                 min="0" 
                 max="99"
               >
@@ -253,14 +253,14 @@
         <!-- 左側：BASE ARMOR 和 TOTAL ARMOR -->
         <div class="flex flex-col w-32 gap-4">
           <div class="flex flex-col">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+            <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               基礎護甲
             </label>
-            <div class="border-2 border-red-900 bg-white h-20 flex items-center justify-center">
+            <div class="border-2 border-slate-700 bg-white h-20 flex items-center justify-center">
               <input 
                 type="number"
                 v-model.number="baseArmor"
-                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
                 min="0" 
                 max="99"
               >
@@ -268,14 +268,14 @@
           </div>
           
           <div class="flex flex-col">
-            <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+            <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
               總護甲
             </label>
-            <div class="border-2 border-red-900 bg-white h-24 flex items-center justify-center">
+            <div class="border-2 border-slate-700 bg-white h-24 flex items-center justify-center">
               <input 
                 type="number"
                 v-model.number="totalArmor"
-                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
                 min="0" 
                 max="99"
               >
@@ -285,10 +285,10 @@
         
         <!-- 右側：INJURIES -->
         <div class="flex flex-col flex-1">
-          <label class="bg-red-900 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+          <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
             創傷
           </label>
-          <div class="border-2 border-red-900 bg-white flex-1" style="min-height: 168px;">
+          <div class="border-2 border-slate-700 bg-white flex-1" style="min-height: 168px;">
             <textarea 
               v-model="injuries"
               class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
@@ -301,15 +301,15 @@
 
     <!-- 屬性表格 -->
     <div class="mb-6 relative">
-      <div class="border-2 border-red-900">
+      <div class="border-2 border-slate-700">
         <table class="w-full border-collapse">
           <thead>
             <tr>
-              <th class="bg-red-900 text-white p-2 text-xs font-bold text-left">屬性</th>
+              <th class="bg-slate-700 text-white p-2 text-xs font-bold text-left">屬性</th>
               <th 
                 v-for="attribute in attributes" 
                 :key="attribute.code"
-                class="bg-red-900 text-white p-2 text-xs font-bold border-l border-red-900 text-center cursor-help"
+                class="bg-slate-700 text-white p-2 text-xs font-bold border-l border-slate-700 text-center cursor-help"
                 @mouseenter="showTooltip($event, attribute)"
                 @mouseleave="hideTooltip"
               >
@@ -319,13 +319,13 @@
           </thead>
           <tbody>
             <tr>
-              <td class="bg-red-900 text-white font-bold text-xs p-2 text-left">
+              <td class="bg-slate-700 text-white font-bold text-xs p-2 text-left">
                 數值
               </td>
               <td 
                 v-for="attribute in attributes" 
                 :key="`rating-${attribute.code}`"
-                class="p-0 border-l border-red-900 text-center bg-white"
+                class="p-0 border-l border-slate-700 text-center bg-white"
               >
                 <input 
                   type="number"
@@ -338,7 +338,7 @@
             </tr>
             <tr>
               <td 
-                class="bg-red-900 text-white font-bold text-xs p-2 border-t border-red-900 text-left relative cursor-help"
+                class="bg-slate-700 text-white font-bold text-xs p-2 border-t border-slate-700 text-left relative cursor-help"
                 @mouseenter="showBonusTooltip"
                 @mouseleave="hideBonusTooltip"
               >
@@ -347,7 +347,7 @@
               <td 
                 v-for="attribute in attributes" 
                 :key="`bonus-${attribute.code}`"
-                class="p-0 border-l border-t border-red-900 text-center"
+                class="p-0 border-l border-t border-slate-700 text-center"
                 :class="['BRA', 'INS', 'WIL'].includes(attribute.code) ? 'bg-white' : 'bg-gray-200'"
               >
                 <input 
@@ -369,10 +369,10 @@
       <div 
         v-if="tooltip.show"
         ref="tooltipRef"
-        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
         :style="tooltipStyle"
       >
-        <div class="font-bold text-red-400 mb-2 text-base">{{ tooltip.attribute?.name }}</div>
+        <div class="font-bold text-slate-300 mb-2 text-base">{{ tooltip.attribute?.name }}</div>
         <div class="text-sm leading-relaxed whitespace-pre-line mb-3">{{ tooltip.attribute?.description }}</div>
         <div class="pt-2 border-t border-slate-600">
           <div class="text-xs text-slate-300 whitespace-pre-line font-medium">{{ tooltip.attribute?.usage }}</div>
@@ -380,7 +380,7 @@
         
         <!-- 小三角箭頭指示器 -->
         <div 
-          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-slate-600/30 transform rotate-45"
           :class="tooltip.arrowClass"
           :style="tooltip.arrowStyle"
         ></div>
@@ -390,10 +390,10 @@
       <div 
         v-if="bonusTooltip.show"
         ref="bonusTooltipRef"
-        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
         :style="bonusTooltipStyle"
       >
-        <div class="font-bold text-red-400 mb-2 text-base">額外挑戰骰</div>
+        <div class="font-bold text-slate-300 mb-2 text-base">額外挑戰骰</div>
         <div class="text-sm leading-relaxed mb-3">
           根據屬性數值獲得的額外挑戰骰數量：
         </div>
@@ -407,13 +407,13 @@
         </div>
         <div class="pt-2 border-t border-slate-600 mt-3">
           <div class="text-xs text-slate-300">
-            只有<span class="text-red-400">體魄</span>、<span class="text-red-400">洞察</span>、<span class="text-red-400">意志</span>提供額外傷害
+            只有<span class="text-slate-300">體魄</span>、<span class="text-slate-300">洞察</span>、<span class="text-slate-300">意志</span>提供額外傷害
           </div>
         </div>
         
         <!-- 小三角箭頭指示器 -->
         <div 
-          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-slate-600/30 transform rotate-45"
           :class="bonusTooltip.arrowClass"
           :style="bonusTooltip.arrowStyle"
         ></div>
@@ -423,15 +423,15 @@
       <div 
         v-if="woundTooltip.show"
         ref="woundTooltipRef"
-        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-96 pointer-events-none"
+        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-96 pointer-events-none"
         :style="woundTooltipStyle"
       >
-        <div class="font-bold text-red-400 mb-2 text-base">傷勢系統</div>
+        <div class="font-bold text-slate-300 mb-2 text-base">傷勢系統</div>
         <div class="text-sm leading-relaxed mb-3">
           每個傷勢會對角色造成以下影響：
         </div>
         <div class="bg-slate-700 p-3 rounded text-xs space-y-2">
-          <div><span class="text-red-400">🎲 糾葛範圍：</span>每個傷勢使糾葛範圍 +1</div>
+          <div><span class="text-amber-400">🎲 糾葛範圍：</span>每個傷勢使糾葛範圍 +1</div>
           <div><span class="text-yellow-400">⚡ 暫時創傷：</span>傷勢會成為暫時創傷</div>
           <div><span class="text-blue-400">💎 真理援引：</span>主持人或玩家可援引傷勢作為真理</div>
         </div>
@@ -449,7 +449,7 @@
         
         <!-- 小三角箭頭指示器 -->
         <div 
-          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-slate-600/30 transform rotate-45"
           :class="woundTooltip.arrowClass"
           :style="woundTooltip.arrowStyle"
         ></div>
@@ -460,25 +460,25 @@
     <div class="flex flex-col xl:flex-row gap-6 relative">
       <!-- 技能列表 -->
       <div class="flex-1">
-        <div class="border-2 border-red-900">
+        <div class="border-2 border-slate-700">
           <table class="w-full border-collapse">
             <thead>
               <tr>
-                <th class="bg-red-900 text-white p-2 text-xs font-bold text-left w-32">技能</th>
-                <th class="bg-red-900 text-white p-2 text-xs font-bold text-center border-l border-red-900 w-20">等級</th>
-                <th class="bg-red-900 text-white p-2 text-xs font-bold text-left border-l border-red-900">專精</th>
+                <th class="bg-slate-700 text-white p-2 text-xs font-bold text-left w-32">技能</th>
+                <th class="bg-slate-700 text-white p-2 text-xs font-bold text-center border-l border-slate-700 w-20">等級</th>
+                <th class="bg-slate-700 text-white p-2 text-xs font-bold text-left border-l border-slate-700">專精</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="skill in skillsData" :key="skill.code" class="border-t border-red-900">
+              <tr v-for="skill in skillsData" :key="skill.code" class="border-t border-slate-700">
                 <td 
-                  class="bg-amber-100 text-red-900 font-bold text-xs px-2 py-2 cursor-help"
+                  class="bg-slate-100 text-slate-800 font-bold text-xs px-2 py-2 cursor-help"
                   @mouseenter="showSkillTooltip($event, skill)"
                   @mouseleave="hideSkillTooltip"
                 >
                   {{ skill.name }}
                 </td>
-                <td class="border-l border-red-900 bg-white text-center">
+                <td class="border-l border-slate-700 bg-white text-center">
                   <input 
                     type="number"
                     :value="store.skills[skill.code]"
@@ -487,19 +487,19 @@
                     min="0" max="99"
                   >
                 </td>
-                <td class="border-l border-red-900 bg-white px-2 py-1">
+                <td class="border-l border-slate-700 bg-white px-2 py-1">
                   <!-- 專精切換按鈕 -->
-                  <div class="text-xs text-red-900">
+                  <div class="text-xs text-slate-700">
                     <span
                       v-for="(focus, index) in skill.focuses"
                       :key="focus.name"
                       @click="toggleFocus(skill.code, focus.name)"
                       @mouseenter="showFocusTooltip($event, focus)"
                       @mouseleave="hideFocusTooltip"
-                      class="cursor-pointer transition-all duration-200 hover:bg-red-100 px-1 rounded"
+                      class="cursor-pointer transition-all duration-200 hover:bg-slate-100 px-1 rounded"
                       :class="isFocusActive(skill.code, focus.name) 
                         ? 'bg-green-600 text-white font-bold' 
-                        : 'text-red-900'"
+                        : 'text-slate-700'"
                     >{{ focus.name }}<span v-if="index < skill.focuses.length - 1"></span></span>
                   </div>
                 </td>
@@ -512,15 +512,15 @@
       <!-- 技能浮動提示框 -->
       <div 
         v-if="skillTooltip.show"
-        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-red-900/30 w-80 pointer-events-none"
+        class="fixed z-50 bg-slate-800 text-white p-4 rounded-lg shadow-2xl border border-slate-600/30 w-80 pointer-events-none"
         :style="skillTooltipStyle"
       >
-        <div class="font-bold text-red-400 mb-2 text-base">{{ skillTooltip.skill?.name }}</div>
+        <div class="font-bold text-slate-300 mb-2 text-base">{{ skillTooltip.skill?.name }}</div>
         <div class="text-sm leading-relaxed">{{ skillTooltip.skill?.description }}</div>
         
         <!-- 箭頭指示器 -->
         <div 
-          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-slate-600/30 transform rotate-45"
           :class="skillTooltip.arrowClass"
           :style="skillTooltip.arrowStyle"
         ></div>
@@ -529,15 +529,15 @@
       <!-- 專精浮動提示框 -->
       <div 
         v-if="focusTooltip.show"
-        class="fixed z-50 bg-slate-800 text-white p-3 rounded-lg shadow-2xl border border-red-900/30 w-72 pointer-events-none"
+        class="fixed z-50 bg-slate-800 text-white p-3 rounded-lg shadow-2xl border border-slate-600/30 w-72 pointer-events-none"
         :style="focusTooltipStyle"
       >
-        <div class="font-bold text-red-400 mb-2">{{ focusTooltip.focus?.name }}</div>
+        <div class="font-bold text-slate-300 mb-2">{{ focusTooltip.focus?.name }}</div>
         <div class="text-sm leading-relaxed">{{ focusTooltip.focus?.description }}</div>
         
         <!-- 箭頭指示器 -->
         <div 
-          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-red-900/30 transform rotate-45"
+          class="absolute w-3 h-3 bg-slate-800 border-l border-t border-slate-600/30 transform rotate-45"
           :class="focusTooltip.arrowClass"
           :style="focusTooltip.arrowStyle"
         ></div>
@@ -545,8 +545,8 @@
       
       <!-- 語言與經驗 -->
       <div class="flex-1 xl:max-w-sm">
-        <div class="mb-4 border-2 border-red-900">
-          <div class="bg-red-900 text-white p-2 text-xs font-bold">
+        <div class="mb-4 border-2 border-slate-700">
+          <div class="bg-slate-700 text-white p-2 text-xs font-bold">
             語言
           </div>
           <textarea 
@@ -555,12 +555,12 @@
           ></textarea>
         </div>
         
-        <div class="border-2 border-red-900">
-          <div class="bg-red-900 text-white p-2 text-xs font-bold flex justify-between items-center">
+        <div class="border-2 border-slate-700">
+          <div class="bg-slate-700 text-white p-2 text-xs font-bold flex justify-between items-center">
             <span>經驗</span>
             <button
               @click="openExperienceModal"
-              class="bg-red-700 hover:bg-red-600 text-white px-2 py-1 text-xs rounded transition-colors"
+              class="bg-slate-600 hover:bg-slate-500 text-white px-2 py-1 text-xs rounded transition-colors"
             >
               記錄
             </button>
@@ -569,7 +569,7 @@
             <input 
               type="number"
               v-model.number="currentExperience"
-              class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-red-900"
+              class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
               min="0" 
               max="9999"
             >
@@ -582,7 +582,7 @@
     <div v-if="showExperienceModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
         <!-- Modal Header -->
-        <div class="bg-red-900 text-white p-4">
+        <div class="bg-slate-700 text-white p-4">
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">經驗點記錄</h3>
             <button 
@@ -598,38 +598,38 @@
         <div class="p-4">
           <!-- 添加新記錄表單 -->
           <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-            <h4 class="text-md font-bold text-red-900 mb-3">添加經驗點記錄</h4>
+            <h4 class="text-md font-bold text-slate-800 mb-3">添加經驗點記錄</h4>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
               <div>
-                <label class="block text-xs font-bold text-red-900 mb-1">增減數量</label>
+                <label class="block text-xs font-bold text-slate-800 mb-1">增減數量</label>
                 <input 
                   type="number" 
                   v-model.number="newExperienceRecord.amount"
-                  class="w-full p-2 border border-red-900 rounded text-sm"
+                  class="w-full p-2 border border-slate-600 rounded text-sm"
                   placeholder="如: +50 或 -20"
                 >
               </div>
               <div>
-                <label class="block text-xs font-bold text-red-900 mb-1">日期</label>
+                <label class="block text-xs font-bold text-slate-800 mb-1">日期</label>
                 <input 
                   type="date" 
                   v-model="newExperienceRecord.date"
-                  class="w-full p-2 border border-red-900 rounded text-sm"
+                  class="w-full p-2 border border-slate-600 rounded text-sm"
                 >
               </div>
               <div class="md:col-span-1">
-                <label class="block text-xs font-bold text-red-900 mb-1">說明</label>
+                <label class="block text-xs font-bold text-slate-800 mb-1">說明</label>
                 <input 
                   type="text" 
                   v-model="newExperienceRecord.description"
-                  class="w-full p-2 border border-red-900 rounded text-sm"
+                  class="w-full p-2 border border-slate-600 rounded text-sm"
                   placeholder="經驗點變動原因"
                 >
               </div>
             </div>
             <button
               @click="addExperienceRecord"
-              class="bg-red-900 hover:bg-red-800 text-white px-4 py-2 text-sm font-bold rounded transition-colors"
+              class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 text-sm font-bold rounded transition-colors"
             >
               添加記錄
             </button>
@@ -637,7 +637,7 @@
 
           <!-- 歷史記錄列表 -->
           <div class="overflow-y-auto max-h-96">
-            <h4 class="text-md font-bold text-red-900 mb-3">歷史記錄</h4>
+            <h4 class="text-md font-bold text-slate-800 mb-3">歷史記錄</h4>
             
             <div v-if="experienceRecords.length === 0" class="text-center text-gray-500 py-8">
               暫無經驗點記錄
@@ -696,10 +696,10 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 // 使用 Pinia store
-const store = useCohorsCthvlhvStore()
+const store = useAchtungCthulhuStore()
 
 // 基本資訊的 computed 屬性
 const characterName = computed({
@@ -1023,10 +1023,10 @@ const getStressBoxClasses = (row, col) => {
   }
   
   if (isChecked) {
-    return 'border-red-900 bg-red-900 cursor-pointer hover:bg-red-700'
+    return 'border-slate-700 bg-slate-700 cursor-pointer hover:bg-slate-600'
   }
   
-  return 'border-red-900 bg-white cursor-pointer hover:bg-red-100'
+  return 'border-slate-700 bg-white cursor-pointer hover:bg-slate-100'
 }
 
 const skillTooltip = ref({
