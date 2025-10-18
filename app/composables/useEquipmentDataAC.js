@@ -4,411 +4,961 @@
 export const useEquipmentData = () => {
   // 武器數據庫
   const weaponsDatabase = [
-    // 近戰武器
-  {
-    name: '斧',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '3🎲兇猛',
-    size: '次要',
-    qualities: ['特殊-斧']
+    //異域遠程武器
+      {
+    "name": "弓",
+    "focus": "異域",
+    "reach": "中距",
+    "damage": "3🎲穿透",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠", "靜音"]
   },
   {
-    name: '棍',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '2🎲',
-    size: '次要',
-    qualities: []
+    "name": "長弓",
+    "focus": "異域",
+    "reach": "遠距",
+    "damage": "5🎲穿透",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠", "靜音"]
   },
   {
-    name: '棍杖',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '3🎲震懾',
+    "name": "弩",
+    "focus": "異域",
+    "reach": "中距",
+    "damage": "4🎲穿透",
+    "salvo": [],
+    "size": "主要",
+    "qualities": ["可靠", "靜音"]
+  },
+    //手榴彈與炸彈
+  {
+    "name": "1½ 磅／3 磅 標準裝藥",
+    "focus": "拆除",
+    "reach": "近距",
+    "damage": "10🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "次要",
+    "qualities": ["強烈"]
+  },
+  {
+    "name": "GP 手榴彈",
+    "focus": "投擲",
+    "reach": "近距",
+    "damage": "6🎲",
+    "salvo": ["區域", "兇猛"],
+    "size": "次要",
+    "qualities": ["笨重", "不精準", "彈藥型"]
+  },
+  {
+    "name": "米爾斯炸彈",
+    "focus": "投擲",
+    "reach": "近距",
+    "damage": "6🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "次要",
+    "qualities": ["不精準", "彈藥型"]
+  },
+  {
+    "name": "米爾斯炸彈（步槍型）",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "次要",
+    "qualities": ["不精準", "彈藥型"]
+  },
+  {
+    "name": "鳳梨手榴彈",
+    "focus": "投擲",
+    "reach": "近距",
+    "damage": "6🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "次要",
+    "qualities": ["不精準", "彈藥型"]
+  },
+  {
+    "name": "鳳梨手榴彈（步槍型）",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "次要",
+    "qualities": ["不精準", "彈藥型"]
+  },
+  {
+    "name": "破胎彈",
+    "focus": "投擲",
+    "reach": "近距",
+    "damage": "6🎲",
+    "salvo": ["區域", "穿透1"],
+    "size": "次要",
+    "qualities": ["笨重", "不精準", "彈藥型"]
+  },
+    //重型武器與火砲
+  {
+    "name": "博伊斯反坦克步槍",
+    "focus": "重型武器",
+    "reach": "遠距",
+    "damage": "7🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["精準", "笨重", "局勢升高", "重型"]
+  },
+  {
+    "name": "擲行式火焰噴射器 No.2 Mk.II",
+    "focus": "重型武器",
+    "reach": "近距",
+    "damage": "5🎲",
+    "salvo": ["區域", "持續4"],
+    "size": "主要",
+    "qualities": ["局勢升高", "削弱"]
+  },
+  {
+    "name": "M1A1 火箭筒",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["笨重", "局勢升高", "巨物殺手", "重型", "彈藥型"]
+  },
+  {
+    "name": "M2 迫擊砲",
+    "focus": "重型武器",
+    "reach": "極遠",
+    "damage": "6🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "主要",
+    "qualities": ["局勢升高", "重型", "間接"]
+  },
+  {
+    "name": "M9 火箭筒",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["穿透1", "兇猛"],
+    "size": "主要",
+    "qualities": ["笨重", "局勢升高", "巨物殺手", "重型", "不精準", "彈藥型"]
+  },
+  {
+    "name": "PIAT 反坦克武器",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["穿透1", "兇猛"],
+    "size": "主要",
+    "qualities": ["笨重", "局勢升高", "重型", "不精準", "彈藥型"]
+  },
+  {
+    "name": "2 吋迫擊砲",
+    "focus": "重型武器",
+    "reach": "極遠",
+    "damage": "6🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "次要",
+    "qualities": ["局勢升高", "重型", "間接"]
+  },
+    //輕機槍與機槍
+      {
+    "name": "布倫機槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "白朗寧自動步槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "白朗寧 M1919 機槍",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "7🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["局勢升高", "不精準"]
+  },
+  {
+    "name": "強森 M1941 機槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "MAC 1924/29 機槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "ERMA 1935 式衝鋒槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不精準", "不可靠"]
+  },
+  {
+    "name": "史登 Mk.IIS 消音衝鋒槍",
+    "focus": "近戰",
+    "reach": "近距",
+    "damage": "3🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不精準", "靜音"]
+  },
+  {
+    "name": "史登 Mk.V 衝鋒槍",
+    "focus": "近戰",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "湯普森衝鋒槍",
+    "focus": "近戰",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "聯合防務 M42 衝鋒槍",
+    "focus": "近戰",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "維克斯機槍",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "7🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["局勢升高", "不精準"]
+  },
+    //步槍與霰彈槍
+      {
+    "name": "貝蒂耶 1892 M16 卡賓槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "德利耶卡賓槍 Mk.I",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["靜音"]
+  },
+  {
+    "name": "李–恩菲爾德步槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "M1 卡賓槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "M1 加蘭德步槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "MAS 1936 式步槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "春田步槍 M1903 步槍",
+    "focus": "步槍",
+    "reach": "遠距",
+    "damage": "6🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠", "精準"]
+  },
+  {
+    "name": "溫徹斯特 M12 霰彈槍",
+    "focus": "近戰",
+    "reach": "近距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠", "不精準"]
+  },
+    //手槍
+  {
+    "name": "隱匿手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "3🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "隱藏"]
+  },
+  {
+    "name": "白朗寧大威力半自動手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰"]
+  },
+  {
+    "name": "恩菲爾德 No.2 .38/200 制式左輪",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "可靠"]
+  },
+  {
+    "name": "Enpen Mk.I",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "2🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "靜音"]
+  },
+  {
+    "name": "High Standard HDM 手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "3🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "靜音"]
+  },
+  {
+    "name": "M1911A1 手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰"]
+  },
+  {
+    "name": "MAB Modèle D 手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "3🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "隱藏"]
+  },
+  {
+    "name": "MAS Modèle 1873 左輪",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "可靠"]
+  },
+  {
+    "name": "Welrod Mk.IIA 手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "3🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "靜音"]
+  },
+    // 異域近戰武器
+  {
+    name: '闊劍',
+    focus: '異域',
+    reach: '—',
+    damage: '5🎲',
+    salvo: [],
     size: '主要',
     qualities: []
-  },
-  {
-    name: '匕首',
-    focus: '近戰武器',
-    reach: '1',
-    damage: '2🎲穿透1',
-    size: '次要',
-    qualities: ['隱藏', '精巧']
-  },
-  {
-    name: '多用途軍斧',
-    focus: '近戰武器',
-    reach: '1',
-    damage: '3🎲穿透1',
-    size: '次要',
-    qualities: []
-  },
-  {
-    name: '標槍',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '3🎲穿透1',
-    size: '次要',
-    qualities: ['特殊-標槍']
   },
   {
     name: '長矛',
-    focus: '近戰武器',
-    reach: '3',
-    damage: '4🎲穿透1',
+    focus: '異域',
+    reach: '—',
+    damage: '4🎲　穿透 1',
+    salvo: [],
     size: '主要',
     qualities: []
-  },
-  {
-    name: '杖',
-    focus: '近戰武器',
-    reach: '3',
-    damage: '2🎲',
-    size: '主要',
-    qualities: ['特殊-杖']
-  },
-  {
-    name: '劍',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '4🎲',
-    size: '主要',
-    qualities: ['格擋']
-  },
-  {
-    name: '鐮刀劍',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '4🎲兇猛',
-    size: '主要',
-    qualities: []
-  },
-  {
-    name: '羅馬短劍',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '4🎲穿透1',
-    size: '主要',
-    qualities: ['格擋']
   },
   {
     name: '長劍',
+    focus: '異域',
+    reach: '—',
+    damage: '4🎲',
+    salvo: [],
+    size: '主要',
+    qualities: ['招架']
+  },
+    // 近戰武器
+  {
+    name: '斧頭',
     focus: '近戰武器',
-    reach: '2',
-    damage: '5🎲',
-    size: '主要',
-    qualities: ['雙手']
-  },
-  {
-    name: '騎士長劍',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '5🎲穿透1',
-    size: '主要',
-    qualities: ['雙手']
-  },
-  {
-    name: '徒手攻擊',
-    focus: '徒手',
-    reach: '0',
-    damage: '2🎲',
-    size: '—',
-    qualities: ['精巧']
-  },
-  {
-    name: '戰斧',
-    focus: '近戰武器',
-    reach: '2',
-    damage: '4🎲兇猛',
-    size: '主要',
-    qualities: ['雙手']
-  },
-  {
-    name: '小盾',
-    focus: '近戰武器',
-    reach: '1',
-    damage: '2🎲震懾',
-    size: '次要',
-    qualities: ['盾牌2']
-  },
-  {
-    name: '大盾',
-    focus: '近戰武器',
-    reach: '1',
-    damage: '3🎲震懾',
-    size: '主要',
-    qualities: ['盾牌3']
-  },
-  // 遠程武器
-  {
-    name: '弩弓',
-    focus: '弓術',
-    reach: '中距',
-    damage: '4🎲穿透1',
-    size: '主要',
-    qualities: ['精準', '裝填']
-  },
-  {
-    name: '弓',
-    focus: '弓術',
-    reach: '中距',
-    damage: '3🎲穿透1',
-    size: '主要',
-    qualities: ['精巧']
-  },
-  {
-    name: '複合弓',
-    focus: '弓術',
-    reach: '遠距',
-    damage: '4🎲穿透1',
-    size: '主要',
-    qualities: ['精巧']
-  },
-  {
-    name: '標槍',
-    focus: '投擲武器',
-    reach: '中距',
-    damage: '3🎲',
-    size: '次要',
-    qualities: ['特殊-標槍']
-  },
-  {
-    name: '羅馬重標槍',
-    focus: '投擲武器',
-    reach: '近距',
-    damage: '4🎲穿透1',
-    size: '次要',
-    qualities: ['特殊-標槍']
-  },
-  {
-    name: '鉛鏢',
-    focus: '投擲武器',
-    reach: '近距',
-    damage: '2🎲穿透1',
+    reach: '—',
+    damage: '3🎲兇猛',
+    salvo: [],
     size: '次要',
     qualities: []
   },
   {
-    name: '投石索',
-    focus: '投擲武器',
-    reach: '遠距',
+    name: '球棒',
+    focus: '近戰武器',
+    reach: '—',
     damage: '3🎲震懾',
+    salvo: [],
+    size: '主要',
+    qualities: []
+  },
+  {
+    name: '警棍',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '3🎲',
+    salvo: [],
     size: '次要',
-    qualities: ['不精準', '精巧', '特殊-投石索']
+    qualities: ['靜音']
+  },
+  {
+    name: '刺刀',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '3🎲穿透',
+    salvo: [],
+    size: '次要',
+    qualities: []
+  },
+  {
+    name: '指虎',
+    focus: '徒手戰鬥',
+    reach: '—',
+    damage: '2🎲震懾',
+    salvo: [],
+    size: '次要',
+    qualities: ['隱藏']
+  },
+  {
+    name: '工兵鏟',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '3🎲',
+    salvo: [],
+    size: '次要',
+    qualities: []
+  },
+  {
+    name: '戰鬥匕首',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '2🎲穿透 1',
+    salvo: [],
+    size: '次要',
+    qualities: ['隱藏', '靜音']
+  },
+  {
+    name: '消防斧',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '4🎲兇猛',
+    salvo: [],
+    size: '主要',
+    qualities: []
+  },
+  {
+    name: '絞索',
+    focus: '徒手戰鬥',
+    reach: '—',
+    damage: '3🎲纏縛',
+    salvo: [],
+    size: '小物品',
+    qualities: []
+  },
+  {
+    name: '軍刀',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '3🎲穿透 1',
+    salvo: [],
+    size: '主要',
+    qualities: ['招架']
+  },
+  {
+    name: '槍托',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '3🎲',
+    salvo: [],
+    size: '—',
+    qualities: []
+  },
+  {
+    name: '拇指刀',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '1🎲穿透1',
+    salvo: [],
+    size: '次要',
+    qualities: ['隱藏', '靜音']
+  },
+  {
+    name: '塹壕匕首',
+    focus: '近戰武器',
+    reach: '—',
+    damage: '3🎲兇猛',
+    salvo: [],
+    size: '次要',
+    qualities: ['隱藏']
+  },
+  {
+    name: '徒手攻擊',
+    focus: '徒手戰鬥',
+    reach: '—',
+    damage: '2🎲',
+    salvo: [],
+    size: '—',
+    qualities: ['靜音']
+  },
+  {
+    "name": "戰鬥匕首 42",
+    "focus": "近戰",
+    "reach": "—",
+    "damage": "1🎲穿透1",
+    "salvo": [],
+    "size": "次要",
+    "qualities": ["隱藏", "靜音"]
+  },
+  {
+    "name": "德國空軍多用途折刀",
+    "focus": "近戰",
+    "reach": "—",
+    "damage": "2🎲穿透1",
+    "salvo": [],
+    "size": "次要",
+    "qualities": ["隱藏", "靜音"]
+  },
+  {
+    "name": "黨衛軍匕首",
+    "focus": "近戰",
+    "reach": "—",
+    "damage": "2🎲穿透1",
+    "salvo": [],
+    "size": "次要",
+    "qualities": ["靜音"]
+  },
+  {
+    "name": "傘兵步槍 FG 42",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "格章爾／卡賓 43（G/K43）",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "卡賓 98k",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "卡賓 98k（狙擊型）",
+    "focus": "步槍",
+    "reach": "遠距",
+    "damage": "5🎲",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["精準", "可靠"]
+  },
+  {
+    "name": "突擊步槍 44（StG 44）",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "5🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["不可靠"]
+  },
+    {
+    "name": "魯格手槍",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰"]
+  },
+  {
+    "name": "華瑟 P 系列",
+    "focus": "手槍",
+    "reach": "近距",
+    "damage": "3🎲",
+    "salvo": ["兇猛"],
+    "size": "次要",
+    "qualities": ["近戰", "隱藏", "可靠"]
+  },
+    {
+    "name": "MG42 機槍",
+    "focus": "步槍",
+    "reach": "中距",
+    "damage": "6🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["不精準"]
+  },
+  {
+    "name": "MP40 衝鋒槍",
+    "focus": "近戰",
+    "reach": "近距",
+    "damage": "4🎲",
+    "salvo": ["震懾"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+  {
+    "name": "MG131 機槍",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "7🎲",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["可靠"]
+  },
+    {
+    "name": "火焰噴射器 41",
+    "focus": "重型武器",
+    "reach": "中距",
+    "damage": "5🎲持續4",
+    "salvo": ["區域"],
+    "size": "主要",
+    "qualities": ["削弱", "局勢升高"]
+  },
+  {
+    "name": "GrW36 迫擊砲",
+    "focus": "重型武器",
+    "reach": "極遠",
+    "damage": "7🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "主要",
+    "qualities": ["局勢升高", "重型", "間接"]
+  },
+  {
+    "name": "反坦克榴彈發射器 60",
+    "focus": "重型武器",
+    "reach": "遠距",
+    "damage": "5🎲穿透1",
+    "salvo": ["兇猛"],
+    "size": "主要",
+    "qualities": ["笨重", "局勢升高", "巨物殺手", "重型", "不精準", "彈藥型"]
+  },
+  {
+    "name": "棍式手榴彈 24",
+    "focus": "投擲",
+    "reach": "近距",
+    "damage": "5🎲",
+    "salvo": ["區域", "震懾"],
+    "size": "主要",
+    "qualities": ["彈藥型"]
   }
+
   ];
 
   // 盔甲數據庫
   const armorsDatabase = [
   {
-    name: '鎖子甲/分環鎧',
-    resistance: '+2',
-    size: '主要',
-    qualities: ['不適']
+    "name": "防彈背心",
+    "resistance": "+2",
+    "size": "主要",
+    "qualities": ["不適"]
   },
   {
-    name: '皮甲',
-    resistance: '+1',
-    size: '主要',
-    qualities: []
+    "name": "皮甲",
+    "resistance": "+1",
+    "size": "主要",
+    "qualities": []
   },
   {
-    name: '分片鎧',
-    resistance: '+3',
-    size: '主要',
-    qualities: ['不適']
+    "name": "板甲",
+    "resistance": "+3",
+    "size": "主要",
+    "qualities": ["沉重", "不適"]
   },
   {
-    name: '鱗甲',
-    resistance: '+3',
-    size: '主要',
-    qualities: ['沉重', '不適']
+    "name": "盾牌",
+    "resistance": "+2",
+    "size": "主要",
+    "qualities": ["盾牌"]
   }
   ];
 
   // 技能工具數據庫
   const skillToolsDatabase = [
   {
-    name: '製作工具',
-    restrictionLevel: 1,
-    requirement: null,
-    size: '次要',
-    description: '內含製造各類物品所需的工具，如：木工鋸、槌與鑿；金工鉗、錘與銼；或石雕用重鑿與鐵桿。每組皆附量具與刻記工具。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "分析工具",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "攜帶式化學分析裝備，可用於鑑定各種化合物、反應與鑑識調查。附帶足量試劑。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
   },
   {
-    name: '馴獸師工具組',
-    restrictionLevel: 1,
-    requirement: '馴獸專精',
-    size: '次要',
-    description: '包含馬銜、韁繩、訓練餌、鞭與各類動物訓練用具。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "彈藥腰帶",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "彈藥腰帶、袋或槍帶，可儲存 3 單位彈藥，供火器使用。",
+    "effect": "可攜帶 3 單位彈藥。"
   },
   {
-    name: '醫師工具組',
-    restrictionLevel: 1,
-    requirement: null,
-    size: '次要',
-    description: '由各種外科器具組成，用於戰場醫療，包括復位用骨桿、手鑽、取箭鉗、手術刀與藥膏。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "竊賊工具",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "裝有開鎖器、螺絲起子、短撬棍、錘子、鞋油及潤滑油等道具的工具包，用於潛入與破門行動。附帶足量用品。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
   },
   {
-    name: '羊皮紙卷軸',
-    restrictionLevel: 1,
-    requirement: null,
-    size: '次要',
-    description: '羅馬時期的書籍多以紙草或羊皮卷成冊，內容廣泛，從帝國史到哲學論述皆有。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "電工工具組",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "內含修理與改裝無線電、通訊設備、車輛與設施電氣系統所需的工具與零件。附帶足夠零件與電池。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
   },
   {
-    name: '儀式工具',
-    restrictionLevel: 2,
-    requirement: '宗教專精',
-    size: '次要',
-    description: '基本儀式工具包含：儀式短劍、香、油燈、羊皮紙與墨水。滿足施行者進行多種儀式的需求。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "爆破工具組",
+    "restrictionLevel": 2,
+    "requirement": null,
+    "size": "主要",
+    "description": "包含工兵或破壞者塑形炸藥、設置陷阱與引爆裝置、或拆除現場炸藥所需的一切。",
+    "effect": "內含 3 單位用於設置炸藥的彈藥。"
   },
   {
-    name: '無賴工具組',
-    restrictionLevel: 1,
-    requirement: null,
-    size: '次要',
-    description: '內含開鎖器、鑿、短撬棍與小錘，並附煤粉與潤滑油，用於潛入或破門而入。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "偽裝組",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "包含義肢、化妝品與服飾配件，可足以改變外貌偽裝成他人。附帶足量資源。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
   },
   {
-    name: '士兵工具組',
-    restrictionLevel: 1,
-    requirement: null,
-    size: '次要',
-    description: '包含備用衣物、乾糧、小鏟與炊具，另附搭營與炊事用品。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "急救包",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "個人急救包內含繃帶、嗎啡針筒、抗菌藥片與粉末及止血帶。軍醫版本包含更多戰地醫療用品。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
   },
   {
-    name: '求生工具組',
-    restrictionLevel: 1,
-    requirement: null,
-    size: '次要',
-    description: '內含生火材料（火絨盒、打火石與鋼片）、毛毯或獸皮、野外乾糧，並附繩索、岩釘與帆布，可搭建單人帳篷。',
-    effect: '提供 3 點動力用於購買 d20'
+    "name": "身分文件組",
+    "restrictionLevel": 2,
+    "requirement": null,
+    "size": "次要",
+    "description": "同盟國特工專用假身分與訓練文件，用於敵後長期行動與偽裝。",
+    "effect": "可在檢定前提供最多 3 點額外動力購買 20 面骰，使用後即失效。"
+  },
+  {
+    "name": "機械工具組",
+    "restrictionLevel": 1,
+    "requirement": null,
+    "size": "次要",
+    "description": "包含修理車輛、坦克、飛機及機械所需的工具、油料、潤滑劑與螺帽螺栓。附帶足量零件。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
+  },
+  {
+    "name": "儀式工具組",
+    "restrictionLevel": 2,
+    "requirement": null,
+    "size": "次要",
+    "description": "包含儀式用短刃、香、蠟燭、羊皮紙、墨水與紙張等基本施法材料。附帶足量供應。",
+    "effect": "可獲得 3 點額外動力購買 20 面骰。"
   }
   ];
 
   // 其他裝備數據庫
   const miscellaneousDatabase = [
   {
-    name: '護符',
-    restrictionLevel: 0,
-    size: '小物品',
-    effect: '防護超自然攻擊',
-    shortDescription: '防止詛咒、惡靈、邪眼攻擊',
-    description: '人們會購買或製作護符與護身符，以防止詛咒、惡靈、「邪眼」與其他邪惡之物。孩童通常會配戴名為布拉或月形護符的護身飾物直到成年，因其被視為特別脆弱。',
-    usage: '角色在被超自然力量、法術、邪眼或神話生物之心智攻擊鎖定時，可消耗 1 點命運點啟動護符，以防止該力量或攻擊的負面效果。之後擲 1 顆挑戰骰🎲。若結果為效果😈，護符仍然有效並可再次使用；若否，則護符失效，必須更換。'
+    "name": "照相機",
+    "restrictionLevel": 2,
+    "size": "主要",
+    "shortDescription": "戰地新聞攝影用相機",
+    "description": "Speed Graphic 攝影機為時代代表性相機，用於戰地記者拍攝戰爭與民生影像。每次曝光需更換底片與閃光燈泡，設置耗時但快門反應迅速。",
+    "effect": "可記錄高品質影像作為證據或情報素材；依場景可為搜尋或記錄檢定提供情境加成。"
   },
   {
-    name: '手持油燈',
-    restrictionLevel: 1,
-    size: '小物品',
-    effect: '產生光源',
-    shortDescription: '近距範圍微弱光源，燃燒一小時',
-    description: '陶製或金屬製手燈，以橄欖油或其他常見燃料為燃料，在羅馬時代十分普遍。',
-    usage: '手燈可在近距範圍內產生微弱光源，燃燒一小時後需重新添油。'
+    "name": "身分識別牌",
+    "restrictionLevel": 0,
+    "size": "小物品",
+    "shortDescription": "軍人識別用金屬牌",
+    "description": "大多數軍人配發兩枚金屬或纖維製識別牌，上刻姓名、軍號、宗教與血型。若士兵陣亡，一枚留於遺體，另一枚交由指揮官通報。",
+    "effect": "標準小物品，於需要確認身分或處理遺體情境時提供識別便利。"
   },
   {
-    name: '連帽披風',
-    restrictionLevel: 0,
-    size: '小物品',
-    effect: '保暖防護與隱匿',
-    shortDescription: '保暖、防風雨、遮掩身份',
-    description: '雖在溫暖的羅馬本地並不常見，但來自日耳曼北方的厚重披風「拉刻爾納」已在邊境地區流行。此披風能保暖、防風雨，且深兜帽可用於遮掩身份。',
-    usage: '提供保暖與防護，兜帽可用於隱匿身份。'
+    "name": "口糧包",
+    "restrictionLevel": 0,
+    "size": "次要",
+    "shortDescription": "一日口糧（或三餐）",
+    "description": "各國軍用口糧包形式不同（美軍 C 口糧、英軍 Compo、德軍鐵口糧等），通常足供一名士兵一日食用，可冷食或加熱。",
+    "effect": "補給用途：恢復或維持一日所需體力或狀態，屬次要。"
   },
   {
-    name: '鎖箱',
-    restrictionLevel: 3,
-    size: '次要',
-    effect: '安全儲存物品',
-    shortDescription: '保管財物與秘密的精製裝備',
-    description: '堅固的木箱配以青銅鎖，是用來保管財物與秘密的昂貴精製裝備。',
-    usage: '可用鑰匙開啟，或進行一次「協調＋潛匿」檢定（難度 3）開鎖；若角色具「開鎖」專精，可套用之。'
+    "name": "瞄準鏡",
+    "restrictionLevel": 2,
+    "size": "小物品",
+    "shortDescription": "步槍用遠距精準鏡片組",
+    "description": "安裝於步槍上的鏡片組，可在遠距射擊時提供極高精度；每次安裝需由合格工匠或槍械師固定調校。",
+    "effect": "將所裝步槍的射程增加 1 個距離等級（通常中距→遠距）；若該武器未具「精準」特性，則獲得該特性。"
   },
   {
-    name: '銅鏡',
-    restrictionLevel: 1,
-    size: '小物品',
-    effect: '反射與觀察',
-    shortDescription: '拋光青銅或鍍銀鏡',
-    description: '鏡子材質多樣，最常見為拋光青銅鏡，而富裕階層則使用鍍銀鏡。',
-    usage: '用於個人梳理或觀察周圍環境。'
+    "name": "制服",
+    "restrictionLevel": 0,
+    "size": "主要",
+    "shortDescription": "軍服套裝（含內衣與外套）",
+    "description": "軍服包含內衣、襯衫、上衣與長褲等，視兵種與氣候有不同款式（大衣、熱帶服、飛行夾克等）。未穿戴時視為主要物品。",
+    "effect": "作為身份識別與社交情境使用；穿戴時在軍中或佔領地情境可提供服裝相關檢定加成。"
   },
   {
-    name: '銅筆與蠟板',
-    restrictionLevel: 1,
-    size: '小物品',
-    effect: '書寫與記錄',
-    shortDescription: '可重複使用的書寫工具',
-    description: '書寫者常使用一端尖銳、一端鏟平的銅筆，於木或金屬框中盛裝的蠟板上刻寫暫時性筆記。',
-    usage: '欲清除內容時，可用筆尾鏟端抹平痕跡。'
+    "name": "祕密服裝",
+    "restrictionLevel": 1,
+    "size": "次要",
+    "shortDescription": "特工用易於偽裝之衣物",
+    "description": "SOE 或 OSS 特工專用的難民衣物或精良仿製品，設計以避免暴露身份，適合潛入與長期滯留敵後。",
+    "effect": "在偽裝、通行或滯留任務中提供情境加值。"
   },
   {
-    name: '計時蠟燭',
-    restrictionLevel: 1,
-    size: '小物品',
-    effect: '計時功能',
-    shortDescription: '側面刻有時間刻度的蠟燭',
-    description: '以蜂蠟或牛脂製成的蠟燭，側面刻或塗有時間刻度。理論上每燃燒一段至標記即過一小時，但受溫度與濕度影響，實際時間常有偏差。',
-    usage: '用於粗略計時，但精度受環境因素影響。'
+    "name": "祕密通訊設備",
+    "restrictionLevel": 2,
+    "size": "主要",
+    "shortDescription": "便攜且抗干擾之祕密無線電設備",
+    "description": "包含 Paraset Mk.VII、MCR1、B2、S-phone 等多種祕密通訊設備，設計便於藏匿並抗干擾，供特工使用以聯絡與定位空投。",
+    "effect": "屬主要物品，能在祕密任務中建立穩定通訊並提供相關檢定加成或特殊功能。"
   },
   {
-    name: '鐵蒺藜',
-    restrictionLevel: 1,
-    size: '次要',
-    effect: '區域防禦武器',
-    shortDescription: '造成物理危害的防禦器具',
-    description: '鐵製蒺藜為羅馬軍與敵軍皆常使用的防禦器具。四刺呈金字塔狀排列，確保落地時必有一尖端朝上。',
-    usage: '在一個區域中構成物理危害，對踏入者造成 3🎲傷害（詳見第 33 頁〈物理危害〉）。'
-  },
-  
-  // 藥劑與藥理
-  {
-    name: '鴉片',
-    restrictionLevel: 2,
-    size: '小物品',
-    effect: '額外消除1點壓力',
-    shortDescription: '強效止痛與助眠藥物',
-    description: '從罌粟提煉的強效藥物。輕劑量可泡製為稱作「克里特酒」的飲品，用於助眠；其葉則可製成「梅科尼翁」，用以減緩傷痛。',
-    usage: '執行調息（主動作）消除壓力時可服用，額外消除1點壓力。若擲出效果😈，本場景中所有技能檢定的糾葛範圍+1。'
+    "name": "拖車釘",
+    "restrictionLevel": 2,
+    "size": "次要",
+    "shortDescription": "道路與跑道破壞用四爪釘",
+    "description": "SOE 或 OSS 供應之四爪拖車釘，設計確保總有一尖端朝上，用於破壞車輛與馬匹。可在區域部署造成危險地帶。",
+    "effect": "在所置一個區域內造成危險，凡通過者承受 2🎲 傷害。"
   },
   {
-    name: '毒藥',
-    restrictionLevel: 2,
-    size: '小物品',
-    effect: '致命傷害或武器強化',
-    shortDescription: '致命的暗殺工具',
-    description: '羅馬政壇上常見的暗殺手段。最常見的種類源自植物，如天仙子、曼陀羅與毒芹，某些動物毒液亦同樣致命。雖被視為懦夫之器，毒藥卻能迅速除去棘手敵人。',
-    usage: '服用：立即承受4🎲物理傷害，並附帶「持續3」與「穿透3」效果。塗抹武器：本場景內該武器攻擊獲得+2傷害並具「持續3」效果。'
+    "name": "伊士曼微型照相機",
+    "restrictionLevel": 2,
+    "size": "小物品",
+    "shortDescription": "可藏於火柴盒之微型相機",
+    "description": "由 OSS 委託研發，體積極小，使用 16mm 底片，適合祕密拍攝。屬小物品。",
+    "effect": "可用於偵查與情報搜集，提供影像證據或情報檢定加值。"
   },
   {
-    name: '幻靈劑',
-    restrictionLevel: 3,
-    size: '小物品',
-    effect: '施法強化或心靈保護',
-    shortDescription: '改變心智狀態的致幻物質',
-    description: '「幻靈劑」泛指能改變心智狀態的物質——從蜜蜂採集劇毒花蜜釀成的致幻蜂蜜、以藍蓮花泡製的茶，到被稱為「夢魚」的鯛魚肉。此類物質常用於魔法儀式與宗教祭典，可引發幻覺與靈視。',
-    usage: '造成3🎲心智傷害，並附帶「持續2」與「穿透3」效果。選擇效果：1）施法者所施法術難度降低1（持續1小時）；2）角色在1小時內免受心靈創傷負面影響。無論選擇哪項，角色在此期間獲得個人真理：「目睹異象，真假難辨」。'
+    "name": "吉胡伊印刷機",
+    "restrictionLevel": 2,
+    "size": "主要",
+    "shortDescription": "便攜接觸印刷機，用於偽造或複製文件",
+    "description": "OSS 提供之便攜式接觸印刷機，可放入公事包，內建光源與電池，附感光紙與藥劑，重約 5.4 公斤，用於複製文件、地圖與傳單。",
+    "effect": "在偽造、散佈或情報作業中提供顯著功能與檢定加成。"
   },
-  
-  // 個人物品
   {
-    name: '幸運符',
-    restrictionLevel: 0,
-    size: '小物品',
-    effect: '每場冒險一次命運點',
-    shortDescription: '吉兆紀念物或遺物',
-    description: '部分背景與特質會賦予角色象徵過往的紀念物、事件遺物或其他吉兆之物。無論其具體外觀如何，效果皆相同。',
-    usage: '每場冒險中一次，你可如同使用一點命運點般啟動幸運符。角色每次冒險僅能啟用一個幸運符。若背景與特質各提供一個幸運符，雖可同時保留兩件物品，但每場冒險僅能啟用其中之一。此外，角色可額外獲得一件限制等級為1或以下的裝備。'
+    "name": "鑰匙複製組",
+    "restrictionLevel": 2,
+    "size": "次要",
+    "shortDescription": "製作鑰匙印模與鑄造用具",
+    "description": "包含製作鑰匙印模、模具與低熔點金屬鑄造器材，並附蠟燭作為加熱源，由 SOE 或 OSS 配發。",
+    "effect": "可用於製作鎖具的複製鑰匙，提升潛入任務成功率。"
+  },
+  {
+    "name": "開鎖小刀",
+    "restrictionLevel": 2,
+    "size": "小物品",
+    "shortDescription": "口袋型開鎖工具兼小刀",
+    "description": "口袋刀型開鎖工具，含刀刃與多種撬鎖器，附扭力桿，可悄然開啟鎖具。由 SOE 或 OSS 使用，戰鬥中視為拇指刀使用。",
+    "effect": "提供開鎖與潛入檢定加成，戰鬥中可作為輔助近戰武器。"
+  },
+  {
+    "name": "M19 逃生刀",
+    "restrictionLevel": 2,
+    "size": "次要",
+    "shortDescription": "多功能折刀（含破鎖、剪線器等）",
+    "description": "多功能折刀，含剪線器、破鎖刃、主刀、鋸片與螺絲起子，長約 18 公分，常藏於板球拍柄中運送給戰俘，戰鬥中視為格鬥短刀使用。",
+    "effect": "在逃脫與維修情境提供工具功能，戰鬥中作為近戰武器。"
+  },
+  {
+    "name": "明諾克斯微型照相機",
+    "restrictionLevel": 2,
+    "size": "小物品",
+    "shortDescription": "典型間諜相機（使用 8×11mm 底片）",
+    "description": "由 VEF 公司製造的微型相機，體積小、可藏匿，使用 8×11mm 底片，可拍攝約 50 張影像，常作為間諜標準裝備。",
+    "effect": "適合祕密拍攝與情報蒐集，提供影像記錄功能與檢定加值。"
+  },
+  {
+    "name": "消音器",
+    "restrictionLevel": 2,
+    "size": "小物品",
+    "shortDescription": "降低射擊聲與槍口閃光之裝置",
+    "description": "安裝於槍口的圓筒裝置，可降低射擊聲與槍口閃光。戰前少見於常規部隊，但為情報單位廣泛使用，常配備於突襲與暗殺任務。",
+    "effect": "可安裝於手槍、衝鋒槍與步槍，使武器獲得「靜音」特性。"
   }
   ];
 
@@ -418,9 +968,13 @@ export const useEquipmentData = () => {
     name: '精準',
     description: '若角色在攻擊前採取瞄準（副動作），該攻擊獲得「強烈」效果。'
   },
-  '剋敵': {
-    name: '剋敵',
-    description: '此武器對神話生物特別有效，無視其「無敵」特殊規則。此外，具「堅韌 X」特質的生物無法以消耗威脅來忽略此武器造成的傷勢。'
+  '近戰': {
+    name: '近戰',
+    description: '此武器設計緊湊，能在狹小空間與混戰中靈活使用。當敵人位於你的觸及範圍內時，進行遠程攻擊不會受到懲罰。'
+  },
+  '笨重': {
+    name: '笨重',
+    description: '武器沉重難以靈活運用，特別是對付人形等小型目標時。若攻擊目標為人類大小或更小，該次攻擊難度 +1。'
   },
   '削弱': {
     name: '削弱',
@@ -430,17 +984,17 @@ export const useEquipmentData = () => {
     name: '局勢升高',
     description: '持此武器進入場景時，為遊戲主持人增加 1 威脅。'
   },
-  '沉重': {
-    name: '沉重',
-    description: '若持用者體魄低於 10，使用此武器攻擊時難度 +1。'
+  '巨物殺手': {
+    name: '巨物殺手',
+    description: '此武器對小型或軟性目標浪費威力，但對龐大目標能發揮致命威能。擲傷害骰時，額外增加目標體型等級數值的🎲，但不得超過武器的基礎傷害值（例如基礎傷害 6🎲 的武器，額外🎲不得超過 +6🎲）。'
+  },
+  '重型': {
+    name: '重型',
+    description: '使用此武器攻擊時，若未設置（如抵住地面或三腳架），攻擊難度 +2。設置需花費準備副動作。'
   },
   '隱藏': {
     name: '隱藏',
     description: '此武器在隱藏時，旁人僅以目視無法察覺。搜尋此武器之技能檢定難度 +1。'
-  },
-  '饑渴': {
-    name: '饑渴',
-    description: '每當此武器造成至少一處傷勢時，使用者可選擇以下獎勵之一：移除 5 點壓力、治癒一處傷勢，或獲得 +1 威能直至場景結束（此加成每場景僅能獲得一次）。'
   },
   '不精準': {
     name: '不精準',
@@ -450,49 +1004,21 @@ export const useEquipmentData = () => {
     name: '間接',
     description: '此武器設計為拋射用途，可越過長距離投射目標。攻擊難度 +1，但不需視線。'
   },
-  '格擋': {
-    name: '格擋',
-    description: '當持用者遭近戰攻擊並進行對抗檢定時，可重擲一顆 d20。若持有多件格擋武器，此效果不疊加。'
+  '彈藥型': {
+    name: '彈藥型',
+    description: '此武器的彈藥體積龐大。每次攻擊須消耗 1 枚彈藥，且無法進行齊射攻擊。'
+  },
+  '招架': {
+    name: '招架',
+    description: '使用者在防禦近戰攻擊時，進行對抗檢定可重擲一顆 d20。若角色持有多件招架武器，此效果不疊加。'
   },
   '可靠': {
     name: '可靠',
     description: '在行動場景中使用此武器時，角色可忽略第一次擲出的糾葛結果。'
   },
-  '裝填': {
-    name: '裝填',
-    description: '攻擊後需重新裝填，耗費一個主動作。'
-  },
-  '盾牌': {
-    name: '盾牌 X',
-    description: '當角色遭受近戰攻擊時，其距離視為 X；若角色處於防備狀態，則獲得 +X 掩蔽抗性。'
-  },
-  '特殊': {
-    name: '特殊',
-    description: '此武器具有特殊性質或能力，於描述中另行說明。'
-  },
-  '特殊-斧': {
-    name: '特殊（斧）',
-    description: '單手斧亦可作為「投擲武器」使用，射程為近距，造成與近戰相同的傷害。'
-  },
-  '特殊-杖': {
-    name: '特殊（杖）',
-    description: '若以雙手持杖，將距離降為 2，基礎傷害提升為 3。'
-  },
-  '特殊-標槍': {
-    name: '特殊（標槍）',
-    description: '雖非為近戰而造，若角色擁有「近戰武器」專精，則可以標槍進行近戰攻擊。此時距離為 2，造成的傷害與遠程相同。'
-  },
-  '特殊-投石索': {
-    name: '特殊（投石索）',
-    description: '此時代的標準彈藥為橢圓形鉛彈。然而此武器最大優勢在於「可就地取材」。若角色因「彈盡」真理失去彈藥，可於地面拾石代替。使用石塊時，武器傷害值減 1。'
-  },
-  '精巧': {
-    name: '精巧',
+  '靜音': {
+    name: '靜音',
     description: '攻擊聲響難以察覺，需以「洞察＋觀察」檢定（難度 2）察覺。遊戲主持人可依距離或環境噪音調整難度。'
-  },
-  '雙手': {
-    name: '雙手',
-    description: '此武器以雙手使用為佳。若單手使用，攻擊難度 +1。'
   },
   '不可靠': {
     name: '不可靠',

@@ -3,1085 +3,661 @@
 export const useTalentData = () => {
   // 天賦數據庫
   const talentsDatabase = {
-    '共通天賦': [
+    '載具': [
       {
-        englishName: 'Advisor',
-        chineseName: '顧問',
-        keywords: '〈技能〉',
-        content: '你擅長引導他人解決問題。選擇一項技能，每當你以該技能協助盟友時，被你協助的盟友可在其檢定檢定骰池中重擲一顆d20。'
+        englishName: 'Combat Gunner',
+        chineseName: '戰鬥炮手',
+        keywords: '〈載具〉',
+        content: '你受過駕駛戰鬥載具與操控車載武器的訓練。當你使用載具上裝設的武器進行攻擊時，可用載具技能代替戰鬥技能。'
       },
       {
-        englishName: 'Bold',
-        chineseName: '大膽',
-        keywords: '〈技能〉',
-        content: '你在計算風險後行動時，往往比常理更容易成功。選擇一項技能。當你使用該技能進行檢定，並透過為遊戲主持人的威脅池增加威脅來購買額外d20時，你可重擲該檢定骰池中的一顆d20。'
+        englishName: 'Drive All Night',
+        chineseName: '通宵駕駛',
+        keywords: '〈載具〉',
+        content: '你習慣長時間駕駛。當你操作載具時，可用載具技能代替韌性，以抵抗因疲勞或睡眠不足造成的檢定。'
       },
       {
-        englishName: 'Cautious',
-        chineseName: '謹慎',
-        keywords: '〈技能〉',
-        content: '你耐心而謹慎，僅在有利時出手。選擇一項技能。當你使用該技能進行檢定，並透過花費動力購買額外d20時，你可重擲該檢定骰池中的一顆d20。'
+        englishName: 'Off-Road',
+        chineseName: '越野專家',
+        keywords: '〈載具〉',
+        content: '即便車輛設計不佳，你仍能在崎嶇地形中駕馭自如。當你進行載具地形檢定時，將難度減少 1。'
       },
       {
-        englishName: 'Collaboration',
-        chineseName: '合作',
-        keywords: '〈技能〉',
-        content: '需求：進階\n你訓練盟友善用你的專長，而今已有成果。選擇一項你擁有3級或以上的技能。當盟友進行該技能檢定，且能與你交流時，你可花費2點動力，使他們改用你的技能等級與一個專精（若適用），代替他們自身的。'
+        englishName: 'Smuggler',
+        chineseName: '走私者',
+        keywords: '〈載具〉',
+        content: '你熟悉如何在車輛中藏人或隱匿物資。當你試圖在車輛內藏匿角色或物品時，可用載具技能代替潛匿，並可重擲骰池中的 1 顆 d20。'
       },
       {
-        englishName: 'Cool Under Pressure',
-        chineseName: '臨危不亂',
-        keywords: '〈技能〉、命運',
-        content: '當情勢艱難時，你能深吸一口氣完成任務。選擇一項技能。當你使用該技能進行檢定時，你可花費1點命運點，自動通過該檢定，但不會獲得任何動力。'
+        englishName: 'Still in Control',
+        chineseName: '穩中掌控',
+        keywords: '〈載具〉',
+        content: '即使車輛失控，你仍能維持一定掌握。當你操作的載具出現糾葛時，你可自行決定其影響結果，但遊戲主持人可否決任何不合情境的結果。'
       },
       {
-        englishName: 'Prodigialis Fortuna',
-        chineseName: '命運寵兒',
-        keywords: '命運',
-        content: '掌管命運的神祇喜愛戲弄你，讓你隨命運潮汐浮沉。每當你花費命運點時，可擲1顆挑戰骰。若結果為效果，立即回復該命運點；若為空白，則立即為遊戲主持人的威脅池產生3點威脅。'
-      },
-      {
-        englishName: 'Skin of Your Teeth',
-        chineseName: '死裡逃生',
-        keywords: '命運',
-        content: '你總能勉強躲過最嚴重的傷害。每場景一次，當你即將承受一個傷勢時，你可以花費1點命運點以避免承受該傷勢。'
+        englishName: 'Strafing Run',
+        chineseName: '掃射專家',
+        keywords: '〈載具〉，進階',
+        content: '你擅長在高速中精準掃射，造成致命火力。當你駕駛載具並使用武器進行齊射攻擊時，可無視因車速或地形顛簸所造成的難度或糾葛範圍增加。'
       }
     ],
-    
-    '學識': [
+    '異質': [
       {
-        englishName: 'Applied Knowledge',
-        chineseName: '應用知識',
-        keywords: '學識',
-        content: '你的積累知識讓你在面對突發挑戰時靈光乍現。每場景一次，你可在檢定中以學識替代其他技能，並視為該檢定有專精。'
+        englishName: 'Bizarre Insight',
+        chineseName: '詭異洞見',
+        keywords: '〈異質〉',
+        content: '你的心智偶爾會浮現出常人無法理解的片段啟示。每場景可產生 1 點威脅，直接進行一次「獲取情報」行動（向遊戲主持人提出一個問題），無需進行技能檢定。'
       },
       {
-        englishName: 'Magister\'s Favorite',
-        chineseName: '導師寵愛',
-        keywords: '學識',
-        content: '你專心於導師教誨、自學不倦，或兼而有之。若你成功通過一次基於學識的檢定，獲得額外1點動力。此獎勵動力不能保存。'
+        englishName: 'Foreboding Survival',
+        chineseName: '預感倖存',
+        keywords: '〈異質〉',
+        content: '某種無形之力似乎多次引導你避開災厄——然而厄運卻降臨在他人身上。每場劇本中一次，當你即將承受傷勢時，可產生 3 點威脅以避免該傷勢。\n由遊戲主持人裁定時，你也可能以產生 3 點威脅為代價，避免其他形式的不幸。'
       },
       {
-        englishName: 'Platonist',
-        chineseName: '柏拉圖信徒',
-        keywords: '學識',
-        content: '你擅長理解外在實用世界與內心世界的區別。你獲得等同於你學識等級的額外勇氣抗性。此加值不與其他提供額外勇氣抗性的天賦疊加。'
+        englishName: 'Minor Pact',
+        chineseName: '微小契約',
+        keywords: '〈異質〉',
+        content: '你發現若夜裡留下一些食物與飲料，隔日便會消失，且會有好事發生。若你持續這些供奉，每次冒險開始時獲得額外 1 點命運。\n經由遊戲主持人裁定，若提供更豐盛或重要的供品，可能獲得更大的回報。'
       },
       {
-        englishName: 'Savant',
-        chineseName: '博學者',
-        keywords: '學識',
-        content: '你展現出罕見的才能。選擇任意兩個因原型而獲得加成等級的技能。對每個技能，你能再將等級提升 +1，或為其選擇一個專精。'
-      }
-    ],
-    
-    '運動': [
-      {
-        englishName: 'Ludi Champion',
-        chineseName: '競技冠軍',
-        keywords: '運動',
-        content: '你曾在羅馬年度競技比賽，或其他文化的同等比賽中勝出。當你進行基於運動的跑步、騎乘或游泳檢定時，可忽略第一次擲出的糾葛。'
+        englishName: 'Mystical Power',
+        chineseName: '神祕之力',
+        keywords: '〈異質〉（僅限施法者）',
+        content: '你深入探索神話體系與時間的祕密，從禁忌知識中獲得更強的魔法能力。\n你獲得一項新的角色真理：「窺見凡人不該知之事（Glimpsed What Mortals Should Not Know）」或類似描述其代價的真理。\n當你施放法術時，可使威能增加 +2🎲。若如此做，每位近距離內的盟友將因暴露於不可名狀的知識而承受等同於每個效果🎲的精神壓力。'
       },
       {
-        englishName: 'Marathon Runner',
-        chineseName: '馬拉松選手',
-        keywords: '運動',
-        content: '當你奔跑時，總能保留一分餘力衝向終點。在你的回合，你可進行一次衝刺（主動作），即使你本回合已進行過移動（副動作）。'
+        englishName: 'Numb to the Horrors',
+        chineseName: '麻木於恐怖',
+        keywords: '〈異質〉',
+        content: '血腥與暴力對你幾乎毫無影響。你的勇氣抗性提高 +6，並可在判定是否獲得精神傷疤的技能檢定中重擲 1 顆 d20。\n然而，你冷漠的態度讓人不安，使你進行的所有說服檢定之糾葛範圍增加 +1。'
       },
       {
-        englishName: 'Sculpted from Marble',
-        chineseName: '雕塑般的體魄',
-        keywords: '運動',
-        content: '你是體格卓絕的典範。當你進行基於運動的舉重、跑步、投擲或游泳檢定時，你可重擲任意數量的骰子。'
-      }
-    ],
-
-    '製作': [
-      {
-        englishName: 'Field Repair',
-        chineseName: '野戰修理',
-        keywords: '製作',
-        content: '你擅長在資源有限的環境下修理物品。當你以洞察＋製作檢定修理受損物品（如護甲或武器）時，你可為遊戲主持人的威脅池產生2點威脅，使該檢定難度－1（最低1）。修復後的物品獲得「野戰修復」真理。'
-      },
-      {
-        englishName: 'Scavenger',
-        chineseName: '拾荒者',
-        keywords: '製作',
-        content: '你善於尋找補給。花費半小時翻找並通過一次難度1的洞察＋製作檢定，你能收集到足以補充一套製作工具包所需資源的材料。'
-      }
-    ],
-
-    '工程': [
-      {
-        englishName: 'Demolitionist',
-        chineseName: '爆破專家',
-        keywords: '工程',
-        content: '你擅長破壞事物。當你攻擊物體、建築或靜止的載具時，可以以工程代替戰鬥，並使用智識加值而非體魄或洞察。當你對此類目標造成傷害時，可以花費2點動力，將最多等同於你工程等級數量的骰子結果改為效果。'
-      },
-      {
-        englishName: 'Quality Crafting',
-        chineseName: '精工製造',
-        keywords: '工程',
-        content: '你製作的物品、載具與建築品質遠超常人，能承受更多損傷。當你建造物體時，其最大壓力+2，可承受的傷勢數量+1。（更多詳情見第34頁〈物體受損〉。）'
-      },
-      {
-        englishName: 'The Tool for the Job',
-        chineseName: '專用工具',
-        keywords: '工程',
-        content: '你習慣透過辛勤工作完成任務。當你在擴展檢定中進行基於工程的技能檢定時，你擲出的傷害骰會獲得「穿透1」傷害效果。'
-      }
-    ],
-
-    '戰鬥': [
-      {
-        englishName: 'Aggressive',
-        chineseName: '進擊者',
-        keywords: '戰鬥',
-        content: '當你進行近戰攻擊時，你可將購買第一顆額外d20的動力花費降為0。但若如此，本回合直到下個回合開始前，針對你的攻擊難度－1。擁有此天賦的角色不可同時獲得【防禦者】天賦。'
-      },
-      {
-        englishName: 'Defensive',
-        chineseName: '防禦者',
-        keywords: '戰鬥',
-        content: '你特別擅長避開傷害。選擇近戰攻擊或遠程攻擊。當你被所選攻擊方式鎖定時，該攻擊難度＋1。此天賦可選兩次，各對應一種攻擊方式。擁有此天賦的角色不可同時獲得【進擊者】天賦。'
-      },
-      {
-        englishName: 'Skirmisher',
-        chineseName: '游擊者',
-        keywords: '戰鬥',
-        content: '每輪一次，當敵方角色的近戰或遠程攻擊未命中你時，你可為遊戲主持人的威脅池產生2點威脅，並以自由動作移動到中距範圍內的任意位置。當你如此移動後，直到下回合開始前，你對近戰與遠程攻擊獲得+2掩蔽抗性。'
-      },
-      {
-        englishName: 'Steady Aim',
-        chineseName: '穩定瞄準',
-        keywords: '戰鬥',
-        content: '你使用遠程武器的攻擊異常精準。當你以遠程武器進行「瞄準」（副動作）後，本回合的攻擊檢定可重擲2顆d20，而非僅1顆。'
-      }
-    ],
-
-    '醫學': [
-      {
-        englishName: 'Anatomist',
-        chineseName: '解剖專家',
-        keywords: '醫學',
-        content: '你處理傷患的經驗，讓你懂得如何造成最大傷害。當你攻擊人類目標，或是你曾解剖過的動物或生物時，可使用醫學代替戰鬥，並將攻擊附加「兇猛」傷害效果。'
-      },
-      {
-        englishName: 'Combat Medicus',
-        chineseName: '戰地醫師',
-        keywords: '醫學',
-        content: '你熟知野戰急救的基本技巧。當你使用「穩定」（主動作）時，可重擲1顆協調＋醫學檢定的d20。若檢定成功，還可移除一項狀態（見第44頁〈狀態〉）。'
-      }
-    ],
-
-    '觀察': [
-      {
-        englishName: 'Keen Eyed',
-        chineseName: '鷹眼',
-        keywords: '觀察',
-        content: '你的視力銳利如鷹。基於感知的檢定在超過近距的區域時，難度減少1（見第31頁〈距離與感知〉）。此外，你使用遠程武器時，其正常射程與下一級射程均視為有效射程。例如，原本有效射程為中距的武器，現在可在中距與遠距下正常使用，無需額外難度。'
-      },
-      {
-        englishName: 'Predator\'s Senses',
-        chineseName: '獵者直覺',
-        keywords: '觀察',
-        content: '你的感官如同狩獵中的狼般敏銳。當你保持清醒時，敵人無法對你發動突襲（見第158頁〈突襲〉）。此外，若NPC要在戰鬥中先於你行動，遊戲主持人必須額外花費1點威脅。'
-      },
-      {
-        englishName: 'Suspicious',
-        chineseName: '多疑',
-        keywords: '觀察',
-        content: '你對所有人事物都心存懷疑。每當戰鬥的第一回合開始前，任何針對你的物理或心智攻擊，其難度＋1。'
-      }
-    ],
-
-    '說服': [
-      {
-        englishName: 'Imposing Presence',
-        chineseName: '威懾氣場',
-        keywords: '說服',
-        content: '你一向容易震懾他人。你可以以近戰武器進行心智攻擊，使用威儀＋說服檢定。此攻擊造成的心智傷害等於武器數值＋你的意志加值，並可選擇附加「穿透1」或「震懾」傷害效果。你無需具備「恐懼 X 特殊規則」即可發動此心智攻擊。'
-      },
-      {
-        englishName: 'Lingua Argentea',
-        chineseName: '能言善道',
-        keywords: '說服',
-        content: '你天賦口才，能迅速有效地說服他人接受你的觀點。當你進行說服檢定以改變他人想法或議價時，檢定難度－1。'
-      }
-    ],
-
-    '韌性': [
-      {
-        englishName: 'Iron Hide',
-        chineseName: '鐵甲之軀',
-        keywords: '韌性',
-        content: '你能承受可怕的傷害而不形於色。在計算糾葛範圍時，你可忽略你所承受的第一個傷勢。此外，你需承受4個傷勢才會被擊倒，而非3個。是否進入瀕死或失常狀態，由遊戲主持人決定。'
-      },
-      {
-        englishName: 'Mithradatic',
-        chineseName: '抗毒體質',
-        keywords: '韌性',
-        content: '你天生對毒素有抗性，或因長期接觸而逐漸免疫。當你進行韌性檢定以抵抗毒藥、毒素或藥物效果時，難度－1。若因此降至0，則無需檢定。'
-      },
-      {
-        englishName: 'Second Wind',
-        chineseName: '再起',
-        keywords: '韌性',
-        content: '當你執行調息（主動作）時，每有1點韌性等級便擲1顆挑戰骰🎲。每擲出1個效果😈，便可額外移除1點壓力。'
-      }
-    ],
-
-    '潛匿': [
-      {
-        englishName: 'Fade Away',
-        chineseName: '消隱',
-        keywords: '潛匿',
-        content: '每場景一次，你可用副動作並為遊戲主持人的威脅池產生2點威脅以隱去身形。若如此，在下個回合開始前，你不能成為攻擊目標（帶有「區域」傷害效果的攻擊除外）。若你處於重度掩蔽中，則不需產生威脅即可使用此天賦。'
-      },
-      {
-        englishName: 'Low Profile',
-        chineseName: '低調',
-        keywords: '潛匿',
-        content: '當你獲得掩蔽抗性時，總掩蔽抗性額外+1。'
+        englishName: 'Occult Dabbler',
+        chineseName: '祕學涉獵者',
+        keywords: '〈施法者〉，〈異質〉',
+        content: '你涉足了難以理解的祕學力量。你成為「涉獵魔法」傳統的施法者，詳見第九章〈魔法與神話體系〉。'
       }
     ],
 
     '求生': [
       {
-        englishName: 'Untraceable',
-        chineseName: '無跡可尋',
-        keywords: '求生',
-        content: '你懂得如何在荒野中不留痕跡。當你單獨旅行或帶領一個隊伍時，敵方追蹤你行蹤的檢定難度增加，數值等於你求生等級的一半（向下取整）。'
+        englishName: 'Companion',
+        chineseName: '夥伴',
+        keywords: '〈求生〉',
+        content: '你在荒野中並不孤單——你有一隻忠誠的狗作為朋友與盟友。\n這隻狗使用指定的角色資料，視為你指揮下的友方 NPC。當你進行資源採集時，牠會自行覓食。\n若該狗因敵方攻擊或意外喪命，你立即獲得 1 點命運，並可選擇重新訓練此天賦（獲得新狗）或改換其他天賦。'
       },
       {
-        englishName: 'Bestiarius',
-        chineseName: '獸鬥士',
-        keywords: '求生',
-        content: '你在荒野中並不孤單。你擁有一隻無智慧的夥伴生物，在危險時刻伴你左右。該生物使用此天賦內建的夥伴生物資料，或附錄B（第211頁）中的資料。此夥伴生物視為由你指揮的盟友NPC。當你覓食時，它能自行照料自身。若它因敵人或不幸而死亡，你立即獲得1點臨時命運點，並可選擇重新訓練此天賦（獲得新夥伴），或將此天賦替換為其他天賦。'
-      }
-    ],
-
-    '戰術': [
-      {
-        englishName: 'Coordinator',
-        chineseName: '協調者',
-        keywords: '戰術',
-        content: '你擅長協調隊伍的行動。當你參與一場有協助的檢定時，即使你不是檢定的領導者，每位協助或領導的玩家角色都可以重擲1顆d20，但必須接受新結果。'
+        englishName: 'Dig for Victory',
+        chineseName: '開墾為營',
+        keywords: '〈求生〉',
+        content: '你善於在荒野中建立舒適與安全的據點。當你進行求生檢定以搭建營地或構築防禦據點時，所需時間減半。'
       },
       {
-        englishName: 'Inconspicuous',
-        chineseName: '隱晦無痕',
-        keywords: '戰術',
-        content: '你懂得保持低調，避免引人懷疑。當你的武器或裝備會產生威脅時，總威脅值－1。若是聖物或邪物具有特殊規則能產生額外威脅，則其威脅值無法降至1以下。'
+        englishName: 'Everything I Need Is Here',
+        chineseName: '一切所需皆在此',
+        keywords: '〈求生〉',
+        content: '你充分運用背包與裝備，攜帶的物品比常人更多。你可額外攜帶一項主要物品，此效果可與體魄屬性帶來的額外攜帶加成疊加。'
       },
       {
-        englishName: 'Rallying Cry',
-        chineseName: '激勵戰吼',
-        keywords: '戰術',
-        content: '你能以自信的吼聲驅散同伴的恐懼。擲等同於你戰術等級數量的挑戰骰🎲。取代對你造成的壓力，每擲出1點壓力可令你或近距內的盟友移除1點壓力；每擲出效果則可移除2點壓力。你可將移除的壓力分配給你與近距盟友，任意分派。'
-      }
-    ],
-
-    '異質': [
-      {
-        englishName: 'Bizarre Insight',
-        chineseName: '詭異洞察',
-        keywords: '異質',
-        content: '你的思維時常浮現出不可能知曉的片段。每場景一次，你可為遊戲主持人的威脅池產生1點威脅，即可進行一次「獲取情報」動作（向主持人提出一個問題），且不需進行技能檢定。'
+        englishName: 'Fieldcraft',
+        chineseName: '野外匿蹤',
+        keywords: '〈求生〉',
+        content: '你在荒野環境中如魚得水。於惡劣的自然環境中試圖隱藏或避免被注意時，可使用求生代替潛匿。'
       },
       {
-        englishName: 'Foreboding Survival',
-        chineseName: '不祥倖存',
-        keywords: '異質',
-        content: '你似乎總有一股無形之手幫你躲過劫難。然而，厄運卻往往降臨在你身邊的人。每場次一次，當你即將承受一個傷勢時，你可為遊戲主持人的威脅池產生3點威脅以避免承受該傷勢。依主持人裁量，你也可能被允許以同樣方式避免其他不幸事件。'
+        englishName: 'Survive and Thrive',
+        chineseName: '野外生存專家',
+        keywords: '〈求生〉',
+        content: '你擅長在自然中尋找所需資源。當你進行求生檢定以覓食、取水、收集燃料或必需品時，難度減少 1，並可為每花費 1 點動力額外取得一份食物或飲水。'
       },
-      {
-        englishName: 'Mystical Power',
-        chineseName: '神祕之力',
-        keywords: '異質，施法者限定',
-        content: '只有施法者可以選擇此天賦。你深入探索神話的永恆奧祕與時間的祕密，並帶著強大的魔法能力回歸。你獲得一項額外的個人真理：「窺見凡人不該知曉之物」，或其他能反映此知識代價的真理。當你施展法術時，你可以將威能值提高+2🎲。但若如此，你每擲出1個效果😈，你的每位近距盟友將承受1點心智壓力，因他們被你掌握的超凡祕密所影響。'
-      },
-      {
-        englishName: 'Numb to the Horrors',
-        chineseName: '麻木於恐怖',
-        keywords: '異質',
-        content: '不知何故，血腥、死亡與暴力無法影響你的心智。你的勇氣抗性+6，但不能再疊加其他來源的勇氣抗性。此外，你在進行判定是否獲得心靈創傷的技能檢定時，可以重擲1顆d20。\n然而，你冷漠的態度會令他人感到疏遠，使你所有基於說服的技能檢定，其糾葛範圍＋1。'
-      },
-      {
-        englishName: 'Occult Dabbler',
-        chineseName: '祕術涉獵者',
-        keywords: '施法者，異質',
-        content: '你涉足了超越理解的祕術力量。你現在被視為「涉獵型施法者」，其規則見第58頁〈第四章：魔法〉。'
-      }
-    ],
-
-    '祕儀師': [
-      {
-        englishName: 'The Gods Are With Us!',
-        chineseName: '神與我同在！',
-        keywords: '祕儀師、說服、施法者',
-        content: '需求：祕儀師原型，且無其他施法者關鍵詞天賦。\n你以虔誠的信念激勵眾人，祈求神恩的呼喊令盟友心安。你是施法者（詳見第58頁〈魔法〉）。此外，你可用副動作進行一次威儀＋說服檢定（難度2）。若成功，你與同區域內的所有盟友皆獲得＋2士氣抗性，持續至你下個回合結束。'
-      },
-      {
-        englishName: 'Gods Guide You',
-        chineseName: '神明指引你',
-        keywords: '祕儀師、學識、施法者',
-        content: '需求：祕儀師原型，且無其他施法者關鍵詞天賦。\n你在萬事萬物中窺見命運與神意，能引導同伴的手行於天命。你是施法者（詳見第58頁〈魔法〉）。此外，每輪一次，當一名盟友進行近戰、遠程或魔法攻擊，或進行智識＋學識檢定時，你可作為反應動作，為遊戲主持人的威脅池增加2點威脅，以協助該角色。'
-      },
-      {
-        englishName: 'Pain Is Nothing',
-        chineseName: '苦痛無礙',
-        keywords: '祕儀師、醫學、施法者',
-        content: '需求：祕儀師原型，且無其他施法者關鍵詞天賦。\n暫時的苦痛在宇宙奧祕之前不值一提。你理解此理，能超越肉體的極限。你是施法者（詳見第58頁〈魔法〉）。此外，在你回合開始時，可為遊戲主持人的威脅池增加3點威脅，以移除等同於你威能值的壓力，或無視你所承受的一次傷勢，持續至當前場景結束。'
-      },
-      {
-        englishName: 'Spirit Offering',
-        chineseName: '靈魂祭獻',
-        keywords: '祕儀師、施法者、異質',
-        content: '需求：祕儀師原型，且無其他施法者關鍵詞天賦。\n你可汲取自身生命力或倒下敵人的靈魂作為祭獻，以安撫神明。你是施法者（詳見第58頁〈魔法〉）。此外，你可在自由動作中對自己造成2點心智傷害；若如此，或若你在本回合擊敗一名敵人，則直到回合結束前，你施放法術時無需進行〈準備〉副動作，且「施法」行動視同副動作而非主動作。'
-      }
-    ],
-
-    '盧珀庫斯': [
-      {
-        englishName: 'Spectral Hunter',
-        chineseName: '幽魂獵者',
-        keywords: '盧珀庫斯、施法者',
-        content: '需求：祕儀師原型、無其他「施法者」關鍵詞天賦\n你為一名施法者（詳見第58頁〈魔法〉）。此外，當你因施放戰場法術承受壓力時，可立即移動至中距離內任意位置。若你已擁有「施法者」天賦，可棄置原天賦並改以此替代。角色僅能同時擁有一項「施法者」天賦。'
-      },
-      {
-        englishName: 'Hasty Ritual',
-        chineseName: '急速儀式',
-        keywords: '盧珀庫斯',
-        content: '需求：幽魂獵者天賦\n選擇一個你已知的法術。每場景一次，你可不進行「準備」副動作而直接施放該法術。此法術視為「缺陷法術」。'
-      },
-      {
-        englishName: 'Instinctive Magic',
-        chineseName: '本能魔法',
-        keywords: '盧珀庫斯、韌性',
-        content: '需求：急速儀式天賦\n每場景一次，當你施放戰場法術時，可使用「韌性」（可套用「堅毅」專精）取代其他技能。此外，該法術消耗🎲減少2（最低為1）。'
-      },
-      {
-        englishName: 'Jaws of the Wolf',
-        chineseName: '狼之顎',
-        keywords: '盧珀庫斯',
-        content: '需求：急速儀式天賦\n當你成功施放攻擊法術時，獲得+1動力，且此動力僅可用於增加該法術造成的傷害+1🎲。'
-      },
-      {
-        englishName: 'Lupercalia',
-        chineseName: '盧珀卡利亞儀式',
-        keywords: '盧珀庫斯',
-        content: '需求：狼之顎天賦\n盧珀卡利亞節乃你所屬祭司團的盛典。此儀式訓練使你精通儀式性魔法。每當你通過儀式的任一組成檢定，可忽略每次擲出效果時最多2點抗性。'
-      },
-      {
-        englishName: 'Wolf Howl',
-        chineseName: '狼之咆嘯',
-        keywords: '盧珀庫斯、說服、求生',
-        content: '需求：狼之顎天賦\n你能呼喚羅馬的母狼之威，以咆哮震懾敵人理智。你可對一個你與之互相察覺、且位於中距離內的生物進行一次心智攻擊，進行意志＋說服或意志＋求生的技能檢定（難度1），無需具備「恐懼 X 特殊規則」。成功時，對目標造成「威能＋2」的心智傷害。'
-      }
-    ],
-
-    '杖持者': [
-      {
-        englishName: 'Quiet Wisdom',
-        chineseName: '靜默之智',
-        keywords: '杖持者、說服、施法者',
-        content: '需求：祕儀師原型\n你為施法者（詳見第58頁〈魔法〉）。此外，當你進行基於「說服」的技能檢定時，可重擲1顆d20，但必須接受新結果。若你已擁有帶有「施法者」關鍵詞的天賦，可棄置原天賦並以此替代。角色僅能同時擁有一項「施法者」天賦。'
-      },
-      {
-        englishName: 'Know the Signs',
-        chineseName: '識兆之慧',
-        keywords: '杖持者、觀察、施法者',
-        content: '需求：祕儀師原型\n你親身面對過超自然現象，能辨識其痕跡。你為施法者（詳見第58頁〈魔法〉）。此外，當你接近在過去六小時內受超自然力量影響的人或物時，可進行一次「洞察＋觀察」技能檢定，其難度等於該事件發生後的經過小時數。若成功，你能察覺該超自然污染。若花費2點動力，則可進一步辨明所使用的具體力量。\n若你已擁有帶有「施法者」關鍵詞的天賦，可棄置原天賦並以此替代。角色僅能同時擁有一項「施法者」天賦。'
-      },
-      {
-        englishName: 'Do We Fear This?',
-        chineseName: '我們畏懼嗎？',
-        keywords: '杖持者、說服',
-        content: '需求：氣場威能或護祟迷信天賦\n你能激勵盟友，使他們在逆境中保持信念。作為一個副動作，你可花費1點命運點，讓所有位於近距離內的盟友獲得等同於你「說服」等級的士氣抗性加值，持續至場景結束。'
-      },
-      {
-        englishName: 'Force of Presence',
-        chineseName: '氣場威能',
-        keywords: '杖持者、異質',
-        content: '需求：靜默之智天賦\n你造成心智傷害的攻擊，其額外傷害增加+1🎲。'
-      },
-      {
-        englishName: 'Runecasting',
-        chineseName: '符文占卜',
-        keywords: '杖持者、觀察',
-        content: '需求：靜默之智或識兆之慧天賦\n你精通符文占卜之術，可預見未來。每24小時可占卜一次，進行「洞察＋觀察」技能檢定，難度由你自行決定（1至5）。若成功，擲出與難度數值相同數量的d20，並記錄各骰結果。直到翌日清晨之前，你可使用以下反應：當你或任何在你視線範圍內的生物進行技能檢定時，可將其擲出的任一顆或多顆d20替換為你記錄的結果。每個記錄結果僅能使用一次，且不必一次用完所有結果。'
-      },
-      {
-        englishName: 'Protective Superstitions',
-        chineseName: '護祟迷信',
-        keywords: '杖持者、觀察',
-        content: '需求：識兆之慧天賦\n當你進行「抵抗魔法」（見第66頁）時，每擁有1級「觀察」，即可額外獲得+1動力。'
-      }
-    ],
-
-    '賢者': [
-      {
-        englishName: 'Aedificator',
-        chineseName: '建造者',
-        keywords: '賢者、工程',
-        content: '需求：賢者原型\n你擅長從大小不一的工程中創造持久之作。當你以「工程」進行任何含有抗性的擴展檢定時，每擲出一個效果😈，可無視1點抗性。'
-      },
-      {
-        englishName: 'The Best Doctor Is Also a Philosopher',
-        chineseName: '良醫亦哲人',
-        keywords: '賢者、醫學',
-        content: '需求：賢者原型\n你鑽研醫術與哲理，研讀加倫等名醫之學說。你精通希臘語（若已精通，則可另選一種語言精通）。此外，當你進行醫學檢定時，可將難度降低1或2，但同時令該檢定的糾葛範圍增加相同數值。'
-      },
-      {
-        englishName: 'Deep Expertise',
-        chineseName: '精研萬學',
-        keywords: '賢者、學識',
-        content: '需求：賢者原型\n你是多領域的專家。你在每一項達3級或以上的技能中，皆額外獲得一項專精。之後每當你將其他技能提升至3級時，立即為該技能再獲得一項專精。'
-      },
-      {
-        englishName: 'Nero Nihil Verius',
-        chineseName: '無物真於觀察',
-        keywords: '賢者、觀察',
-        content: '需求：賢者原型\n你具備能洞察真理的銳眼。當你進行偵測危險或隱藏敵人的檢定時，將檢定難度降低1。'
-      }
-    ],
-
-    '工程師': [
-      {
-        englishName: 'Fabricator',
-        chineseName: '構造師',
-        keywords: '工程師、製作、工程',
-        content: '需求：賢者原型\n當你進行「製作」或「工程」相關的技能檢定時，可重擲1顆d20，但必須接受新結果。'
-      },
-      {
-        englishName: 'Dedication',
-        chineseName: '專志不移',
-        keywords: '工程師、動力',
-        content: '需求：構造師天賦\n你對信念與目標的堅定讓你屢度渡過難關。若在場景開始時，你的團隊動力池為0，則擲1顆d20。若結果小於或等於你的「意志」屬性值，則為團隊動力池增加+1動力。'
-      },
-      {
-        englishName: 'In the Nick of Time',
-        chineseName: '及時洞察',
-        keywords: '工程師、學識、工程',
-        content: '需求：精研學識天賦，且「學識」或「工程」等級達3級以上\n每當你在擴展檢定中通過「學識」或「工程」相關技能檢定時，該檢定獲得「兇猛」傷害效果。'
-      },
-      {
-        englishName: 'Incisive Scrutiny',
-        chineseName: '銳察分析',
-        keywords: '工程師',
-        content: '需求：構造師天賦\n你擅長從理論、論點或機械的脆弱處洞察其本質。當你成功通過「洞察」或「智識」相關技能檢定時，獲得+1獎勵動力，此動力僅能用於「獲取情報」的動力選項。'
-      },
-      {
-        englishName: 'Intense Scrutiny',
-        chineseName: '深度解析',
-        keywords: '工程師',
-        content: '需求：具備「銳察分析」或「精研學識」天賦，且「學識」或「工程」等級達3級以上。\n當你在擴展檢定中成功通過「智識」或「意志」相關技能檢定時，該檢定獲得「穿透2」傷害效果。'
-      },
-      {
-        englishName: 'Intense Study',
-        chineseName: '精研學識',
-        keywords: '工程師',
-        content: '需求：專志不移天賦或深度解析天賦\n你博聞強記，通曉廣泛知識，能於危急時展現臨場專業。每次遊戲場次中可使用兩次：在進行技能檢定前，可選擇一個你未具備的專精，並於該次檢定中獲得之，且該專精在本場次餘下時間內持續生效。'
-      }
-    ],
-
-    '醫師': [
-      {
-        englishName: 'Physician',
-        chineseName: '臨床醫師',
-        keywords: '醫師、醫學',
-        content: '需求：賢者原型，醫學1級以上\n當你進行以「醫學」為基礎的技能檢定時，可重擲1顆d20，但必須接受新結果。'
-      },
-      {
-        englishName: 'Emergency Doctor',
-        chineseName: '急救醫師',
-        keywords: '醫師、醫學',
-        content: '需求：臨床醫師天賦\n當你執行「穩定」主動作時，其難度降低1（最低為0）。'
-      },
-      {
-        englishName: 'Fast Aid',
-        chineseName: '迅速救治',
-        keywords: '醫師、醫學',
-        content: '需求：臨床醫師天賦\n當你進行「醫學」技能檢定時，可選擇承受一項額外糾葛，以換取一次自動成功。'
-      },
-      {
-        englishName: 'Field Medicine',
-        chineseName: '野戰醫學',
-        keywords: '醫師、醫學',
-        content: '需求：臨床醫師天賦\n當你進行「醫學」技能檢定時，可忽略因缺乏合適工具或設備所造成的難度增加。'
-      },
-      {
-        englishName: 'First Response',
-        chineseName: '第一應變',
-        keywords: '醫師、醫學',
-        content: '需求：迅速救治天賦，且醫學3級以上\n在戰鬥中，你可對非垂死角色使用「穩定」主動作。若檢定成功，可選擇以下一項效果：\n• 使目標回復等同於你「醫學」等級的壓力，並可為每花費1點動力額外回復1點壓力。\n• 解除一項狀態。\n• 解除目前影響目標的持續傷害效果（例如「持續」傷害）。'
-      },
-      {
-        englishName: 'Triage',
-        chineseName: '分診',
-        keywords: '醫師、醫學',
-        content: '需求：急救醫師或第一應變天賦，且醫學3級以上\n你能以「智識＋醫學」檢定辨識患者的具體傷病，或判斷其嚴重程度。若成功，獲得+1獎勵動力，僅能用於「獲取情報」的動力選項。\n此外，當你以「智識＋醫學」檢定成功去除創傷時，可額外花費動力，每花費1點，便能同時為另一名患者去除創傷。'
-      }
-    ],
-
-    '謀士': [
-      {
-        englishName: 'Backed by Authority',
-        chineseName: '權勢加持',
-        keywords: '謀士、說服',
-        content: '需求：謀士原型\n你獲得區域權威者（如行省總督、軍閥或宗教領袖）的背書。當你進行以「說服」為基礎的檢定時，可重擲1顆d20，但必須採用新結果。另外，你取得物品時，其限制等級視為降低1（最低為1）。'
-      },
-      {
-        englishName: 'Et Tu?',
-        chineseName: '你也如此乎？',
-        keywords: '謀士、戰鬥',
-        content: '需求：謀士原型\n你深知前手示好、後手藏刃方為上策。在同一場景中，若你曾以「說服」通過影響或欺瞞敵人的檢定，之後對其發動的突襲攻擊（見第158頁）若成功，該次攻擊每擲出一個效果😈，便可額外擲＋1🎲；這些額外骰上擲出的效果不再產生進一步的連鎖效果。'
-      },
-      {
-        englishName: 'Play the Part',
-        chineseName: '角色扮演',
-        keywords: '謀士、學識',
-        content: '需求：謀士原型\n你對異域文化熟稔至能以衣著、語彙與舉止逼真偽裝其人。當你嘗試運用偽裝時，可以「學識」取代「潛匿」。'
-      },
-      {
-        englishName: 'Social Network',
-        chineseName: '社交網絡',
-        keywords: '謀士、觀察',
-        content: '需求：謀士原型\n只要在某地久居一段時日，你便能網羅一批跟班與線民。凡你曾於該地進入修整期，你至少擁有一名可動用的有用聯絡人（見第53頁〈人脈、聲望與恩惠〉）；其關係等級為「良好」。另於修整期進行的任一技能檢定中，你購買的第一顆加骰d20免費（前提是該檢定不涉及任何形式的戰鬥）。'
-      }
-    ],
-
-    '糧務官': [
-      {
-        englishName: 'Sharp Senses',
-        chineseName: '銳敏感覺',
-        keywords: '糧務官、觀察',
-        content: '需求：謀士原型\n當你進行以「觀察」為基礎的技能檢定時，可重擲1顆d20，但必須接受新結果。'
-      },
-      {
-        englishName: 'Do or Die',
-        chineseName: '背水一戰',
-        keywords: '糧務官、士氣',
-        content: '需求：銳敏感覺天賦\n糧務官慣於獨自行動，常與支援斷絕。你可產生1點威脅（加入遊戲主持人的威脅池），以獲得+2士氣抗性，持續至當前場景結束。'
-      },
-      {
-        englishName: 'Know Thy Enemy',
-        chineseName: '識敵之道',
-        keywords: '糧務官',
-        content: '需求：銳敏感覺天賦\n當你進行以「洞察」為基礎的技能檢定以判斷某人是否說謊或隱藏真理時，購買的第一顆d20不需花費動力。'
-      },
-      {
-        englishName: 'Interrogation',
-        chineseName: '審訊',
-        keywords: '糧務官',
-        content: '需求：識敵之道天賦\n當你在社交衝突中成功迫使他人透露情報時，獲得+1獎勵動力，僅能用於「獲取情報」的動力選項。'
-      },
-      {
-        englishName: 'Perfect Facade',
-        chineseName: '完美偽裝',
-        keywords: '糧務官、潛匿',
-        content: '需求：銳敏感覺天賦\n你精通偽裝與角色扮演之術，能完美融入群體、無縫偽裝身分。當你成功以「潛匿」進行偽裝檢定時，獲得等同於你「潛匿」等級（最高+3）的獎勵動力。'
-      },
-      {
-        englishName: 'Thorough Search',
-        chineseName: '徹底搜查',
-        keywords: '糧務官',
-        content: '需求：審訊天賦\n當你成功通過搜尋區域以找出證據的技能檢定時，獲得+1獎勵動力，僅能用於「獲取情報」的動力選項。若你協助其他角色進行該檢定且他成功，則該角色同樣獲得此+1動力（受相同限制）。'
-      }
-    ],
-
-    '政務官': [
-      {
-        englishName: 'Charismatic',
-        chineseName: '魅力非凡',
-        keywords: '政務官、說服',
-        content: '需求：謀士原型\n當你進行以「說服」為基礎的技能檢定時，可重擲1顆d20，但必須接受新結果。'
-      },
-      {
-        englishName: 'Commanding Presence',
-        chineseName: '威儀領導',
-        keywords: '政務官、說服、戰術',
-        content: '需求：魅力非凡天賦\n你以強大的氣場與說服力領導他人。當你進行以「說服」或「戰術」為基礎的技能檢定時，購買的第一顆d20不需花費動力。'
-      },
-      {
-        englishName: 'Honestas',
-        chineseName: '榮譽信用',
-        keywords: '政務官',
-        content: '需求：魅力非凡天賦\n你維持一種受人尊敬的正直形象。當你進行技能檢定以抵抗被強迫背棄諾言、背叛盟友或做出不名譽行為時，其難度降低1（最低為0）。'
-      },
-      {
-        englishName: 'Lictors',
-        chineseName: '執杖侍衛',
-        keywords: '政務官、戰術',
-        content: '需求：威儀領導天賦\n你可指定與你位於同一區域的任意數量盟友（上限為你的「戰術」等級）作為你的執杖侍衛。本場景內，每當你成為攻擊目標時，其中一名執杖侍衛可選擇代替你成為目標，並獲得等同於你「戰術」等級的勇氣抗性加值。'
-      },
-      {
-        englishName: 'Rhetoric',
-        chineseName: '修辭',
-        keywords: '政務官',
-        content: '需求：魅力非凡天賦\n當你對群眾發表演說並購買額外d20時，可重擲其中1顆d20。'
-      },
-      {
-        englishName: 'Stoic',
-        chineseName: '斯多葛哲學者',
-        keywords: '政務官',
-        content: '需求：榮譽信用天賦\n你奉行斯多葛哲學，對命運、痛苦與快樂皆保持平靜。當你進行任何抵抗強迫、心智侵入、痛苦或其他心智攻擊的技能檢定時，其難度降低2（最低為0）。'
-      }
-    ],
-
-    '無賴': [
-      {
-        englishName: 'Cunning Fighter',
-        chineseName: '狡詐戰士',
-        keywords: '無賴、運動',
-        content: '需求：無賴原型\n戰鬥時，你運用一切卑鄙手段——從揚沙至敵眼到狠踢下體。當敵人對你進行近戰攻擊卻未造成任何壓力時，該敵人失去其防備。若你於下一次對該敵人的攻擊成功，則可造成額外傷害🎲，數值等同於你的運動技能等級。'
-      },
-      {
-        englishName: 'Hidden Blade',
-        chineseName: '隱刃',
-        keywords: '無賴、戰鬥',
-        content: '需求：無賴原型\n你擅以隱匿但致命的利刃殺敵。當你進行近戰攻擊時，可為遊戲主持人的威脅池增加1至3點威脅。若攻擊成功，你可依所產生的威脅數，每點威脅獲得＋1傷害🎲，或為攻擊附加一種等量的傷害效果😈：「強烈」或「兇猛」（見第40頁〈傷害效果〉）。'
-      },
-      {
-        englishName: 'Oculus Aurum',
-        chineseName: '黃金之眼',
-        keywords: '無賴、觀察',
-        content: '需求：無賴原型\n你對貴重物品有敏銳的眼光——尤其是那些防守薄弱的。你可在自由動作中為遊戲主持人的威脅池增加1點威脅，以識別你所在區域內最貴重的物品（見第31頁〈環境與區域〉）。若如此進行，還可再增加1點威脅以得知其大致價值與限制等級。'
-      },
-      {
-        englishName: 'Unremarkable',
-        chineseName: '無名之姿',
-        keywords: '無賴、潛匿',
-        content: '需求：無賴原型\n你天生不引人注目，能在人群中自然消失。當你嘗試混入群體時，使察覺你的技能檢定難度提高＋1。'
-      }
-    ],
-
-    '盜匪': [
-      {
-        englishName: 'Hasty Retreat',
-        chineseName: '急速撤退',
-        keywords: '盜匪',
-        content: '需求：無賴原型\n當你進行逃避追擊的技能檢定時，若購買了額外的d20，可重擲其中1顆d20。'
-      },
-      {
-        englishName: 'Inconspicuous',
-        chineseName: '隱於眾人',
-        keywords: '盜匪、潛匿',
-        content: '需求：無賴原型\n行竊不難——難的是全身而退。你已熟習如何在人群中消失。若近距離內存在非敵對者，你可進行一次「洞察＋潛匿」檢定以躲藏或避免被注意，即使你正被敵人看見。若你的外貌、服裝或舉止過於引人注目，遊戲主持人可提高此檢定的難度。'
-      },
-      {
-        englishName: 'Alter Ego',
-        chineseName: '化名身份',
-        keywords: '盜匪',
-        content: '需求：隱於眾人天賦\n你能採用另一重身份——一個「我」的化身。當你進入場景時，可選擇要扮演的身分或角色。若如此，你獲得一項代表該身分的新真理，直到被識破或自行放棄為止。若你在場景中暫時脫離他人視線，可花費一個主動作並產生2點威脅（加入遊戲主持人的威脅池），迅速更換偽裝。'
-      },
-      {
-        englishName: 'Nimble',
-        chineseName: '敏捷身法',
-        keywords: '盜匪、移動',
-        content: '需求：急速撤退天賦\n你的腳步輕快，少有障礙能阻擋。當你進行移動、翻越或穿越困難地形等障礙的技能檢定（如追逐或戰鬥中），難度降低2。若因此降至0，則你可自由越過該障礙，視同無物。'
-      },
-      {
-        englishName: 'Scotopia',
-        chineseName: '適應昏暗',
-        keywords: '盜匪',
-        content: '需求：化名身份天賦或敏捷身法天賦\n你的雙眼已適應黑暗。你可無視因昏暗或光線不足造成的技能檢定減值。然而，此天賦在完全黑暗環境中無效。'
-      },
-      {
-        englishName: 'Ransack',
-        chineseName: '洗劫',
-        keywords: '盜匪、觀察',
-        content: '需求：適應昏暗天賦\n時間緊迫時，你寧可留下痕跡也要完成目標。當你進行以「觀察」為基礎的搜尋檢定時，可產生2點威脅（加入遊戲主持人的威脅池），以將該檢定難度降低1，並使搜尋所需時間減半。'
-      }
-    ],
-
-    '刺客': [
-      {
-        englishName: 'Subtle Step',
-        chineseName: '無痕步',
-        keywords: '刺客、潛匿',
-        content: '需求：無賴原型\n你熟悉隱行之道，行動謹慎不留痕跡。當你進行以「潛匿」為基礎的潛行或潛入檢定時，購買的第一顆d20不需花費動力。'
-      },
-      {
-        englishName: 'Assassin',
-        chineseName: '行刺者',
-        keywords: '刺客',
-        content: '需求：死神使者天賦或無聲一擊天賦\n你精通殺戮之術，奪命已無情感負擔。當你以具有「隱藏武器特性」的近戰武器攻擊時，可花費2點動力，令檢定骰池中所有「效果」符號的結果視為效果，忽略實際擲值。'
-      },
-      {
-        englishName: 'Backstabber',
-        chineseName: '背刺者',
-        keywords: '刺客',
-        content: '需求：破防者天賦或無痕步天賦\n當你攻擊沒有防備之目標時，若武器尚未具備「強烈」傷害效果，則獲得該效果。'
-      },
-      {
-        englishName: 'Death Dealer',
-        chineseName: '死神使者',
-        keywords: '刺客、潜匿',
-        content: '需求：破防者天賦或無聲一擊天賦\n你是熟練的殺手，擅以詭計與假象致命一擊。當你手持具有「隱藏武器特性」的武器時，可以「潜匿」取代「戰鬥」技能進行攻擊，並使該武器的傷害+1🎲。'
-      },
-      {
-        englishName: 'Guard Break',
-        chineseName: '破防者',
-        keywords: '刺客',
-        content: '需求：背刺者天賦或無痕步天賦\n當你攻擊「距離」比你長的對手時，將其距離視為減少1。'
-      },
-      {
-        englishName: 'Silent Strike',
-        chineseName: '無聲一擊',
-        keywords: '刺客',
-        content: '需求：背刺者天賦或死神使者天賦\n當你使用「距離」為1的近戰武器攻擊時，該武器獲得「精巧」武器特性。'
-      }
-    ],
-
-    '斥侯': [
-      {
-        englishName: 'Eye for Weakness',
-        chineseName: '視破弱點',
-        keywords: '斥侯、觀察',
-        content: '需求：斥侯原型\n你能看出獵物（或敵手）在天然或人為防禦上的破綻。當你花費動力以〈獲取情報〉來研究某個生物或敵人時，直到本場景結束，你對該目標的攻擊獲得「穿透1」；若武器已具有「穿透」，則改為傷害＋1🎲。'
-      },
-      {
-        englishName: 'Strike from Hiding',
-        chineseName: '暗處出擊',
-        keywords: '斥侯、戰鬥',
-        content: '需求：斥侯原型\n最佳的一擊，來自獵物尚未知你所在之時。當你對敵人成功發動突襲攻擊（見第158頁「突襲攻擊」）時，該次攻擊每擲出一個效果符號😈，便可額外擲＋1🎲；這些額外骰上擲出的效果不再產生進一步的連鎖效果。'
-      },
-      {
-        englishName: 'Survivalist',
-        chineseName: '荒野生存家',
-        keywords: '斥侯、求生',
-        content: '需求：斥侯原型\n你能以求生之道補足資源匱乏，長期在遠野行動。當你在荒野中進行「覓食、狩獵、搭建庇護所或收集補給」的擴展檢定時，該檢定獲得「兇猛」傷害效果。'
-      },
-      {
-        englishName: 'Woodland Stride',
-        chineseName: '林行健步',
-        keywords: '斥侯、運動',
-        content: '需求：斥侯原型\n你善於穿越破碎與艱難地形，如密林與荊棘叢生之處。當你穿越困難或危險地形時，使你為移動而進行的任何技能檢定難度－1（最低為0）。若因此降至0，則可視同該地形並非困難或危險而自由通過。'
-      }
-    ],
-
-    '獵人': [
       {
         englishName: 'Tracker',
         chineseName: '追蹤者',
-        keywords: '獵人',
-        content: '需求：斥侯原型\n當你進行發現或追蹤足跡的技能檢定時，購買的第一顆d20不需花費動力。'
+        keywords: '〈求生〉',
+        content: '你能追蹤最微弱的痕跡。當你進行求生檢定以追蹤動物、人類或異界生物時，第一顆購買的額外 d20 免費。\n若此追蹤為延展任務之一部分，則每擲出一個效果🎲時，額外造成 +1 壓力。'
+      }
+    ],
+    '戰術': [
+      {
+        englishName: 'Call to Action',
+        chineseName: '行動號召',
+        keywords: '〈戰術〉',
+        content: '你發號施令明確，使盟友能迅速佔據有利位置。於行動場景中，你可花費一個副動作，使一名盟友立即執行一個副動作。\n此外，你可作為主要動作進行一次協調＋戰術檢定（難度 1），成功後可讓數量等同於你戰術技能值的盟友各立即執行一個副動作。\n你必須能與這些盟友溝通，才能讓他們獲得額外行動。'
       },
+      {
+        englishName: 'Band of Brothers',
+        chineseName: '戰友之情',
+        keywords: '〈戰術〉',
+        content: '你與盟友在共患難中培養了深厚情誼。當行動場景開始時，若團隊動力池中的點數少於擁有此天賦的角色數量，立即向團隊動力池中補充 1 點動力。'
+      },
+      {
+        englishName: 'Convey Intent',
+        chineseName: '意傳無聲',
+        keywords: '〈戰術〉',
+        content: '你不需多言即可讓人明白意圖，有時一個手勢便勝過千言萬語。當你進行戰術檢定以傳達指令或溝通新戰略時，第一顆購買的額外 d20 免費。'
+      },
+      {
+        englishName: 'Decisive Plan',
+        chineseName: '果斷策劃',
+        keywords: '〈戰術〉',
+        content: '你擅長在戰場中迅速提供支援。當你在行動場景中協助盟友時，若能讓該盟友成為下一位行動者，你可**保持先機（Keep the Initiative）**而無需支付動力。'
+      },
+      {
+        englishName: 'Direct',
+        chineseName: '指揮行動',
+        keywords: '〈戰術〉',
+        content: '你的強項在於領導他人。於行動場景中，你可作為主要動作選擇一名能與你溝通的盟友。該盟友可立即執行一個主要動作；若該行動包含技能檢定，你以戰術技能協助其行動。'
+      },
+      {
+        englishName: 'Teamwork',
+        chineseName: '團隊合作',
+        keywords: '〈戰術〉',
+        content: '你的領導讓團隊發揮超越個體總和的力量。當你領導或協助進行技能檢定時，若其中任一角色擁有適用專精，則所有參與者皆視為擁有該專精。\n若該技能檢定為延展任務之一部分，則在🎲池中額外加入 +2🎲 壓力。'
+      }
+    ],
+    '觀察': [
       {
         englishName: 'Constantly Watching',
-        chineseName: '警戒不懈',
-        keywords: '獵人',
-        content: '需求：追蹤者天賦\n當你進行偵測危險或發現隱藏敵人的技能檢定時，難度降低1（最低為0）。'
+        chineseName: '時時警戒',
+        keywords: '〈觀察〉',
+        content: '每當你進行偵測危險或發現隱藏敵人的技能檢定時，將難度減少 1（最低為 0）。'
       },
       {
-        englishName: 'Expert Aim',
-        chineseName: '精準瞄準',
-        keywords: '獵人',
-        content: '需求：追蹤者天賦\n當你花時間瞄準時，幾乎不會失手。當你進行「瞄準」副動作時，可在擲骰前指定檢定骰池中的一顆d20，視為其結果為1。'
+        englishName: 'Forward Observer',
+        chineseName: '前線校射員',
+        keywords: '〈觀察〉',
+        content: '你為友軍砲火標定目標，協助其命中。若你能與持有間接特性的武器之盟友溝通，你可使用智識＋觀察協助其攻擊；當你這麼做時，該盟友之攻擊難度再降低 1。'
       },
       {
-        englishName: 'Dead Eye',
-        chineseName: '致命準星',
-        keywords: '獵人',
-        content: '需求：精準瞄準天賦\n你深知何處射擊能造成最大傷害。當你以遠程武器攻擊時，該武器傷害+1🎲。'
+        englishName: 'Lights Out',
+        chineseName: '黑暗視覺',
+        keywords: '〈觀察〉',
+        content: '你在昏暗環境下依然表現優異。你可忽略因低光照造成的難度提升或糾葛範圍增加；但在全然黑暗中仍照常受影響。'
       },
       {
-        englishName: 'Scotopia',
-        chineseName: '適應昏暗',
-        keywords: '獵人',
-        content: '需求：警戒不懈天賦\n你的雙眼已適應黑暗。你可無視因光線不足或昏暗所造成的技能檢定減值，但此能力在完全黑暗環境中無效。'
+        englishName: 'Ransack',
+        chineseName: '翻箱倒櫃',
+        keywords: '〈觀察〉',
+        content: '你深知時間寶貴，搜查徹底但略顯凌亂。當你進行區域搜尋的觀察檢定時，可產生 2 點威脅：使該檢定之難度降低 1，且搜尋時間減半。'
       },
       {
-        englishName: 'Self-Sufficient',
-        chineseName: '自給自足',
-        keywords: '獵人、求生',
-        content: '需求：追蹤者天賦\n當你進行以「求生」為基礎的技能檢定時，可重擲1顆d20，但必須接受新結果。'
+        englishName: 'Scout',
+        chineseName: '斥候',
+        keywords: '〈觀察〉',
+        content: '你善於快速掌握地形與重點。於行動場景開始時，你可免費提出 1 個問題，效果等同於花費動力以獲取情報。'
+      },
+      {
+        englishName: 'Scrutinise',
+        chineseName: '細察入微',
+        keywords: '〈觀察〉',
+        content: '你總是留心細節。當你在戰鬥外進行觀察檢定並將所需時間加倍時，你購買的第一顆額外 d20免費。'
       }
     ],
-
-    '輕步兵': [
+    '說服': [
       {
-        englishName: 'Pack Tactics',
-        chineseName: '群狼戰術',
-        keywords: '輕步兵',
-        content: '需求：斥侯原型\n當你在戰鬥中協助其他角色且對方通過技能檢定時，該角色額外獲得+1動力。'
+        englishName: 'An Answer for Everything',
+        chineseName: '妙辯如流',
+        keywords: '〈說服〉',
+        content: '你熱愛激烈的辯論，總能洞悉對手論點並反轉局勢。當你在延展任務中成功進行說服檢定時，可重擲數量等同於你說服技能值的🎲。'
       },
       {
-        englishName: 'Acrobatic Dodge',
-        chineseName: '翻躍閃避',
-        keywords: '輕步兵、運動',
-        content: '需求：迅捷制勝天賦\n你行動不停，善於把握敵方出手的空隙逃脫攻勢。當敵人對你進行近戰攻擊時，你可使用「敏捷＋運動」取代「敏捷＋戰鬥」進行對抗檢定。若你勝出，無法造成傷害，但可移動至近距離任意位置；若再花費1點動力，則可改為移動至中距離。'
+        englishName: 'Hog the Spotlight',
+        chineseName: '搶佔焦點',
+        keywords: '〈說服〉',
+        content: '你習慣成為眾人注目的中心，且知道如何吸引所有目光。當你成功以說服檢定分散或吸引他人注意時，可花費 1 點動力，使敵方的所有觀察檢定難度提高 +1。'
       },
       {
-        englishName: 'Assail',
-        chineseName: '標槍突襲',
-        keywords: '輕步兵、戰鬥',
-        content: '需求：群狼戰術天賦\n輕步兵以突如其來的標槍攻勢聞名。當你以具「投擲武器」專精的武器進行遠程攻擊時，可花費2點動力以在本回合再執行一次主動作。'
+        englishName: 'Imposing Presence',
+        chineseName: '威嚴氣勢',
+        keywords: '〈說服〉',
+        content: '你天生具備威懾他人的氣場。當你以近戰武器進行精神攻擊時，可用說服代替戰鬥，並可為該攻擊賦予「穿透 1」或「震懾」武器效果。'
       },
       {
-        englishName: 'Swift Victory',
-        chineseName: '迅捷制勝',
-        keywords: '輕步兵',
-        content: '需求：群狼戰術天賦\n速度即是勝利，即使伴隨代價。當你進行以「運動」為基礎的技能檢定以執行「衝刺」主動作或跨越困難地形時，可選擇承受一項額外糾葛，以換取一次自動成功。\n此外，在任何衝突開始時，你可產生1點威脅（加入遊戲主持人的威脅池），以搶先於所有其他角色行動。'
+        englishName: 'Reasoned Discourse',
+        chineseName: '理性論辯',
+        keywords: '〈說服〉',
+        content: '你語言精確、邏輯嚴密，能快速傳達複雜資訊。當你以理性取代情感進行溝通或辯論時，將該次說服檢定難度減少 1。'
       },
       {
-        englishName: 'Rejuvenation',
-        chineseName: '再起之志',
-        keywords: '輕步兵、韌性',
-        content: '需求：群狼戰術天賦\n習於於戰場邊緣反覆進退，你已學會迅速恢復戰力。當你執行「調息主動作」時，其技能檢定難度降低1（最低為0）。此外，每花費1點動力以消除壓力，可額外消除1點（共2點）壓力。'
+        englishName: 'Rousing Speaker',
+        chineseName: '鼓舞演說者',
+        keywords: '〈說服〉',
+        content: '你擅長公開演說，能激發聽眾情緒。當你以說服檢定進行鼓舞性演說時，檢定難度減少 1。\n此外，你可於行動場景中以主要動作進行激勵呼喊（難度 1 的意志＋說服檢定）。若成功，所有能聽見你的盟友獲得 2 點勇氣，並可為每花費 1 點動力額外增加 +1 勇氣，效果持續至該場景結束。'
       },
       {
-        englishName: 'Fortune Favors the Bold',
-        chineseName: '幸運垂青勇者',
-        keywords: '輕步兵、命運',
-        content: '需求：再起之志天賦\n當你技能檢定失敗並花費命運點重擲時，可先選擇將檢定難度提升+1。若重擲後成功，立即收回該命運點。'
+        englishName: 'Subtle Cues',
+        chineseName: '細微暗示',
+        keywords: '〈說服〉',
+        content: '你能洞察他人的情緒，察覺姿態、語氣與表情中的暗示，也擅長偽裝這些線索。當你花時間與某人交談或觀察後，在同場景內對其進行說服檢定時，第一次購買的額外 d20 成本降為 0。'
       }
     ],
-
+    '韌性': [
+      {
+        englishName: 'A Stiff Drink',
+        chineseName: '烈酒鎮魂',
+        keywords: '〈韌性〉',
+        content: '烈酒能讓你穩住心神。將一瓶烈酒隨身攜入個人物品中。當你使用「喘口氣」行動為自己或盟友移除壓力時，若有人飲用此酒，額外移除 1🎲 壓力。\n但若擲出效果，則因酒精麻痺而使你本場景所有技能檢定的糾葛範圍提高 +1。若酒喝完（可能作為糾葛結果），則無法再次使用此天賦，但補充酒水應不成問題。'
+      },
+      {
+        englishName: 'Courageous',
+        chineseName: '勇氣十足',
+        keywords: '〈韌性〉',
+        content: '你不易被嚇倒。獲得等同於你韌性技能值的勇氣抗性。'
+      },
+      {
+        englishName: 'Dauntless',
+        chineseName: '無畏不屈',
+        keywords: '〈韌性〉',
+        content: '每當你進行抵抗恐嚇、威脅、恐懼或驚慌的技能檢定時，你購買的第一顆額外 d20 免費。'
+      },
+      {
+        englishName: 'Extra Effort',
+        chineseName: '超限發揮',
+        keywords: '〈韌性〉',
+        content: '選擇一項屬性。當你以該屬性進行技能檢定時，可消耗疲勞代替動力購買額外 d20，每取代 1 點動力需承受 1 點疲勞。'
+      },
+      {
+        englishName: 'Hard as Nails',
+        chineseName: '堅如鐵釘',
+        keywords: '〈韌性〉',
+        content: '你比他人更為強韌。你的護甲抗性提高 +1。'
+      },
+      {
+        englishName: 'Second Wind',
+        chineseName: '再起之息',
+        keywords: '〈韌性〉，命運',
+        content: '在你的回合中可作為自由動作，花費 1 點命運以移除你目前所有的壓力。'
+      },
+      {
+        englishName: 'Tough',
+        chineseName: '堅毅如山',
+        keywords: '〈韌性〉',
+        content: '你能承受比常人更多的壓力。你的壓力軌上限增加 +3。'
+      }
+    ],
+    '潛匿': [
+      {
+        englishName: 'All the Best Hiding Spots',
+        chineseName: '藏匿高手',
+        keywords: '〈潛匿〉',
+        content: '你很難被偷襲，因為你早已熟知所有最佳藏身之處。任何在你視線範圍內進行潛匿檢定的敵人，其檢定難度提高 +1。'
+      },
+      {
+        englishName: 'Exploit Weakness',
+        chineseName: '利用弱點',
+        keywords: '〈潛匿〉',
+        content: '當你攻擊毫無防備的敵人，或攻擊受「弱點」或「脆弱」真理影響的敵人時，該攻擊獲得「穿透 2」武器效果。'
+      },
+      {
+        englishName: 'Face in the Crowd',
+        chineseName: '人群之中',
+        keywords: '〈潛匿〉',
+        content: '你懂得如何在眾目睽睽下隱藏自己，只要看似合理、行為自然即可。當你身著適當服裝或偽裝時，敵人欲在群眾中以觀察檢定察覺你，其難度提高 +1。'
+      },
+      {
+        englishName: 'Hit and Run',
+        chineseName: '打了就跑',
+        keywords: '〈潛匿〉',
+        content: '你知道敵人會先搜尋攻擊發生的地方，因此你總在那之前撤離。當你成功攻擊毫無防備的目標後，可花費 1 點動力，移動至近距離範圍內，即使該回合已移動亦可。'
+      },
+      {
+        englishName: 'Like a Shadow',
+        chineseName: '如影隨形',
+        keywords: '〈潛匿〉',
+        content: '你行動無聲，即使情況失控也能迅速減低動靜。當場景中包含與敵方警覺或追擊相關的後果軌時，該後果的抗性增加 +2。'
+      },
+      {
+        englishName: 'Perfect Timing',
+        chineseName: '完美時機',
+        keywords: '〈潛匿〉',
+        content: '你總能在千鈞一髮之際抵達目標地。當潛匿檢定有時間限制（如在守衛回頭前抵達、避開移動探照燈等）時，你購買的第一顆額外 d20 成本為 0。'
+      }
+    ],
+    '工程': [
+      {
+        englishName: 'Demolitions',
+        chineseName: '爆破專家',
+        keywords: '〈工程〉，進階',
+        content: '你精通製作、安置與拆除爆炸物。當你進行與爆炸裝置相關的工程檢定時，第一次購買的額外骰免費。\n此外，每場景可忽略一次與爆炸物相關的工程檢定所產生的第一次糾葛。'
+      },
+      {
+        englishName: 'Elbow Grease',
+        chineseName: '苦幹實幹',
+        keywords: '〈工程〉',
+        content: '你習慣透過勤奮完成任務。當你進行延展任務中的工程檢定時，每擲出一個效果🎲，可忽略 1 點阻力。'
+      },
+      {
+        englishName: 'Gunsmith',
+        chineseName: '槍械匠',
+        keywords: '〈工程〉',
+        content: '你熟悉槍械的內部構造，並擅長維修與保養。在任務開始時，你可選擇一把隊伍持有的遠程武器，使其獲得「可靠」特性，或移除其「不可靠」特性。'
+      },
+      {
+        englishName: 'Jury Rig',
+        chineseName: '臨時修補',
+        keywords: '〈工程〉',
+        content: '當你嘗試修理機械時，可產生 2 點威脅以將檢定難度降低 1（最低 0），但此修理僅為暫時性。\n該修理在當前場景結束前有效，之後當遊戲主持人花費 2 點威脅時，該裝置將失效。'
+      },
+      {
+        englishName: 'Saboteur',
+        chineseName: '破壞者',
+        keywords: '〈工程〉',
+        content: '你擅長破壞物體。當攻擊物件、建築或固定載具時，可使用工程技能代替戰鬥，並以智識取代體魄或洞察來獲得額外挑戰骰。\n當對此類目標造成壓力時，你可花費 2 點動力，將任意數量的挑戰骰結果轉換為效果🎲，最多不超過你的工程等級。'
+      },
+      {
+        englishName: 'Make Do and Mend',
+        chineseName: '修補維生',
+        keywords: '〈工程〉',
+        content: '你擅長利用機械零件製造所需資源。你可花費半小時拆解一台機械，並進行一次難度 1 的洞察＋工程檢定。\n若成功，可獲得足夠零件以補充機械工具或電工工具的資源。此檢定可在代價下成功，該被拆解的物品將報廢。'
+      }
+    ],
+    '戰鬥': [
+      {
+        englishName: 'Defensive',
+        chineseName: '防禦專家',
+        keywords: '〈戰鬥〉',
+        content: '你特別擅長閃避傷害。選擇一項攻擊類型：近戰攻擊或遠程攻擊。針對你的該類攻擊難度提高 +1。\n此天賦可選兩次，分別對應兩種攻擊類型。'
+      },
+      {
+        englishName: 'Five Rounds Rapid',
+        chineseName: '五連速射',
+        keywords: '〈戰鬥〉',
+        content: '你能以猛烈火力壓制敵人。當你進行遠程攻擊並花費彈藥進行齊射時，第一次購買的額外骰免費。'
+      },
+      {
+        englishName: 'Guardian',
+        chineseName: '守護者',
+        keywords: '〈戰鬥〉',
+        content: '你習慣挺身擋下攻擊。當近距離內的盟友成為攻擊目標時，你可立即進行反應，迫使攻擊者改以你為目標。'
+      },
+      {
+        englishName: 'Mean Right Hook',
+        chineseName: '重拳出擊',
+        keywords: '〈戰鬥〉',
+        content: '你的徒手攻擊獲得「兇猛」武器效果。'
+      },
+      {
+        englishName: 'Sharpshooter',
+        chineseName: '神射手',
+        keywords: '〈戰鬥〉',
+        content: '你是神準的射手，能擊中常人難以命中的目標。當你在進行遠程攻擊前使用「瞄準」副動作時，第一次購買的額外骰免費。\n此外，該攻擊獲得「穿透」特性，或使武器的穿透等級提高 1。'
+      },
+      {
+        englishName: 'They Don’t Like It Up ’Em',
+        chineseName: '貼身突刺',
+        keywords: '〈戰鬥〉',
+        content: '你擅長近距肉搏，以無可抵擋的突擊壓制敵人。當你移動至敵人可及範圍並進行近戰攻擊時，第一次購買的額外骰免費。\n若攻擊成功，目標將被擊倒。'
+      }
+    ],
+    '醫學': [
+      {
+        englishName: 'Long-Term Care',
+        chineseName: '長期照護',
+        keywords: '〈醫學〉',
+        content: '你擅長減輕戰爭創傷並確保夥伴獲得妥善治療。每當你進行判定角色是否獲得傷疤，或嘗試治療傷疤的醫學檢定時，可重擲其中 1 顆 d20。'
+      },
+      {
+        englishName: 'Medic',
+        chineseName: '戰地醫護',
+        keywords: '〈醫學〉',
+        content: '當你成功使一名盟友穩定時，你可花費 2 點動力，立即治療該盟友的一項身體傷勢；但其狀態仍為被擊倒（defeated）。'
+      },
+      {
+        englishName: 'Placebo Effect',
+        chineseName: '安慰劑效應',
+        keywords: '〈醫學〉',
+        content: '物資吃緊時，你能物盡其用。當你在醫學檢定中花費急救箱資源時，每使用一次藥物擲 1 🎲；每擲出 1 個效果，立刻返還其中 1 份已花費的資源。'
+      },
+      {
+        englishName: 'Out of Harm’s Way',
+        chineseName: '遠離危險',
+        keywords: '〈醫學〉',
+        content: '你擅長在固定患者與轉移至安全處之間取得平衡。當你嘗試搬運或約束他人時，可用醫學代替運動，且可忽略該檢定首次產生的糾葛。'
+      },
+      {
+        englishName: 'Reassuring',
+        chineseName: '安心撫慰',
+        keywords: '〈醫學〉',
+        content: '你的臨床態度讓病患放下恐懼。當你嘗試治療患者的心靈傷勢時，可花費 2 點動力，以額外再治療 1 個心靈傷勢。'
+      },
+      {
+        englishName: 'Seen Worse',
+        chineseName: '見多不怪',
+        keywords: '〈醫學〉，進階',
+        content: '你有強健的胃與責任感，不讓恐懼凌駕於病患需求之上。你可花費 2 點動力，獲得等同於你能看見或聽見之受傷盟友人數的勇氣抗性。'
+      }
+    ],
+    '通用天賦': [
+      {
+        englishName: 'Advisor',
+        chineseName: '顧問',
+        keywords: '〈技能〉',
+        content: '你擅長引導他人解決問題。選擇此天賦時，請選擇一項技能。\n當你協助一位盟友且使用該技能時，被你協助的盟友可重擲其骰池中的一顆骰子。'
+      },
+      {
+        englishName: 'Bold',
+        chineseName: '大膽',
+        keywords: '〈技能〉',
+        content: '你在經過計算的風險中，成功的頻率總是高得令人驚訝。選擇此天賦時，請選擇一項技能。\n當你以該技能進行技能檢定，並透過為遊戲主持人產生威脅購買額外骰時，你可以重擲該骰池中的一顆骰子。'
+      },
+      {
+        englishName: 'Cautious',
+        chineseName: '謹慎',
+        keywords: '〈技能〉',
+        content: '你謹慎周全，只在勝算明顯時才行動。選擇此天賦時，請選擇一項技能。\n當你以該技能進行技能檢定，並透過花費動力購買額外骰時，你可以重擲該骰池中的一顆骰子。'
+      },
+      {
+        englishName: 'Collaboration',
+        chineseName: '協作',
+        keywords: '〈技能〉，進階',
+        content: '你訓練盟友活用你的專業，這份努力已獲得成果。選擇此天賦時，請選擇一項技能（該技能等級須達 3 或以上）。\n當任一盟友嘗試進行該技能的檢定時，只要你能與其溝通，你可花費 2 點動力，讓該盟友使用你的該技能數值與其中一項專精（若適用）。'
+      },
+      {
+        englishName: 'Cool Under Pressure',
+        chineseName: '臨危不亂',
+        keywords: '〈技能〉，命運',
+        content: '當情勢緊迫時，你能深吸一口氣並完成任務。選擇此天賦時，請選擇一項技能。\n當你以該技能進行技能檢定時，你可花費 1 點命運以自動成功該檢定，但不會產生任何動力。'
+      }
+    ],
+    '運動': [
+      {
+        englishName: 'Athletic Prodigy',
+        chineseName: '體能神童',
+        keywords: '〈運動〉',
+        content: '你比任何人都能將身體推向極限。當你在延展任務中成功進行一次運動檢定時，你可在壓力擲骰中額外加入 🎲🎲 以推進進度。'
+      },
+      {
+        englishName: 'Might Makes Right',
+        chineseName: '強壯為勝',
+        keywords: '〈運動〉，進階',
+        content: '你懂得如何在戰鬥中發揮自身的力量與體型。當你進行近戰對抗檢定時，可使用「體魄 + 運動」進行。\n此外，你可無視所持武器的「沉重」特性。'
+      },
+      {
+        englishName: 'Fighting Fit',
+        chineseName: '健壯如常',
+        keywords: '〈運動〉',
+        content: '你的體能極佳，不易因劇烈活動而疲憊。每當你因體力消耗而承受疲勞時，擲 1🎲 以抵消每一點疲勞。每擲出一個效果即可忽略 1 點疲勞。'
+      },
+      {
+        englishName: 'Sure-Footed',
+        chineseName: '穩步如山',
+        keywords: '〈運動〉',
+        content: '你平衡感極佳，幾乎不會跌倒或絆倒。當你進行運動檢定時，可忽略第一次出現的糾葛。\n此外，敵人必須花費 3 點威脅，而非 2 點，才能在戰鬥中將你擊倒。'
+      },
+      {
+        englishName: 'Hail Mary',
+        chineseName: '遠投奇襲',
+        keywords: '〈運動〉',
+        content: '你擁有非凡的投擲能力，能精準命中遠距離目標。當你使用投擲武器時，可產生 1 點威脅以提升武器射程一級（例如由近距提升至中距），並使該武器的傷害提高 +1🎲。'
+      },
+      {
+        englishName: 'Hit the Dirt',
+        chineseName: '臥倒掩護',
+        keywords: '〈運動〉',
+        content: '當你在戰鬥中使用「衝鋒」動作時，對你發動的攻擊難度提高 +1，直到你下一回合開始為止。'
+      }
+    ],
     '士兵': [
       {
-        englishName: 'Brute',
-        chineseName: '蠻力猛擊',
-        keywords: '士兵、運動',
-        content: '需求：士兵原型\n你的攻擊深沉有力，足以撕裂敵人防線。當你進行近戰攻擊時，可重擲任意數量的效果骰😈，以重新決定造成的壓力與傷害效果。'
+        englishName: 'Army of One',
+        chineseName: '孤軍之鋒',
+        keywords: '士兵，戰鬥',
+        content: '你精通各種武器與戰鬥技法。當你進行攻擊時，可消耗2點動力，為該攻擊附加以下任一武器效果：「消耗」「穿透」或「震懾」。每次攻擊僅能以此方式添加一種效果。'
       },
       {
-        englishName: 'Flashing Steel',
-        chineseName: '閃鋼連斬',
-        keywords: '士兵、戰鬥',
-        content: '需求：士兵原型\n你能以迅捷之姿連續出擊。當你執行「攻擊」主動作時，可在副動作中對另一名處於相同距離的角色發動第二次攻擊。若你攻擊的是「敵群」（見《臨戰克蘇魯：遊戲主持人指南》第189頁），則改為使該次攻擊造成的壓力傷害加倍。'
+        englishName: 'Draw Their Fire!',
+        chineseName: '吸引火力！',
+        keywords: '士兵，韌性',
+        content: '你以自身吸引敵人火力，保護同伴安全。當你完成一次攻擊後，可消耗2點動力使敵人注意到你。若如此作，任何能攻擊你的敵人若改以你的盟友為目標，其攻擊難度提高1。'
       },
       {
-        englishName: 'Hold Fast',
-        chineseName: '堅守不退',
-        keywords: '士兵、韌性',
-        content: '需求：士兵原型\n你能在最猛烈的敵襲下堅守陣地，並激勵同袍效仿。當你或同區域內的盟友遭受近戰攻擊時，可為遊戲主持人的威脅池增加1點威脅，使攻擊者的檢定難度＋1。'
-      },
-      {
-        englishName: 'Shield Wall',
-        chineseName: '盾牆陣形',
-        keywords: '士兵、戰術',
-        content: '需求：士兵原型\n你受過與持盾同袍並肩作戰的訓練。當你與至少一名在相同距離內、持有盾牌的盟友並肩時，可以副動作令陣形緊密、鎖盾成牆。只要所有成員仍保持「防備」，每名成員的盾牌提供的掩蔽抗性皆＋2，直至盾牆維持為止。'
+        englishName: 'Own the Battlefield',
+        chineseName: '掌控戰場',
+        keywords: '士兵，求生，命運',
+        content: '你是老練的戰士，善於利用地形取得優勢。你可花費1點命運，立即執行以下其中一項反應行動：\n速射：當一名位於中距離內的敵人嘗試穿越困難地形且檢定失敗時，你可對其造成等同於你「戰鬥」技能值的物理壓力。此攻擊無法消耗彈藥進行齊射，也無法花費動力增加壓力傷害。你必須持有可用且已裝彈的火器才能執行此反應。\n把頭低下：當敵人對你或中距離內的盟友成功進行遠程攻擊時，該攻擊目標獲得等同於你「觀察」技能值的掩護抗性，直到其下回合開始為止。'
       }
     ],
-
-    '狂戰士': [
+    '神秘學者': [
       {
-        englishName: 'Head Taker',
-        chineseName: '獵首者',
-        keywords: '狂戰士、戰鬥',
-        content: '需求：士兵原型\n選擇一名你在視線範圍內可見的精銳或宿敵NPC，你對該目標的近戰攻擊獲得+1傷害。此效果持續至該NPC死亡、場景結束、或你因其攻擊而承受壓力為止。當你擊敗該NPC時，獲得1點臨時命運點（於場景結束時失效）。'
+        englishName: 'Occult Scholar',
+        chineseName: '祕學學者',
+        keywords: '神秘學者，學識，施法者',
+        content: '你精通秘學傳統、超心理學及各種超自然研究領域，並掌握數種強化心智以抵禦異界恐懼的技巧。\n你是一名施法者（詳見第九章〈魔法與神話體系〉）。\n你獲得等同於「學識」技能值的勇氣加值（此效果不可與〈勇敢者〉天賦重複計算）。'
       },
       {
-        englishName: 'War Cry',
-        chineseName: '戰吼',
-        keywords: '狂戰士',
-        content: '需求：獵首者天賦\n當獵首者指定的NPC對你發動近戰攻擊時，你可以反應動作發出震天怒吼。在遊戲主持人擲出攻擊檢定骰池前，你可從該檢定骰池中選擇1顆d20，不擲骰而直接視為結果為20。此外，該NPC攻擊的糾葛範圍增加+1。'
+        englishName: 'Summoner',
+        chineseName: '召喚者',
+        keywords: '神秘學者，說服，施法者',
+        content: '你曾與超越物質界的存在交談，並能召喚異次元的生物。\n你是一名施法者（詳見第九章〈魔法與神話體系〉）。\n此外，當你施放召喚類法術時，可消耗2點動力以確保被召喚生物服從你。此服從持續時間（以分鐘計，或在戰鬥中以回合計）等同於你的「說服」技能值，之後需再次進行指令檢定以維持控制。'
       },
       {
-        englishName: 'Hack and Slash',
-        chineseName: '砍殺',
-        keywords: '狂戰士、戰鬥',
-        content: '需求：獵首者天賦\n當你在本場景中再次攻擊先前已擊中的生物時，購買的第一顆d20不需花費動力。'
-      },
-      {
-        englishName: 'Brutal Fighter',
-        chineseName: '殘虐戰士',
-        keywords: '狂戰士',
-        content: '需求：砍殺天賦\n你所持的所有武器獲得「兇猛」傷害效果。若武器原已具此效果，則傷害+2🎲。'
-      },
-      {
-        englishName: 'Bloody-Handed',
-        chineseName: '染血之手',
-        keywords: '狂戰士、戰鬥',
-        content: '需求：殘虐戰士天賦\n當你進行近戰攻擊時，可為該攻擊添加「區域」傷害效果，使每次擲出效果😈時，額外擊中近距離內另一名敵人（由遊戲主持人選擇）。若如此執行，則每擲出一個效果符號，你需增加1點威脅至遊戲主持人的威脅池。此外，遊戲主持人可花費威脅，使你的攻擊誤中非預期目標——每名意外受擊者需消耗2點威脅。'
-      },
-      {
-        englishName: 'Onslaught',
-        chineseName: '猛襲',
-        keywords: '狂戰士、移動',
-        content: '需求：獵首者天賦\n當你完成一次近戰攻擊且對方因該攻擊承受壓力後，可作為自由動作移動至中距離內任意位置。'
-      },
-      {
-        englishName: 'Berserker Rush',
-        chineseName: '狂戰奔襲',
-        keywords: '狂戰士、戰鬥',
-        content: '需求：猛襲天賦\n當你執行「衝刺主動作」後，可花費2點動力，在移動結束時立即進行一次近戰攻擊。若此攻擊造成傷害，則額外對目標造成傷害+1🎲。'
+        englishName: 'A Price to Pay',
+        chineseName: '代價之印',
+        keywords: '神秘學者，韌性，施法者',
+        content: '你深知魔法必有代價，並心甘情願地付出，甚至以自身為祭增幅咒能。\n你是一名施法者（詳見第九章〈魔法與神話體系〉）。\n此外，當你成功施放法術時，可獲得額外2點動力，但這些動力只能用於強化該法術的效果且無法儲存。若你如此作，該法術的代價增加2點，且消耗類型改為「身體壓力」而非「精神壓力」。'
       }
     ],
-
-    '軍團士兵': [
+    '技術專家': [
       {
-        englishName: 'Legionary Training',
-        chineseName: '軍團訓練',
-        keywords: '軍團士兵、戰鬥',
-        content: '需求：士兵原型\n當你使用矛、短劍或標槍進行以「戰鬥」為基礎的技能檢定時，可重擲1顆d20，但必須接受新結果。'
+        englishName: 'Prototype',
+        chineseName: '原型裝置',
+        keywords: '技術專家，工程',
+        content: '你能以工程檢定（難度2）製作奇特且實驗性的裝置。製作時，從「天賦」章節（第86頁）中選擇一項天賦，其效果將附加於該裝置。任何使用該裝置的人都可在檢定中套用此天賦效果。 每次使用後，擲1顆🎲，並為每次先前的使用額外多擲1顆🎲；若擲出效果符號，該裝置即報廢且無法修復。'
       },
       {
-        englishName: 'Legionary Veteran',
-        chineseName: '老兵意志',
-        keywords: '軍團士兵',
-        content: '需求：軍團訓練天賦\n歷經無數苦戰，你鍛鍊出堅定的意志。你的勇氣抗性+2。'
+        englishName: 'Lifesaver',
+        chineseName: '救命專家',
+        keywords: '技術專家，命運，醫學',
+        content: '你能讓垂死之人起死回生。任何用以穩定或復甦瀕死角色的醫學檢定，其難度減少1。 此外，你可嘗試挽回於本場景中剛死去的角色。你必須花費1點命運，並進行協調＋醫學檢定（難度3）；若成功，該角色僅為「戰敗」而非真正死亡。'
       },
       {
-        englishName: 'Precision Strikes',
-        chineseName: '精確打擊',
-        keywords: '軍團士兵',
-        content: '需求：軍團訓練天賦\n你所持武器獲得「穿透1」傷害效果。若該武器原已具有「穿透」效果，則提升其穿透值+1。'
-      },
-      {
-        englishName: 'Strike as One',
-        chineseName: '協同一擊',
-        keywords: '軍團士兵、戰術',
-        content: '需求：精確打擊天賦\n在攻擊前，你可作為副動作花費任意數量的動力，下令攻擊，每花費1點動力可命令1名盟友（上限為你的戰術等級）。當你進行攻擊（主動作）時，所有收到命令的盟友可使用反應動作進行一次近戰或遠程攻擊。'
-      },
-      {
-        englishName: 'Scutarius',
-        chineseName: '盾陣守衛',
-        keywords: '軍團士兵',
-        content: '需求：軍團訓練天賦\n作為主動作，你可與同區域內的一名盟友「連盾成陣」。雙方皆須裝備盾牌。當你們的盾牌連結時，你獲得額外+X掩蔽抗性（X為盟友盾牌的「盾牌X」等級），而盟友亦獲得等同於你盾牌等級的掩蔽抗性加值。'
-      },
-      {
-        englishName: 'Brace for Impact',
-        chineseName: '迎擊防禦',
-        keywords: '軍團士兵、戰鬥',
-        content: '需求：盾陣守衛天賦\n當你成為近戰攻擊目標但攻擊尚未擲骰時，你可與同區域內的盟友組成防禦陣列。雙方皆須裝備盾牌。你與盟友各獲得+1掩蔽抗性。若你在「敏捷＋戰鬥」對抗檢定中勝出，除可對敵人造成傷害外，還能迫使其後退至你指定的近距離位置。'
-      },
-      {
-        englishName: 'Formation Tactics',
-        chineseName: '陣列戰術',
-        keywords: '軍團士兵',
-        content: '需求：迎擊防禦天賦\n作為主動作，你可與同區域內的盟友組成戰陣。雙方皆須持有盾牌與短劍或類似武器。在此陣型下，你可在有敵人於「距離」內時，仍以自由動作恢復防備。此外，若敵人成功攻擊此陣內的任一成員，該敵人將自受2🎲物理傷害。'
+        englishName: 'Push the Limits',
+        chineseName: '極限推進',
+        keywords: '技術專家，載具',
+        content: '你精通機械構造，能讓任何載具發揮極限性能。若你能接近該載具引擎，可進行協調＋載具檢定（難度3）；成功時，該載具的速度提升1，或在地形與機動上視為體型縮小1級。 然而，這些調整將使載具不穩定——之後任何操作該載具的檢定，其失誤範圍增加1。此效果持續至場景結束。'
       }
     ],
-
-    '羅馬公民文化': [
+    '指揮官': [
       {
-        englishName: 'Alea Iacta Est',
-        chineseName: '骰已擲下',
-        keywords: '羅馬公民',
-        content: '需求條件：羅馬公民文化\n每場景中一次，當某非玩家角色（NPC）遭遇糾葛時，你可啟用此天賦，使遊戲主持人取消該糾葛所需的威脅花費提高至 4 點。'
+        englishName: 'Opportunist',
+        chineseName: '機會主義者',
+        keywords: '指揮官，戰鬥',
+        content: '你擅長利用敵人的失誤進行反制。當敵人出現糾葛或在難度3以上的檢定中失敗時，你可作為反應行動消耗2點動力，立即創造一項「真理」，其內容必須代表戰術優勢，並持續至該戰鬥場景結束。'
       },
       {
-        englishName: 'All Roads Lead to Rome',
-        chineseName: '條條大路通羅馬',
-        keywords: '羅馬公民',
-        content: '需求條件：羅馬公民文化\n羅馬帝國疆域遼闊，囊括眾多民族，語言與風俗各異。當你進行下列技能檢定時，其難度降低 1（最低降至 0）。學習陌生文化相關知識；與該文化成員互動並試圖表現得得體時。'
+        englishName: 'Wilderness Guide',
+        chineseName: '荒野嚮導',
+        keywords: '指揮官，求生',
+        content: '你不僅能在野外生存，還能指導他人同樣做到。當你的同伴進行求生檢定而你無法直接協助時，你可消耗2點動力以代表你的指導與建議進行「遠距協助」。此方式輔助的檢定，其糾葛範圍增加1。'
+      },
+      {
+        englishName: 'Born Leader',
+        chineseName: '天生領袖',
+        keywords: '指揮官，戰術，命運',
+        content: '你天生擁有激勵他人的領導力。你可花費1點命運，令一位盟友立即獲得1點命運。'
       }
     ],
-
-    '日耳曼部族文化': [
+    '騙徒': [
       {
-        englishName: 'Unyielding',
-        chineseName: '堅毅不屈',
-        keywords: '日耳曼部族',
-        content: '需求條件：日耳曼部族文化\n你的體魄與意志比他人更為堅強。你的最大壓力提高 +3。'
+        englishName: 'Cold Reading',
+        chineseName: '冷讀術',
+        keywords: '騙徒，觀察',
+        content: '你善於藉由細微觀察與誘導性言語，營造出深不可測的印象。當你與他人交談時，可消耗2點動力進行一次「冷讀」，在場未察覺詐術的角色會誤以為你擁有極為詳盡且專業的情報來源。'
       },
       {
-        englishName: 'Woodwise',
-        chineseName: '森林通達',
-        keywords: '日耳曼部族',
-        content: '需求條件：日耳曼部族文化\n當你身處日耳曼尼亞的森林地帶，並進行尋找食物、尋覓棲身處、導航或在林中移動的技能檢定時，該檢定的難度降低 1（最低為 0）。'
+        englishName: 'A Way with Words',
+        chineseName: '言辭之道',
+        keywords: '騙徒，說服',
+        content: '你從不多言，只說足以影響他人的話語。當你在說服檢定中產生糾葛時，可消耗1點動力以取消該糾葛。'
+      },
+      {
+        englishName: 'Chameleon',
+        chineseName: '千面偽裝者',
+        keywords: '騙徒，潛匿，命運',
+        content: '你天生擅長偽裝成他人，連你展現的身份都未必是真實的自己。當你採取偽裝時，可花費1點命運，宣告你已事先準備好一個合適的化名，並擁有相關文件與物品，這些可能在身上或存放於附近安全地點。'
       }
     ],
-
-    '埃及文化': [
+    '機械工': [
       {
-        englishName: 'Balancing the Scales',
-        chineseName: '衡秤之審',
-        keywords: '埃及',
-        content: '需求條件：埃及文化\n埃及人自古理解善惡之衡的概念，追溯至阿努比斯在死後世界秤量亡者之心的傳說。當你進行議價相關的技能檢定時，可為遊戲主持人的威脅池產生 2 點威脅，以將該檢定的難度降低 1（最低降至 1）。'
+        englishName: 'Keep It Steady',
+        chineseName: '穩定維修',
+        keywords: '機械工，工程',
+        content: '你熱衷於調校愛車，能讓它在最糟的情況下仍維持運作。當你操作一輛曾親自維修或改裝的載具時，可在進行載具檢定時消耗2點動力，以忽略該載具在本次檢定中所受傷害造成的負面影響。'
       },
       {
-        englishName: 'Writ in Stone',
-        chineseName: '石刻傳承',
-        keywords: '埃及、學識',
-        content: '需求條件：埃及文化\n你的家鄉以悠久歷史聞名，其中許多被刻錄於古牆之上。當你進行基於「學識」的技能檢定以回憶相關歷史或傳說時，可重擲所有未成功的 d20 一次。'
+        englishName: 'Quartermaster',
+        chineseName: '後勤軍需官',
+        keywords: '機械工，說服，命運',
+        content: '你熟悉補給運輸與軍需交易，且總會為緊急狀況留下備品。你可花費1點命運，宣告你手邊擁有特定物品。該物品可能藏於身上、存放於你近期使用的載具內，或放在附近隱蔽地點（由遊戲主持人決定）。該物品必須為限制值3或以下的小型物品，且不得為武器，除非該武器具備「投擲（Thrown）」特性。'
+      },
+      {
+        englishName: 'Born to Drive',
+        chineseName: '天生車手',
+        keywords: '機械工，載具',
+        content: '你能完美掌控任何載具，駕馭技巧令人嘆為觀止。當你進行難度3或以上的載具檢定時，可花費最多3點動力，每消耗1點動力便可使難度降低1點（最多降低3點）。但檢定的糾葛範圍會隨降低的難度等量增加，代表此動作的高風險性。'
       }
     ],
-
-    '不列顛文化': [
+    '滲透者': [
       {
-        englishName: 'Night Raiders',
-        chineseName: '夜襲者',
-        keywords: '不列顛人',
-        content: '需求條件：不列顛文化\n不列顛人——尤其北方部族——擅長於黑夜作戰。你擁有銳利的夜視力，能忽略因光線不足或昏暗造成的場地真理對技能檢定的修正。然而，此天賦在完全黑暗中無效。'
+        englishName: 'Acrobatic',
+        chineseName: '特技身手',
+        keywords: '滲透者，運動',
+        content: '你身手矯健，能以最小的力氣迅速越過障礙。當你面對障礙物時，可消耗2點動力直接越過該障礙，無須進行檢定，也不需使用任何工具（如攀爬裝備）。此障礙須為一般可克服的類型，例如可跳越的裂縫、可攀的牆面或可翻越的障柵。'
       },
       {
-        englishName: 'Warrior Born',
-        chineseName: '戰士之子',
-        keywords: '不列顛人',
-        content: '需求條件：不列顛文化\n作為安德拉斯特的真正子嗣，你無所畏懼，攻勢不懈。你在遊戲開始時獲得 +2 勇氣抗性。'
+        englishName: 'Assassination',
+        chineseName: '暗殺',
+        keywords: '滲透者，戰鬥',
+        content: '你是潛行殺敵的專家，能以迅雷不及掩耳之勢解決毫無防備的敵人。當你對未察覺你存在的目標發動攻擊時，可消耗2點動力執行「暗殺」，為攻擊賦予「強烈（Intense）」效果（若武器已有該效果，則額外造成+2 傷害）。若此攻擊擊敗目標，則攻擊完全無聲，不會被任何人察覺。'
+      },
+      {
+        englishName: 'Silent Step',
+        chineseName: '無聲步伐',
+        keywords: '滲透者，潛匿',
+        content: '你的腳步幾近無聲，行動如影隨形。當你在潛匿檢定中產生糾葛時，可消耗1點動力以取消該糾葛。'
       }
     ],
-
-    '高盧文化': [
+    '調查員': [
       {
-        englishName: 'Noble Line',
-        chineseName: '貴胄血統',
-        keywords: '高盧人',
-        content: '需求條件：高盧文化\n高盧人擁有悠久的貴族領袖血脈。當你進行任何爭取非羅馬人士支持或援助的檢定時，可重擲 1 顆 d20，但必須接受新的結果。'
+        englishName: 'Polymath',
+        chineseName: '博學多才',
+        keywords: '調查員，學識',
+        content: '你涉獵廣博，於各領域皆有專長。每場景可消耗2點動力，臨時獲得一項額外的專精，該專精必須屬於你在該技能中已有2點或以上等級的技能。此效果持續至場景結束。'
       },
       {
-        englishName: 'Undergoing All Dangers',
-        chineseName: '無懼萬難',
-        keywords: '高盧人',
-        content: '需求條件：高盧文化\n傳說高盧人曾在遷徙前焚毀舊居，以斷歸途之念，迫使自己勇敢面對一切艱險。你在遊戲開始時獲得 +1 勇氣抗性。'
+        englishName: 'The Cutting Edge',
+        chineseName: '醫學前沿',
+        keywords: '調查員，醫學',
+        content: '你熟知最新的醫學進展——從新手術技術、藥物配方到新興疾病的研究——使你能為任何情況做好準備。當你進行難度3以上的醫學檢定時，可花費最多3點動力，每消耗1點動力可使難度降低1點（最多降低3點）。但檢定的糾葛範圍會隨降低的難度等量增加，代表這些新技術仍具風險。'
+      },
+      {
+        englishName: 'Detailed Analysis',
+        chineseName: '細緻分析',
+        keywords: '調查員，觀察',
+        content: '你善於注意細節，能從蛛絲馬跡中找出真相。每場景可消耗2點動力，立即向遊戲主持人提出三個關於當前場景的問題，視同使用「獲取情報」的動力花費，但不需先進行檢定。'
       }
     ],
-
-    '希臘文化': [
-      {
-        englishName: 'Cosmopolitan',
-        chineseName: '博聞世通',
-        keywords: '希臘人',
-        content: '需求條件：希臘文化\n你的家鄉接納無數來自異地的旅者與居民，擁有豐富多樣的語言與風俗。當你與一名不共語言的對象交談時，雙方仍可透過混雜語、手勢與其他方式清楚交流，只要內容不過於複雜。'
-      },
-      {
-        englishName: 'Practiced Listener',
-        chineseName: '敏銳聆聽者',
-        keywords: '希臘人',
-        content: '需求條件：希臘文化\n你的故鄉充滿思想家，各自對「真理」懷抱不同見解。你曾在街巷與論壇聆聽他們的辯論，因此培養出敏銳的洞察力。當你進行以「洞察」為基礎、用以判斷他人誠實與否的技能檢定時，可重擲所有未成功的 d20 一次。'
-      }
-    ],
-
-    '其他文化／盟邦人': [
-      {
-        englishName: 'Do as the Romans Do',
-        chineseName: '入鄉隨俗',
-        keywords: '其他文化／盟邦人',
-        content: '需求條件：其他文化／盟邦人文化\n學會在羅馬人之間生存，是任何鄰近民族的重要才能。你可取得任一「羅馬公民文化」的天賦，擇一作為自身文化天賦。'
-      },
-      {
-        englishName: 'Hidden Potential',
-        chineseName: '潛藏潛能',
-        keywords: '其他文化／盟邦人',
-        content: '需求條件：其他文化／盟邦人文化\n每場景一次，你可為遊戲主持人的威脅池產生 2 點威脅。若如此，則在該場景餘下時間內，你可選擇一項未受訓的技能，視為擁有 2 點技能階級，並獲得一項與該技能相關的專精。'
-      },
-      {
-        englishName: 'World-Weary',
-        chineseName: '世故老成',
-        keywords: '其他文化／盟邦人',
-        content: '需求條件：其他文化／盟邦人文化\n當你進行以「意志」為基礎的技能檢定時，額外獲得 1 次自動成功。在羅馬統治下飽經煩憂的生活，使你早已能面對風波而不動聲色。'
-      }
-    ],
-
-    '階級天賦': [
-      {
-        englishName: 'Purse Strings',
-        chineseName: '錢袋之線',
-        keywords: '僕役',
-        content: '需求條件：僕役階級\n作為受信任的僕役，你被委以雇主的財務管理事務，並學會從中為自己謀得便利。每場冒險可使用一次此能力，購買一件限制等級 3 或以下的物品，改以雇主的財富或補給點數支付，而非使用你或團隊的點數。你可能從雇主藏庫取走該物，或以代購名義「暫借」。你必須在當前冒險結束後將物品歸還雇主掌控。'
-      },
-      {
-        englishName: 'Envy and Attention',
-        chineseName: '嫉妒與矚目',
-        keywords: '貴族',
-        content: '需求條件：貴族階級\n你在社會中擁有顯赫地位，這固然帶來許多利益，卻同時也伴隨挑戰與糾葛。你難以在眾人之間不被察覺，而那些想讓你墜落或奪取你地位的人常在暗中策劃。\n每當你進行以「威儀」為基礎、旨在影響他人或改變觀感的技能檢定時，購買第一顆額外 d20 的花費降為 0。然而，為反映這些潛在問題，遊戲主持人於每場冒險開始時，其威脅池將額外獲得 +2 威脅。\n除非你的角色失去貴族階級的身分，否則此天賦無法重新訓練（參見第 144 頁〈重新訓練〉）。'
-      }
-    ]
   };
 
   // 獲取所有分類
