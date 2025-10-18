@@ -5,6 +5,20 @@
       <h1 class="text-3xl font-bold mb-2 text-slate-800 tracking-widest">
         《克蘇魯來襲—角色表》
       </h1>
+      <div class="flex justify-center gap-4 mt-4">
+        <button 
+          @click="openCharacterCreation"
+          class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg font-bold transition-colors shadow-lg"
+        >
+          🎲 建立新角色
+        </button>
+        <button 
+          @click="clearAllData"
+          class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-bold transition-colors shadow-lg"
+        >
+          🗑️ 清空資料
+        </button>
+      </div>
     </div>
 
     <!-- 第一行：基本資訊 -->
@@ -678,12 +692,105 @@
         </div>
       </div>
     </div>
+
+    <!-- 角色建立 Modal -->
+    <div v-if="showCharacterCreationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-lg shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden flex flex-col">
+        <!-- Modal Header -->
+        <div class="bg-amber-700 text-white p-4 flex-shrink-0">
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="text-2xl font-bold">🎲 角色建立精靈</h3>
+              <p class="text-amber-100 text-sm mt-1">步驟 {{ currentCreationStep }} / 5: {{ creationStepNames[currentCreationStep - 1] }}</p>
+            </div>
+            <button 
+              @click="closeCharacterCreation"
+              class="text-white hover:text-gray-200 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          
+          <!-- 進度條 -->
+          <div class="mt-4">
+            <div class="flex justify-between text-xs text-amber-100 mb-2">
+              <span v-for="(stepName, index) in creationStepNames" :key="index" 
+                    :class="index + 1 <= currentCreationStep ? 'font-bold' : ''">
+                {{ stepName }}
+              </span>
+            </div>
+            <div class="w-full bg-amber-800 rounded-full h-2">
+              <div class="bg-amber-300 h-2 rounded-full transition-all duration-300" 
+                   :style="{ width: (currentCreationStep / 5) * 100 + '%' }"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Body - 可滾動區域 -->
+        <div class="flex-1 overflow-y-auto">
+          <div class="p-6">
+            <!-- 步驟 1: 選擇原型 -->
+            <div v-if="currentCreationStep === 1">
+              <CharacterCreationStep1 
+                @next-step="nextCreationStep"
+                @select-archetype="selectArchetype"
+                :selected-archetype="selectedArchetype"
+              />
+            </div>
+            
+            <!-- 步驟 2: 國籍 -->
+            <div v-else-if="currentCreationStep === 2">
+              <CharacterCreationStep2 
+                @next-step="nextCreationStep"
+                @prev-step="prevCreationStep"
+                @select-nationality="selectNationality"
+                :selected-nationality="selectedNationality"
+              />
+            </div>
+            
+            <!-- 步驟 3: 背景 -->
+            <div v-else-if="currentCreationStep === 3">
+              <CharacterCreationStep3 
+                @next-step="nextCreationStep"
+                @prev-step="prevCreationStep"
+                @select-background="selectBackground"
+                :selected-background="selectedBackground"
+              />
+            </div>
+            
+            <!-- 步驟 4: 特徵 -->
+            <div v-else-if="currentCreationStep === 4">
+              <CharacterCreationStep4 
+                @next-step="nextCreationStep"
+                @prev-step="prevCreationStep"
+                @select-trait="selectTrait"
+                :selected-trait="selectedTrait"
+              />
+            </div>
+            
+            <!-- 步驟 5: 最終修飾 -->
+            <div v-else-if="currentCreationStep === 5">
+              <CharacterCreationStep5 
+                @finish-creation="finishCharacterCreation"
+                @prev-step="prevCreationStep"
+                :character-data="getCharacterCreationData()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
+import CharacterCreationStep1 from './CharacterCreationStep1.vue'
+import CharacterCreationStep2 from './CharacterCreationStep2.vue'
+import CharacterCreationStep3 from './CharacterCreationStep3.vue'
+import CharacterCreationStep4 from './CharacterCreationStep4.vue'
+import CharacterCreationStep5 from './CharacterCreationStep5.vue'
 
 // 使用 Pinia store
 const store = useAchtungCthulhuStore()
@@ -1032,6 +1139,23 @@ const newExperienceRecord = ref({
   description: ''
 })
 
+// 角色建立 Modal 相關狀態
+const showCharacterCreationModal = ref(false)
+const currentCreationStep = ref(1)
+const creationStepNames = ref([
+  '選擇原型',
+  '選擇國籍', 
+  '選擇背景',
+  '選擇特徵',
+  '最終修飾'
+])
+
+// 角色建立過程中的選擇
+const selectedArchetype = ref(null)
+const selectedNationality = ref(null)
+const selectedBackground = ref(null)
+const selectedTrait = ref(null)
+
 const tooltipStyle = computed(() => ({
   left: `${tooltip.value.x}px`,
   top: `${tooltip.value.y}px`
@@ -1362,6 +1486,75 @@ const showWoundTooltip = (event) => {
 
 const hideWoundTooltip = () => {
   woundTooltip.value.show = false
+}
+
+// 角色建立相關函數
+const openCharacterCreation = () => {
+  showCharacterCreationModal.value = true
+  currentCreationStep.value = 1
+  // 重置所有選擇
+  selectedArchetype.value = null
+  selectedNationality.value = null
+  selectedBackground.value = null
+  selectedTrait.value = null
+}
+
+const closeCharacterCreation = () => {
+  showCharacterCreationModal.value = false
+  currentCreationStep.value = 1
+}
+
+const nextCreationStep = () => {
+  if (currentCreationStep.value < 5) {
+    currentCreationStep.value++
+  }
+}
+
+const prevCreationStep = () => {
+  if (currentCreationStep.value > 1) {
+    currentCreationStep.value--
+  }
+}
+
+// 各步驟的選擇方法
+const selectArchetype = (archetype) => {
+  selectedArchetype.value = archetype
+}
+
+const selectNationality = (nationality) => {
+  selectedNationality.value = nationality
+}
+
+const selectBackground = (background) => {
+  selectedBackground.value = background
+}
+
+const selectTrait = (trait) => {
+  selectedTrait.value = trait
+}
+
+const getCharacterCreationData = () => {
+  return {
+    archetype: selectedArchetype.value,
+    nationality: selectedNationality.value,
+    background: selectedBackground.value,
+    trait: selectedTrait.value
+  }
+}
+
+const finishCharacterCreation = (finalData) => {
+  // 應用所有選擇到角色表
+  console.log('完成角色建立:', finalData)
+  
+  // 這裡會應用所有的屬性、技能、天賦等變更
+  // 暫時關閉 modal，實際應用邏輯稍後實現
+  closeCharacterCreation()
+}
+
+const clearAllData = () => {
+  if (confirm('確定要清空所有角色資料嗎？此操作無法復原。')) {
+    store.clearAllData()
+  }
 }
 
 // 監聽數據載入和清除事件
