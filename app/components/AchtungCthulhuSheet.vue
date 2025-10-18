@@ -39,16 +39,6 @@
           class="border-2 border-slate-700 p-2 bg-white font-serif"
         >
       </div>
-      <div class="flex flex-col md:w-32">
-        <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
-          財富          
-        </label>
-        <input 
-          type="text" 
-          v-model="wealth"
-          class="border-2 border-slate-700 p-2 bg-white font-serif"
-        >
-      </div>
     </div>
 
     <!-- 第二行：職業背景 -->
@@ -73,7 +63,7 @@
       </div>
       <div class="flex flex-col flex-1">
         <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
-          特質
+          特徵
         </label>
         <textarea 
           v-model="talent"
@@ -215,34 +205,18 @@
           </div>
         </div>
 
-        <!-- 勇氣與財富 -->
+        <!-- 語言區塊 -->
         <div class="flex gap-4">
           <div class="flex flex-col flex-1">
             <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-              勇氣
+              語言
             </label>
-            <div class="border-2 border-slate-700 bg-white h-20 flex items-center justify-center">
-              <input 
-                type="number"
-                v-model.number="courage"
-                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
-                min="0" 
-                max="99"
-              >
-            </div>
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-              命運點
-            </label>
-            <div class="border-2 border-slate-700 bg-white h-20 flex items-center justify-center">
-              <input 
-                type="number"
-                v-model.number="fate"
-                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
-                min="0" 
-                max="99"
-              >
+            <div class="border-2 border-slate-700 bg-white h-20">
+              <textarea 
+                v-model="languages"
+                class="w-full h-full p-2 border-0 bg-transparent font-serif text-sm resize-none"
+                placeholder="掌握的語言..."
+              ></textarea>
             </div>
           </div>
         </div>
@@ -254,12 +228,12 @@
         <div class="flex flex-col w-32 gap-4">
           <div class="flex flex-col">
             <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-              基礎護甲
+              勇氣
             </label>
-            <div class="border-2 border-slate-700 bg-white h-20 flex items-center justify-center">
+            <div class="border-2 border-slate-700 bg-white h-12 flex items-center justify-center">
               <input 
                 type="number"
-                v-model.number="baseArmor"
+                v-model.number="courage"
                 class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
                 min="0" 
                 max="99"
@@ -269,12 +243,26 @@
           
           <div class="flex flex-col">
             <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
-              總護甲
+              護甲
             </label>
-            <div class="border-2 border-slate-700 bg-white h-24 flex items-center justify-center">
+            <div class="border-2 border-slate-700 bg-white h-12 flex items-center justify-center">
               <input 
                 type="number"
                 v-model.number="totalArmor"
+                class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
+                min="0" 
+                max="99"
+              >
+            </div>
+          </div>
+          <div class="flex flex-col flex-1">
+            <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-2 rounded-sm inline-block">
+              命運點
+            </label>
+            <div class="border-2 border-slate-700 bg-white h-12 flex items-center justify-center">
+              <input 
+                type="number"
+                v-model.number="fate"
                 class="w-full h-full text-center border-0 bg-transparent font-serif text-2xl font-bold text-slate-800"
                 min="0" 
                 max="99"
@@ -437,8 +425,7 @@
         </div>
         <div class="mt-3 p-2 bg-green-900/30 rounded text-xs">
           <div class="text-green-400 font-bold mb-1">援引獎勵：</div>
-          <div>• 獲得 1 點臨時命運點</div>
-          <div>• 獲得 1 點經驗點</div>
+          <div>• 獲得 1 點命運點</div>
           <div>• 立刻發生糾葛</div>
         </div>
         <div class="pt-2 border-t border-slate-600 mt-3">
@@ -714,10 +701,6 @@ const rank = computed({
   get: () => store.basicInfo.rank,
   set: (value) => store.updateBasicInfo({ rank: value })
 })
-const wealth = computed({
-  get: () => store.basicInfo.wealth,
-  set: (value) => store.updateBasicInfo({ wealth: value })
-})
 const archetype = computed({
   get: () => store.basicInfo.archetype,
   set: (value) => store.updateBasicInfo({ archetype: value })
@@ -743,10 +726,6 @@ const currentExperience = computed({
   get: () => store.character.currentExperience,
   set: (value) => store.character.currentExperience = Number(value) || 0
 })
-const totalExperience = computed({
-  get: () => store.character.totalExperience,
-  set: (value) => store.character.totalExperience = Number(value) || 0
-})
 const experienceRecords = computed(() => store.character.experienceRecords)
 
 // 個人真理的 computed 屬性
@@ -763,10 +742,6 @@ const courage = computed({
 const fate = computed({
   get: () => store.combat.fate,
   set: (value) => store.updateCombatStats({ fate: Number(value) || 0 })
-})
-const baseArmor = computed({
-  get: () => store.combat.baseArmor,
-  set: (value) => store.updateCombatStats({ baseArmor: Number(value) || 0 })
 })
 const totalArmor = computed({
   get: () => store.combat.totalArmor,
@@ -793,11 +768,13 @@ const skillsData = ref([
     name: '學識',
     description: '此技能涵蓋角色的教育背景與知識積累，以及研究不熟悉課題的能力。最常用於研究新資訊或回憶相關事實。',
     focuses: [
-      { name: '金融', description: '貿易與銀行的知識，以及金錢對政治與文化的影響。' },
-      { name: '歷史', description: '對歷史事件、推動事件的人物與力量的知識，並理解不同歷史觀點。' },
-      { name: '語言學', description: '研究語言的現用與古老形式、死語，以及語言隨時間演變的方式。除角色特質給予的語言外，還可額外掌握最多三種語言。若要以此專精施法，角色必須擁有帶有「施法者」關鍵字的天賦。' },
-      { name: '哲學', description: '研究現實與真理背後的概念、觀點，以及哲學家的歷史。' },
-      { name: '宗教', description: '研究眾神、其顯現，以及相關的傳統、實踐與生物。若要以此專精施法，角色必須擁有帶有「施法者」關鍵字的天賦。' }
+      { name: '藝術', description: '涵蓋對藝術品、藝術流派與技巧的理解，以及其在不同文化中的影響。' },
+      { name: '密碼學', description: '涵蓋對各種加密與解密技術的理解與應用。' },
+      { name: '財務學', description: '涵蓋對貿易、銀行制度的知識，及金錢對政治與文化的影響。' },
+      { name: '歷史學', description: '涵蓋對歷史事件、人物及其背後驅動力量的了解。' },
+      { name: '語言學', description: '涵蓋對現代、古代與死語的研究，以及語言的演化。' },
+      { name: '神秘學', description: '涵蓋對超自然現象、儀式、存在與傳統的研究。' },
+      { name: '科學', description: '涵蓋科學方法與其主要分支（數學、物理、化學、生物學），以及其細部領域。' }
     ]
   },
   {
@@ -805,22 +782,12 @@ const skillsData = ref([
     name: '運動',
     description: '此技能衡量角色的體能與運動能力，亦包括角色快速移動的嘗試。',
     focuses: [
-      { name: '攀爬', description: '攀登峭壁、城牆與登山。' },
-      { name: '舉重', description: '搬運與提升重物，並包含相關訓練方式。' },
-      { name: '體能訓練', description: '訓練自己與他人的方法與技巧。' },
-      { name: '跑步', description: '短距離衝刺與長距離耐力奔跑。' },
-      { name: '游泳', description: '無裝備的游泳與潛水。' }
-    ]
-  },
-  {
-    code: 'CRAFTING',
-    name: '製作',
-    description: '此技能涵蓋角色對製造技術的熟悉度，以及研究與開發新設計的能力。',
-    focuses: [
-      { name: '甲冑工藝', description: '製造與修理護甲，包含鍛造與零件打造。' },
-      { name: '烹飪', description: '料理製作、食材運用與保存技術。' },
-      { name: '縫紉', description: '設計、製作與修改衣物，從簡單長袍到厚重防護衣，亦含皮革工藝。' },
-      { name: '武器工藝', description: '製造與修理武器，包括槍矛與弓箭的木工技術，以及鍛造與打磨刀劍的金工技術。' }
+      { name: '攀爬', description: '涵蓋攀登牆壁、懸崖與登山技巧。' },
+      { name: '游泳', description: '涵蓋徒手游泳與使用呼吸裝置的潛水能力。' },
+      { name: '奔跑', description: '涵蓋短跑爆發力與長距離耐力。' },
+      { name: '運動訓練', description: '涵蓋自我與他人訓練的方法。' },
+      { name: '投擲', description: '涵蓋擲物技巧，從奧運式項目到手榴彈與飛刀。' },
+      { name: '舉重', description: '涵蓋搬運重物與對肌肉負荷的訓練應用。' }
     ]
   },
   {
@@ -828,11 +795,11 @@ const skillsData = ref([
     name: '工程',
     description: '此技能涵蓋角色的技術與機械專業，著重於實際應用：設計、建造與修理裝置與建築；操作設備；以及判斷如何破壞或摧毀它們。',
     focuses: [
-      { name: '建築學', description: '理解建築物的設計、內外結構與重量支撐分配。' },
-      { name: '防禦工事', description: '規劃與建造如瞭望塔、木柵、壕溝與路障等設施。' },
-      { name: '爆破', description: '有效摧毀建築、攻城器械與防禦設施的技術。' },
-      { name: '基礎建設', description: '規劃與建造道路、水道橋與橋梁等基礎工程。' },
-      { name: '攻城器械', description: '規劃與建造攻城戰所需的武器與工具，如攻城塔、雲梯、投石器與弩砲。' }
+      { name: '建築學', description: '涵蓋建築設計與結構支撐原理。' },
+      { name: '戰鬥工兵', description: '涵蓋支援或阻礙軍隊行動的工程任務，如築路、壕溝、堡壘與軍事設施建造或破壞。' },
+      { name: '電子學', description: '涵蓋電子設備的構造、修理與應用。二戰期間此領域尚屬新興技術，涵蓋雷達、聲納、通訊甚至早期電腦的發展。' },
+      { name: '爆裂物學', description: '涵蓋對炸藥性質、用途與操作的知識，包括製造與拆解炸彈或地雷。' },
+      { name: '機械工程', description: '涵蓋機械運作、維修與設計的理解，適用於各類戰鬥載具（坦克、飛機、船艦等）。' }
     ]
   },
   {
@@ -840,11 +807,14 @@ const skillsData = ref([
     name: '戰鬥',
     description: '此技能衡量角色的戰鬥能力與自我防衛，融合了訓練技巧、體能與本能。用於攻擊、判斷威脅情況，並包含對武器與戰鬥風格的實用知識。',
     focuses: [
-      { name: '弓術', description: '使用與維護弓箭，以及較先進的武器如強弩。' },
-      { name: '近戰武器', description: '使用短劍、斧頭、長劍或長槍等近戰武器，並維護其良好狀態。' },
-      { name: '投擲武器', description: '使用標槍、投斧、鉛錘與投石索等武器。' },
-      { name: '徒手', description: '徒手打擊與擒抱的各種技巧，包括泛克拉辛、拳鬥與街頭搏鬥。' },
-      { name: '戰爭魔法', description: '於戰鬥中施展直接造成傷害的法術。若要使用此專精施法，角色必須擁有帶有「施法者」關鍵字的天賦。' }
+      { name: '徒手戰鬥', description: '包含以拳腳或擒拿進行的無裝備格鬥，可代表拳擊、柔道等武術訓練。' },
+      { name: '近戰武器', description: '使用短兵器作戰，如匕首或刺刀。' },
+      { name: '手槍', description: '使用左輪、半自動與衝鋒手槍等短槍。' },
+      { name: '近距作戰', description: '使用霰彈槍、衝鋒槍等設計於近距離或狹窄空間（如戰壕、建築內）的武器。' },
+      { name: '步槍', description: '使用中長距離火器，如步槍與卡賓槍。' },
+      { name: '重型武器', description: '使用機槍、火焰噴射器、反坦克武器、迫擊砲或車載武裝。' },
+      { name: '威脅感知', description: '對危險的警覺與反應能力，可用於避免攻擊或伏擊。' },
+      { name: '異域', description: '操作稀有、實驗性或異常武器的知識與應變能力，能在不熟悉的情況下安全使用。' }
     ]
   },
   {
@@ -852,11 +822,12 @@ const skillsData = ref([
     name: '醫學',
     description: '此技能代表角色診斷與治療傷病的能力，用於處理傷口、疾病症狀，並延緩死亡。',
     focuses: [
-      { name: '傳染病', description: '理解疾病的起因、傳播方式、症狀與治療方法。' },
-      { name: '信仰治療', description: '透過儀式、祭品或祈求神祇（或超自然存在）的介入來治癒。若要使用此專精施法，角色必須擁有帶有「施法者」關鍵字的天賦。' },
-      { name: '野戰處置', description: '快速止血與包紮傷口，爭取時間接受更完整治療。' },
-      { name: '藥理', description: '關於天然藥物、藥劑與毒素的知識，能製造、辨識症狀並施用解方。' },
-      { name: '外科手術', description: '涉及切開、取出組織或異物、截肢與縫合的醫療技術。' }
+      { name: '急救', description: '為患者進行緊急處置以穩定傷勢，維持生命直到接受完整治療。' },
+      { name: '傳染病學', description: '理解疾病的成因、傳播、症狀與治療方式。' },
+      { name: '藥理學', description: '研究藥物的用途、副作用與療效。' },
+      { name: '精神醫學', description: '研究並治療心理疾病。' },
+      { name: '外科手術', description: '涉及開放性操作，如切除異物、縫合傷口或移除組織。' },
+      { name: '毒理學', description: '研究毒素、毒液等異物對身體的影響，並掌握中和與排除方法。' }
     ]
   },
   {
@@ -864,10 +835,10 @@ const skillsData = ref([
     name: '觀察',
     description: '此技能衡量角色的覺察力與從環境中獲取資訊的能力。描述角色多敏銳、多快能察覺細節，並有效運用或忽略干擾。觀察與學識常有重疊，但方法不同。',
     focuses: [
-      { name: '聽覺', description: '分辨不同聲音，並從中辨識訊息，例如捕捉微弱口音。獵人與守衛尤其受益。' },
-      { name: '直覺', description: '來自觀察的「第六感」或預感，通常提供模糊的感覺，而非具體訊息，經常源自經驗累積。若要使用此專精施法，角色必須擁有帶有「施法者」關鍵字的天賦。' },
-      { name: '視覺', description: '提升在惡劣環境下的視力敏感度，幫助偵測遠處細節與細微變化。適合斥候與獵人。' },
-      { name: '嗅覺與味覺', description: '偵測氣味與味道的能力。雖然人類不敏銳，但對毒師、醫者、試毒者與廚師十分寶貴。' }
+      { name: '聽覺', description: '涵蓋聽覺辨識與聲音分析，如識別口音。對無線電操作員、密碼員、通訊專家尤其有用。' },
+      { name: '直覺', description: '代表基於觀察的第六感或直覺反應，能提供模糊但實用的危機預感。' },
+      { name: '視覺', description: '涵蓋在低能見度下觀察細節的能力，能準確辨識遠距離或細微變化。觀測員、領航員與投彈手皆適用。' },
+      { name: '嗅覺與味覺', description: '以氣味或味覺辨識資訊，雖非人類強項，但對毒藥師、醫師或品酒師而言極具價值。' }
     ]
   },
   {
@@ -876,12 +847,12 @@ const skillsData = ref([
     description: '此技能代表角色透過言語與肢體語言影響他人的能力，也能察覺他人是否在施展相同手段。',
     focuses: [
       { name: '魅力', description: '以天生的吸引力與氣場影響他人。' },
-      { name: '欺瞞', description: '誘導他人相信虛假的訊息。' },
-      { name: '影射', description: '間接傳遞隱含意義的技巧。' },
-      { name: '恐嚇', description: '以威脅或施壓來引發恐懼與猶豫。' },
-      { name: '祈招', description: '以非常規或神祕方式與非自然存在溝通。通常僅限施法者可用，並需擁有帶有「施法者」關鍵字的天賦。' },
-      { name: '談判', description: '透過交涉達成協議，可能涉及交易或報酬。' },
-      { name: '修辭', description: '在公開演說或辯論中運用語言來說服、激勵或影響他人。' }
+      { name: '暗示', description: '以間接方式傳達訊息或意圖。' },
+      { name: '恐嚇', description: '透過威脅或揭露弱點使對方恐懼、遲疑或屈服。' },
+      { name: '談判', description: '透過對話達成協議，可能涉及交易或報酬。' },
+      { name: '修辭', description: '運用演說或辯論技巧，達成說服、激勵或傳達目的。' },
+      { name: '欺瞞', description: '以手段或言語讓他人相信虛假的事實。' },
+      { name: '祈招', description: '以非凡方式與超自然實體溝通的能力，為一般人所無法掌握的領域。' }
     ]
   },
   {
@@ -889,9 +860,9 @@ const skillsData = ref([
     name: '韌性',
     description: '此技能代表角色抵抗與復原於身體與心智損傷的能力，包括傷害、疼痛、疲勞與精神壓力。它還涵蓋對抗毒素與疾病的效果，以及抵禦魔法影響。角色可用韌性來避免負面效果，或在已受影響時嘗試復原。雖然醫學與韌性部分重疊，但韌性更專注於角色的內在堅韌。韌性與體魄或意志（取其高者）共同決定角色的最大壓力。',
     focuses: [
-      { name: '紀律', description: '角色的心理韌性與自制力，抵抗並復原於混亂、恐懼與精神效果。若要以此專精施法，必須具備「施法者」關鍵字的天賦。' },
-      { name: '堅毅', description: '身體的耐力與持久力，抵抗並克服疲勞、疼痛與傷害。' },
-      { name: '免疫', description: '對疾病與毒素的天生抵抗力，並能更快復原。' }
+      { name: '堅毅', description: '代表身體的耐力與持久性，用以抵抗並恢復疲勞、疼痛與傷害。' },
+      { name: '紀律', description: '代表心智的穩定與自制力，能抵抗混亂、恐懼或超自然精神影響。' },
+      { name: '免疫力', description: '代表自然抵抗疾病與毒素的能力，並能更快恢復。' }
     ]
   },
   {
@@ -899,12 +870,10 @@ const skillsData = ref([
     name: '潛匿',
     description: '此技能代表角色隱藏自身、潛行不被發現、融入人群與藏匿物品的能力。',
     focuses: [
-      { name: '隱蔽', description: '隱藏自己、他人或物品以避免被發現。' },
-      { name: '偽裝', description: '利用服裝、道具、演技與肢體語言假扮成他人。' },
-      { name: '脫逃技巧', description: '從束縛中掙脫的能力。' },
-      { name: '開鎖', description: '使用工具克服機械鎖具。' },
-      { name: '手上功夫', description: '竊取他人物品或使物品消失的技巧。' },
-      { name: '潛行', description: '隱密移動以避免偵測。' }
+      { name: '偽裝', description: '透過化妝、服裝、道具與肢體語言扮演他人。' },
+      { name: '迷彩', description: '利用自然或人工材料遮掩人物、物件或地點。' },
+      { name: '都市潛行', description: '在城市環境中安靜移動並避免被察覺。' },
+      { name: '野外潛行', description: '在自然環境中安靜行動並保持隱匿。' }
     ]
   },
   {
@@ -912,14 +881,12 @@ const skillsData = ref([
     name: '求生',
     description: '此技能涵蓋角色在野外生存與行動的能力，測量其在無文明庇護下獲取必需品、適應環境、導航、覓食與築庇護所的技巧。',
     focuses: [
-      { name: '馴獸', description: '了解並訓練各類動物，掌握行為模式與控制方法。' },
-      { name: '船運', description: '駕駛或操作河船與其他淡水船隻的基本技巧。' },
-      { name: '覓食', description: '收集食物、辨識可食用植物與避免天然毒素。' },
-      { name: '狩獵', description: '追蹤、捕殺動物，並處理獵物。' },
-      { name: '神祕學', description: '於野外祈求自然之力或靈體庇護，主要用於儀式或施法。若要以此專精施法，必須具備「施法者」關鍵字的天賦。' },
-      { name: '導航', description: '跨越距離時保持方向、規劃路線，並承受長途旅行的消耗。' },
-      { name: '追蹤', description: '辨識並追隨動物或人類的痕跡，推斷數量、狀態、速度與方向。' },
-      { name: '野外工藝', description: '利用自然材料搭建庇護與營地設施。' }
+      { name: '動物操控', description: '理解動物行為、馴養與指令控制。' },
+      { name: '採集', description: '搜尋並辨識可食植物與安全食材，避免中毒。' },
+      { name: '狩獵', description: '追蹤、捕殺獵物與處理野味的技術。' },
+      { name: '秘學', description: '理解古代或現代的宗教儀式與祈禱，並能抵抗或破除其影響。' },
+      { name: '定向', description: '導航、測向與長途跋涉的技巧。' },
+      { name: '追蹤', description: '辨識與追隨生物或人類的行蹤，判斷其人數、速度與狀態等細節。' }
     ]
   },
   {
@@ -927,12 +894,25 @@ const skillsData = ref([
     name: '戰術',
     description: '此技能涉及角色感知與評估戰場局勢，並擬定合適的計畫。範圍涵蓋軍事戰略、部隊運作、領導與組織。',
     focuses: [
-      { name: '騎兵戰術', description: '熟悉騎兵部隊的戰略與戰術。' },
-      { name: '步兵戰術', description: '熟悉步兵部隊的戰略與戰術。' },
-      { name: '領導', description: '指揮與帶領他人，發布明確命令並維持士氣。' },
-      { name: '海軍戰術', description: '熟悉海上作戰的戰略與戰術，從小規模交戰至艦隊作戰。' },
-      { name: '徵兆解讀', description: '從自然界徵兆占卜未來，許多行動前皆伴隨此習俗。若要以此專精施法，必須具備「施法者」關鍵字的天賦。' },
-      { name: '偵察', description: '組織小隊以隱密高效地進行伏擊、偵查敵情或潛行作戰。' }
+      { name: '空軍', description: '包含戰鬥機與轟炸機戰術，如纏鬥、編隊飛行與空中戰略。' },
+      { name: '陸軍', description: '涵蓋步兵與機械化地面作戰的戰術與策略。' },
+      { name: '祕密行動', description: '組織小隊在敵後安靜高效地行動。' },
+      { name: '領導', description: '指揮與鼓舞他人，維持士氣與執行力。' },
+      { name: '海軍', description: '涵蓋淺海與深海作戰戰略，從單艦交戰到艦隊規模。' },
+      { name: '技術專案', description: '管理與分配大型科研、工程或學術計畫的人力與進度。' }
+    ]
+  },
+  {
+    code: 'VEHICLES',
+    name: '載具',
+    description: '此技能涵蓋角色操作各種交通工具的能力，從民用到軍用載具皆包含在內。',
+    focuses: [
+      { name: '汽車', description: '操作民用或軍用四輪車輛，包括小型卡車。' },
+      { name: '摩托車', description: '操作雙輪或三輪民用與軍用摩托車。' },
+      { name: '重型載具', description: '操作重卡、半履帶車等大型軍民兩用車輛。' },
+      { name: '坦克', description: '操作各類坦克與裝甲戰鬥車輛。' },
+      { name: '飛機', description: '操作民用與軍用飛行器，包含螺旋槳與噴射機型。' },
+      { name: '船艇', description: '操作船隻、潛艇與軍用艦艇。' }
     ]
   }
 ])
@@ -985,12 +965,6 @@ const attributes = ref([
     name: '協調',
     description: '協調是細緻動作、準確度與時機感的衡量。協調良好的角色射擊精準，善於騎乘，並能掌握需要巧手的任務。',
     usage: '用於進行遠程攻擊。'
-  },
-  {
-    code: 'GRA',
-    name: '威儀',
-    description: '威儀反映角色的氣度、莊重與威嚴。高威儀的角色是出色的演說家與領袖，能贏得尊敬與服從。有些人以幽默親近他人，有些則展現謙遜或同理心。不論形式如何，威儀使角色更容易說服目標、激發信心或展現誠懇。',
-    usage: '用於提出具說服力的論點，展現莊重與信念。'
   },
   {
     code: 'INS',

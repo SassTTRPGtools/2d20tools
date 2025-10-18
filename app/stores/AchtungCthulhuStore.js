@@ -7,7 +7,6 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       characterName: '',
       culture: '',
       rank: '',
-      wealth: '',
       archetype: '',
       background: '',
       talent: ''
@@ -16,12 +15,11 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
     // 個人真理與傷疤 (10個欄位)
     personalTruths: Array(10).fill(''),
 
-    // 屬性系統 (7個屬性)
+    // 屬性系統 (6個屬性)
     attributes: {
       AGI: 0,  // 敏捷
       BRA: 0,  // 體魄
       COO: 0,  // 協調  
-      GRA: 0,  // 威儀
       INS: 0,  // 洞察
       REA: 0,  // 智識
       WIL: 0   // 意志
@@ -32,17 +30,15 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       AGI: 0,
       BRA: 0,
       COO: 0,
-      GRA: 0,
       INS: 0,
       REA: 0,
       WIL: 0
     },
 
-    // 技能系統 (12個技能)
+    // 技能系統 (13個技能)
     skills: {
       ACADEMIA: 0,
       ATHLETICS: 0,
-      CRAFTING: 0,
       ENGINEERING: 0,
       FIGHTING: 0,
       MEDICINE: 0,
@@ -51,7 +47,8 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       RESILIENCE: 0,
       STEALTH: 0,
       SURVIVAL: 0,
-      TACTICS: 0
+      TACTICS: 0,
+      VEHICLES: 0
     },
 
     // 技能專精選擇
@@ -74,7 +71,6 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
     combat: {
       courage: 0,
       fate: 0,
-      baseArmor: 0,
       totalArmor: 0,
       injuries: ''
     },
@@ -83,7 +79,6 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
     character: {
       languages: '',
       currentExperience: 0,
-      totalExperience: 0,
       experienceRecords: []
     },
 
@@ -93,6 +88,7 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       focus: '',
       reach: '',
       damage: '',
+      salvo: '',
       size: '',
       qualities: []
     })),
@@ -460,6 +456,7 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
           focus: '',
           reach: '',
           damage: '',
+          salvo: '',
           size: '',
           qualities: []
         }
@@ -693,7 +690,6 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
         characterName: '',
         culture: '',
         rank: '',
-        wealth: '',
         archetype: '',
         background: '',
         talent: ''
@@ -702,17 +698,17 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       this.personalTruths = Array(10).fill('')
 
       Object.assign(this.attributes, {
-        AGI: 6, BRA: 6, COO: 6, GRA: 6, INS: 6, REA: 6, WIL: 6
+        AGI: 6, BRA: 6, COO: 6, INS: 6, REA: 6, WIL: 6
       })
 
       Object.assign(this.attributeBonuses, {
-        AGI: 0, BRA: 0, COO: 0, GRA: 0, INS: 0, REA: 0, WIL: 0
+        AGI: 0, BRA: 0, COO: 0, INS: 0, REA: 0, WIL: 0
       })
 
       Object.assign(this.skills, {
-        ACADEMIA: 0, ATHLETICS: 0, CRAFTING: 0, ENGINEERING: 0,
+        ACADEMIA: 0, ATHLETICS: 0, ENGINEERING: 0,
         FIGHTING: 0, MEDICINE: 0, OBSERVATION: 0, PERSUASION: 0,
-        RESILIENCE: 0, STEALTH: 0, SURVIVAL: 0, TACTICS: 0
+        RESILIENCE: 0, STEALTH: 0, SURVIVAL: 0, TACTICS: 0, VEHICLES: 0
       })
 
       this.selectedFocuses = {}
@@ -731,7 +727,6 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       Object.assign(this.combat, {
         courage: 0,
         fate: 0,
-        baseArmor: 0,
         totalArmor: 0,
         injuries: ''
       })
@@ -739,12 +734,11 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       Object.assign(this.character, {
         languages: '',
         currentExperience: 0,
-        totalExperience: 0,
         experienceRecords: []
       })
 
       this.weapons = Array(5).fill().map(() => ({
-        name: '', focus: '', reach: '', damage: '', size: '', qualities: []
+        name: '', focus: '', reach: '', damage: '', salvo: '', size: '', qualities: []
       }))
 
       this.armors = Array(3).fill().map(() => ({
