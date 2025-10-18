@@ -17,12 +17,12 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
 
     // 屬性系統 (6個屬性)
     attributes: {
-      AGI: 0,  // 敏捷
-      BRA: 0,  // 體魄
-      COO: 0,  // 協調  
-      INS: 0,  // 洞察
-      REA: 0,  // 智識
-      WIL: 0   // 意志
+      AGI: 6,  // 敏捷
+      BRA: 6,  // 體魄
+      COO: 6,  // 協調  
+      INS: 6,  // 洞察
+      REA: 6,  // 智識
+      WIL: 6   // 意志
     },
 
     // 屬性額外傷害
