@@ -82,7 +82,7 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore.js'
-import { useachtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 import { useFVTTExport } from '~/composables/useFVTTExport.js'
 
 // Props 定義，支援不同角色卡類型
@@ -132,7 +132,7 @@ const showMenu = ref(false)
 const store = computed(() => {
   switch (props.characterType) {
     case 'achtung-cthulhu':
-      return useachtungCthulhuStore()
+      return useAchtungCthulhuStore()
     case 'cohors-cthulhu':
     default:
       return useCohorsCthvlhvStore()
@@ -193,7 +193,7 @@ const handleFVTTExport = async () => {
     }
     
     // 強制使用 Achtung Cthulhu Store
-    const achtungStore = useachtungCthulhuStore()
+    const achtungStore = useAchtungCthulhuStore()
     const data = achtungStore.getFullCharacterData
     
     // 使用 FVTT 匯出功能
