@@ -21,6 +21,210 @@ export const useFVTTExport = () => {
     return Date.now()
   }
 
+  // 中文武器尺寸轉換
+  const translateWeaponSize = (size) => {
+    const sizeMap = {
+      '次要': '次要',
+      '主要': '主要',
+      '重型': '重型',
+      'minor': '次要',
+      'major': '主要',
+      'heavy': '重型'
+    }
+    return sizeMap[size] || size || '次要'
+  }
+
+  // 根據武器尺寸獲取對應重量
+  const getWeaponWeightBySize = (size) => {
+    const weightMap = {
+      '次要': '1',
+      '主要': '3',
+      '重型': '5', // 假設重型武器重量為5
+      'minor': '1',
+      'major': '3', 
+      'heavy': '5'
+    }
+    return weightMap[size] || '1'
+  }
+
+  // 中文武器射程轉換
+  const translateWeaponRange = (range) => {
+    const rangeMap = {
+      // 中文射程轉換
+      '近距': 'close',
+      '短距': 'short', 
+      '中距': 'medium',
+      '遠距': 'long',
+      '極遠距': 'extreme',
+      '鄰近': 'reach',
+      // 英文保持不變
+      'close': 'close',
+      'short': 'short',
+      'medium': 'medium', 
+      'long': 'long',
+      'extreme': 'extreme',
+      'reach': 'reach'
+    }
+    return rangeMap[range] || range || 'close'
+  }
+
+  // 中文武器齊射轉換
+  const translateSalvo = (salvo) => {
+    const salvoMap = {
+      '兇猛': '兇猛',
+      '爆發': '爆發',
+      '全自動': '全自動',
+      'vicious': '兇猛',
+      'burst': '爆發',
+      'auto': '全自動'
+    }
+    return salvoMap[salvo] || salvo || ''
+  }
+
+  // 武器專精轉換（基於 FIGHTING 技能的 defaultFocuses）
+  const translateWeaponFocus = (focus) => {
+    const focusMap = {
+      // 中文到英文
+      '徒手戰鬥': 'Hand-to-Hand',
+      '近戰武器': 'Melee Weapons',
+      '手槍': 'Handguns',
+      '近距作戰': 'Close Quarters',
+      '步槍': 'Rifles',
+      '重型武器': 'Heavy Weapons',
+      '威脅感知': 'Threat Awareness',
+      '異域': 'Exotic',
+      // 英文保持不變
+      'Hand-to-Hand': 'Hand-to-Hand',
+      'Melee Weapons': 'Melee Weapons',
+      'Handguns': 'Handguns',
+      'Close Quarters': 'Close Quarters',
+      'Rifles': 'Rifles',
+      'Heavy Weapons': 'Heavy Weapons',
+      'Threat Awareness': 'Threat Awareness',
+      'Exotic': 'Exotic'
+    }
+    return focusMap[focus] || focus || 'Melee Weapons'
+  }
+
+  // 護甲特性處理（根據護甲資料中的特性設定對應的 qualities）
+  const getArmorQualities = (armorData) => {
+    // 中文特性到英文 quality 的對照
+    const qualityMap = {
+      '重型': 'heavy',
+      '厚重': 'heavy',
+      '盾牌': 'shield',
+      '護盾': 'shield',
+      '不舒適': 'uncomfortable',
+      '不適': 'uncomfortable',
+      '笨重': 'uncomfortable'
+    }
+
+    const qualities = {
+      heavy: {
+        description: "",
+        label: "Heavy",
+        value: false
+      },
+      shield: {
+        description: "",
+        label: "Shield", 
+        value: false
+      },
+      uncomfortable: {
+        description: "",
+        label: "Uncomfortable",
+        value: false
+      }
+    }
+
+    // 根據 armorData 中的布林屬性設定
+    if (armorData.heavy) qualities.heavy.value = true
+    if (armorData.shield) qualities.shield.value = true
+    if (armorData.uncomfortable) qualities.uncomfortable.value = true
+
+    // 根據 armorData 中的特性陣列或字串設定
+    if (armorData.qualities) {
+      const qualityList = Array.isArray(armorData.qualities) ? armorData.qualities : [armorData.qualities]
+      qualityList.forEach(quality => {
+        const englishQuality = qualityMap[quality] || quality
+        if (qualities[englishQuality]) {
+          qualities[englishQuality].value = true
+        }
+      })
+    }
+
+    return qualities
+  }
+
+  // 武器特性處理（根據武器資料中的特性設定對應的 qualities）
+  const getWeaponQualities = (weaponData) => {
+    // 中文特性到英文 quality 的對照
+    const qualityMap = {
+      '精準': 'accurate',
+      '禍根': 'bane',
+      '近戰': 'close_quarters',
+      '笨重': 'cumbersome',
+      '削弱': 'debilitating',
+      '局勢升高': 'escalation',
+      '實驗性': 'experimental',
+      '巨物殺手': 'giant_killer',
+      '重型': 'heavy',
+      '隱藏': 'hidden',
+      '飢渴': 'hunger',
+      '不精準': 'inaccurate',
+      '間接': 'indirect',
+      '彈藥型': 'munition',
+      '招架': 'parrying',
+      '精確': 'precise',
+      '可靠': 'reliable',
+      '靜音': 'subtle',
+      '不可靠': 'unreliable',
+      '劇毒': 'venomous'
+    }
+
+    const qualities = {
+      accurate: { value: false },
+      bane: { value: false },
+      close_quarters: { value: false },
+      cumbersome: { value: false },
+      debilitating: { value: false },
+      escalation: { value: false },
+      experimental: { value: false },
+      giant_killer: { value: false },
+      heavy: { value: false },
+      hidden: { value: false },
+      hunger: { value: false },
+      inaccurate: { value: false },
+      indirect: { value: false },
+      munition: { value: false },
+      parrying: { value: false },
+      precise: { value: false },
+      reliable: { value: false },
+      subtle: { value: false },
+      unreliable: { value: false },
+      venomous: { value: false }
+    }
+
+    // 根據 weaponData 中的布林屬性設定
+    Object.keys(qualities).forEach(key => {
+      if (weaponData[key]) {
+        qualities[key].value = true
+      }
+    })
+
+    // 根據 weaponData 中的特性陣列設定
+    if (weaponData.qualities && Array.isArray(weaponData.qualities)) {
+      weaponData.qualities.forEach(quality => {
+        const englishQuality = qualityMap[quality] || quality
+        if (qualities[englishQuality]) {
+          qualities[englishQuality].value = true
+        }
+      })
+    }
+
+    return qualities
+  }
+
   // 屬性代碼轉換對照表（僅 Achtung Cthulhu 支援的屬性）
   const attributeMapping = {
     AGI: 'agi',
@@ -43,7 +247,7 @@ export const useFVTTExport = () => {
     MEDICINE: 'Medicine',
     OBSERVATION: 'Observation',
     PERSUASION: 'Persuasion',
-    RESILIENCE: 'Resilience',
+    RESILIENCE: 'Resilience',  // 確保拼寫正確
     STEALTH: 'Stealth',
     SURVIVAL: 'Survival',
     TACTICS: 'Tactics',
@@ -60,10 +264,9 @@ export const useFVTTExport = () => {
 
     return {
       _id: generateId(),
-      effects: [],
-      folder: null,
-      img: "systems/ac2d20/assets/skills.svg",
       name: skillName,
+      type: "skill",
+      img: "systems/ac2d20/assets/skills.svg",
       system: {
         description: "",
         favorite: false,
@@ -72,15 +275,17 @@ export const useFVTTExport = () => {
         summary: "",
         value: skillData || 0
       },
-      type: "skill",
+      effects: [],
+      folder: null,
+      sort: 0,
+      flags: {},
       _stats: {
         coreVersion: "13.348",
         systemId: "ac2d20", 
         systemVersion: "11.8.2",
+        modifiedTime: getCurrentTimestamp(),
         lastModifiedBy: generateId()
       },
-      sort: 0,
-      flags: {},
       ownership: {
         default: 0
       }
@@ -310,77 +515,83 @@ export const useFVTTExport = () => {
     if (!weaponData.name) return null
 
     return {
+      name: weaponData.name,
+      type: "weapon",
       _id: generateId(),
+      img: "systems/ac2d20/assets/doc-icons/weapon.svg",
+      system: {
+        description: weaponData.description || "",
+        favorite: false,
+        cost: weaponData.cost || 0,
+        quantity: weaponData.quantity || 1,
+        rarity: weaponData.rarity || 0,
+        restriction: weaponData.restriction || 0,
+        size: translateWeaponSize(weaponData.size),
+        stashed: false,
+        weight: weaponData.weight || getWeaponWeightBySize(weaponData.size),
+        equippable: true,
+        equipped: weaponData.equipped || false,
+        ammo: weaponData.ammo || 0,
+        effect: {
+          area: {
+            rank: 0,
+            value: false
+          },
+          backlash_x: {
+            rank: 1,
+            value: false
+          },
+          drain: {
+            rank: 0,
+            value: false
+          },
+          intense: {
+            rank: 0,
+            value: false
+          },
+          persistent_x: {
+            rank: 1,
+            value: false
+          },
+          piercing_x: {
+            rank: 1,
+            value: false
+          },
+          snare: {
+            rank: 0,
+            value: false
+          },
+          stun: {
+            rank: 0,
+            value: false
+          },
+          vicious: {
+            rank: 0,
+            value: weaponData.vicious || false
+          }
+        },
+        escalation: weaponData.escalation || true,
+        focus: translateWeaponFocus(weaponData.focus),
+        melee: weaponData.reach === "close" || false,
+        qualities: getWeaponQualities(weaponData),
+        range: translateWeaponRange(weaponData.reach || weaponData.range),
+        salvo: translateSalvo(weaponData.salvo),
+        skill: weaponData.skill || "Fighting",
+        stress: parseInt(weaponData.damage) || 4,
+        weaponType: weaponData.weaponType || "agi",
+        focuses: weaponData.focuses || []
+      },
       effects: [],
       folder: null,
-      img: "systems/ac2d20/assets/doc-icons/weapon.svg",
-      name: weaponData.name,
-      system: {
-        description: "",
-        favorite: false,
-        cost: 0,
-        quantity: 1,
-        rarity: 0,
-        restriction: 0,
-        size: weaponData.size || 0,
-        stashed: false,
-        weight: "3",
-        equippable: true,
-        equipped: false,
-        ammo: 0,
-        effect: {
-          area: { rank: 0, value: false },
-          backlash_x: { rank: 1, value: false },
-          drain: { rank: 0, value: false },
-          intense: { rank: 0, value: false },
-          persistent_x: { rank: 1, value: false },
-          piercing_x: { rank: 1, value: false },
-          snare: { rank: 0, value: false },
-          stun: { rank: 0, value: false },
-          vicious: { rank: 0, value: false }
-        },
-        escalation: false,
-        focus: weaponData.focus || "Melee Weapons",
-        melee: weaponData.reach === "close",
-        qualities: {
-          accurate: { value: false },
-          bane: { value: false },
-          close_quarters: { value: false },
-          cumbersome: { value: false },
-          debilitating: { value: false },
-          escalation: { value: true },
-          experimental: { value: false },
-          giant_killer: { value: false },
-          heavy: { value: false },
-          hidden: { value: false },
-          hunger: { value: false },
-          inaccurate: { value: false },
-          indirect: { value: false },
-          munition: { value: false },
-          parrying: { value: false },
-          precise: { value: false },
-          reliable: { value: true },
-          subtle: { value: false },
-          unreliable: { value: false },
-          venomous: { value: false }
-        },
-        range: weaponData.reach || "close",
-        salvo: weaponData.salvo || "",
-        skill: "Fighting",
-        stress: parseInt(weaponData.damage) || 4,
-        weaponType: "coo"
-      },
-      type: "weapon",
+      sort: 0,
+      flags: {},
       _stats: {
         coreVersion: "13.348",
         systemId: "ac2d20",
         systemVersion: "11.8.2",
-        createdTime: getCurrentTimestamp(),
         modifiedTime: getCurrentTimestamp(),
         lastModifiedBy: generateId()
       },
-      sort: 0,
-      flags: {},
       ownership: {
         default: 0
       }
@@ -392,41 +603,77 @@ export const useFVTTExport = () => {
     if (!armorData.name) return null
 
     return {
-      _id: generateId(),
-      effects: [],
-      folder: null,
-      img: "systems/ac2d20/assets/doc-icons/armor.svg", 
       name: armorData.name,
+      type: "armor",
+      _id: generateId(),
+      img: "systems/ac2d20/assets/doc-icons/armor.svg",
       system: {
-        description: "",
+        description: armorData.description || "",
         favorite: false,
-        cost: 0,
-        quantity: 1,
-        rarity: 0,
-        restriction: 1,
-        size: 0,
+        cost: armorData.cost || 0,
+        quantity: armorData.quantity || 1,
+        rarity: armorData.rarity || 0,
+        restriction: armorData.restriction || 0,
+        size: parseInt(armorData.size) || 0,
         stashed: false,
-        weight: "3",
+        weight: armorData.weight || "0",
         equippable: true,
-        equipped: false,
-        qualities: {
-          heavy: { description: "", label: "Heavy", value: false },
-          shield: { description: "", label: "Shield", value: false },
-          uncomfortable: { description: "", label: "Uncomfortable", value: false }
-        },
+        equipped: armorData.equipped || false,
+        qualities: getArmorQualities(armorData),
         resistance: parseInt(armorData.resistance) || 1
       },
-      type: "armor",
+      effects: [],
+      folder: null,
+      sort: 0,
+      flags: {},
       _stats: {
         coreVersion: "13.348",
         systemId: "ac2d20",
-        systemVersion: "11.8.2", 
-        createdTime: getCurrentTimestamp(),
+        systemVersion: "11.8.2",
         modifiedTime: getCurrentTimestamp(),
         lastModifiedBy: generateId()
       },
+      ownership: {
+        default: 0
+      }
+    }
+  }
+
+  // 創建技能包物件
+  const createSkillkitItem = (skillkitData) => {
+    if (!skillkitData.name) return null
+
+    return {
+      name: skillkitData.name,
+      type: "skillkit",
+      _id: generateId(),
+      img: "systems/ac2d20/assets/doc-icons/skillkit.svg",
+      system: {
+        description: skillkitData.description || "",
+        favorite: false,
+        cost: skillkitData.cost || 0,
+        quantity: skillkitData.quantity || 1,
+        rarity: skillkitData.rarity || 0,
+        restriction: skillkitData.restriction || 0,
+        size: parseInt(skillkitData.size) || 0,
+        stashed: false,
+        weight: skillkitData.weight || "1",
+        equippable: true,
+        equipped: skillkitData.equipped || false,
+        resources: skillkitData.resources || 3,
+        skill: skillkitData.skill || ""
+      },
+      effects: [],
+      folder: null,
       sort: 0,
       flags: {},
+      _stats: {
+        coreVersion: "13.348",
+        systemId: "ac2d20",
+        systemVersion: "11.8.2",
+        modifiedTime: getCurrentTimestamp(),
+        lastModifiedBy: generateId()
+      },
       ownership: {
         default: 0
       }
@@ -438,27 +685,187 @@ export const useFVTTExport = () => {
     if (!talentData.name) return null
 
     return {
-      _id: generateId(),
-      effects: [],
-      folder: null,
-      img: "systems/ac2d20/assets/doc-icons/talent.svg",
       name: talentData.name,
+      type: "talent",
+      _id: generateId(),
+      img: "systems/ac2d20/assets/doc-icons/talent.svg",
       system: {
         description: `<p>${talentData.content || '天賦描述'}</p>`,
         favorite: false,
         keywords: talentData.keywords || '關鍵詞'
       },
-      type: "talent",
+      effects: [],
+      folder: null,
+      sort: 0,
+      flags: {},
       _stats: {
         coreVersion: "13.348",
         systemId: "ac2d20",
-        systemVersion: "11.8.2", 
-        createdTime: getCurrentTimestamp(),
+        systemVersion: "11.8.2",
         modifiedTime: getCurrentTimestamp(),
         lastModifiedBy: generateId()
       },
+      ownership: {
+        default: 0
+      }
+    }
+  }
+
+  // 創建法術物件
+  const createSpellItem = (spellSlot) => {
+    if (!spellSlot.spell || !spellSlot.spell.chineseName) return null
+
+    const spell = spellSlot.spell
+    
+    // 法術類型映射
+    const getSpellType = (category) => {
+      const typeMap = {
+        '攻擊法術': 'att',
+        '結界法術': 'bar',
+        '祝福法術': 'ble',
+        '占卜法術': 'div',
+        '顯現法術': 'man',
+        '祝福或詛咒法術': 'cur',
+        '召喚法術': 'sum',
+        '詛咒法術': 'cur',
+        '放逐法術': 'ban',
+        '儀式': 'ins'  // 儀式應該是 ins 類型
+      }
+      return typeMap[category] || 'ins' // 默認為瞬發法術
+    }
+
+    // 技能映射 - 統一使用與 skillMapping 相同的名稱
+    const translateSkill = (skill) => {
+      const skillMap = {
+        '醫學': 'Medicine',
+        '韌性': 'Resilience', 
+        '說服': 'Persuasion',  // 修正為與 skillMapping 一致
+        '戰鬥': 'Fighting',
+        '學識': 'Academia',
+        '求生': 'Survival',
+        '觀察': 'Observation',
+        '戰術': 'Tactics',
+        '潛匿': 'Stealth'
+      }
+      return skillMap[skill] || 'Academia'  // 改為 Academia 作為默認
+    }
+
+    // 專精映射
+    const translateFocus = (skill) => {
+      const focusMap = {
+        '醫學': 'Medicine',
+        '韌性': 'Resilience',
+        '說服': 'Persuasion',  // 修正為與 skillMapping 一致
+        '戰鬥': 'Fighting',
+        '學識': 'Occultism',  // 專精仍使用 Occultism
+        '求生': 'Survival',
+        '觀察': 'Observation',
+        '戰術': 'Tactics',
+        '潛匿': 'Stealth'
+      }
+      return focusMap[skill] || 'Occultism'
+    }
+
+    // 解析儀式步驟
+    const parseRitualSteps = (stepsString) => {
+      if (!stepsString) return 0
+      
+      // 提取數字，例如 "1+（由遊戲主持人裁定）" 提取出 1
+      const stepsMatch = stepsString.match(/(\d+)/)
+      return stepsMatch ? parseInt(stepsMatch[1]) : 0
+    }
+
+    // 解析消耗文字
+    const parseCost = (costString) => {
+      if (!costString) return { cost: 1, effects: '' }
+      
+      // 提取數字部分作為基本消耗
+      const costMatch = costString.match(/(\d+)/)
+      const baseCost = costMatch ? parseInt(costMatch[1]) : 1
+      
+      // 移除數字和🎲，剩下的作為效果
+      const effects = costString.replace(/\d+🎲?消耗[，,]?/, '').trim()
+      
+      return {
+        cost: baseCost,
+        effects: effects
+      }
+    }
+
+    // 解析傷害文字
+    const parseDamage = (effectString) => {
+      if (!effectString) return { damage: 0, effects: '', formula: '' }
+      
+      // 查找傷害數值
+      const damageMatch = effectString.match(/(\d+)🎲/)
+      const damage = damageMatch ? parseInt(damageMatch[1]) : 0
+      
+      // 查找傷害效果
+      const effectMatch = effectString.match(/🎲(.+?)(?:傷害|，|$)/)
+      const effects = effectMatch ? effectMatch[1].trim() : ''
+      
+      // 生成傷害公式
+      const formula = damage > 0 ? `${damage}d6` : ''
+      
+      return {
+        damage: damage,
+        effects: effects,
+        formula: formula
+      }
+    }
+
+    const costData = parseCost(spell.cost)
+    const damageData = parseDamage(spell.effect)
+
+    return {
+      name: spell.chineseName||spell.englishName,
+      type: "spell",
+      _id: generateId(),
+      img: "systems/ac2d20/assets/doc-icons/spell.svg",
+      system: {
+        description: `<p>${spell.description || spell.effect || '法術描述'}</p>`,
+        favorite: false,
+        bonusChallenge: 0,
+        complication: 20,
+        cost: costData.cost,
+        costEffects: costData.effects,
+        damage: damageData.damage,
+        damageEffects: damageData.effects,
+        damageFormula: damageData.formula,
+        damageStressType: damageData.damage > 0 ? "mental" : "",
+        difficulty: spell.difficulty || 1,
+        duration: spell.duration || '即時',
+        effect: spell.effect || '',
+        flawed: spell.flawedSpell || '',
+        focus: translateFocus(spell.skill),
+        mantle: false,
+        momentum: spell.momentumOptions ? spell.momentumOptions.map(opt => 
+          `${opt.cost}動力：${opt.effect}`
+        ).join('\n') : '',
+        ritualRequirements: spell.requirements || '',
+        ritualResistance: '', // 目前資料中沒有抗性資訊，保持空白
+        ritualSteps: {
+          max: spell.category === '儀式' ? parseRitualSteps(spell.steps) : 0,
+          value: 0
+        },
+        ritualStress: {
+          max: spell.category === '儀式' ? (parseInt(spell.maxStress) || 0) : 0,
+          value: 0
+        },
+        skill: 'Academia',
+        spellType: getSpellType(spell.category)
+      },
+      effects: [],
+      folder: null,
       sort: 0,
       flags: {},
+      _stats: {
+        coreVersion: "13.348",
+        systemId: "ac2d20", 
+        systemVersion: "11.8.2",
+        modifiedTime: getCurrentTimestamp(),
+        lastModifiedBy: generateId()
+      },
       ownership: {
         default: 0
       }
@@ -519,11 +926,36 @@ export const useFVTTExport = () => {
             value: 0
           },
           stress: {
-            max: characterData.stress?.maxStressBoxes || 20,
+            max: characterData.stress?.maxStressBoxes || 0,
             mod: 0,
-            value: (characterData.attributes?.WIL || 6) + 1
+            value: (characterData.attributes?.WIL || 6) + 6
           },
-          attributes: {},
+          attributes: {
+            agi: {
+              bonus: characterData.attributeBonuses?.AGI || 0,
+              value: characterData.attributes?.AGI || 6
+            },
+            bra: {
+              bonus: characterData.attributeBonuses?.BRA || 0,
+              value: characterData.attributes?.BRA || 6
+            },
+            coo: {
+              bonus: characterData.attributeBonuses?.COO || 0,
+              value: characterData.attributes?.COO || 6
+            },
+            ins: {
+              bonus: characterData.attributeBonuses?.INS || 0,
+              value: characterData.attributes?.INS || 6
+            },
+            rea: {
+              bonus: characterData.attributeBonuses?.REA || 0,
+              value: characterData.attributes?.REA || 6
+            },
+            wil: {
+              bonus: characterData.attributeBonuses?.WIL || 0,
+              value: characterData.attributes?.WIL || 6
+            }
+          },
           archetype: characterData.basicInfo?.archetype || "",
           background: characterData.basicInfo?.background || "",
           characteristic: "",
@@ -604,6 +1036,9 @@ export const useFVTTExport = () => {
           flags: {},
           randomImg: false,
           appendNumber: false,
+          prependAdjective: false,
+          randomImg: false,
+          appendNumber: false,
           prependAdjective: false
         },
         items: [],
@@ -614,7 +1049,6 @@ export const useFVTTExport = () => {
           coreVersion: "13.348",
           systemId: "ac2d20",
           systemVersion: "11.8.2",
-          createdTime: getCurrentTimestamp(),
           modifiedTime: getCurrentTimestamp(),
           lastModifiedBy: generateId(),
           exportSource: {
@@ -630,27 +1064,30 @@ export const useFVTTExport = () => {
         }
       }
 
-      // 轉換屬性（僅處理 Achtung Cthulhu 支援的屬性）
-      if (characterData.attributes) {
-        supportedAttributes.forEach(key => {
-          if (characterData.attributes[key] !== undefined) {
-            const fvttKey = attributeMapping[key]
-            fvttCharacter.system.attributes[fvttKey] = {
-              bonus: characterData.attributeBonuses?.[key] || 0,
-              value: characterData.attributes[key] || 6
-            }
-          }
-        })
-      }
-
       // 建立技能物件（僅處理 Achtung Cthulhu 支援的技能）
       if (characterData.skills) {
+        console.log('[FVTT Export] 開始處理技能，角色技能資料:', characterData.skills)
+        
+        // 確保所有支援的技能都被創建，即使沒有資料也創建預設值
         supportedSkills.forEach(skillCode => {
-          if (characterData.skills[skillCode] !== undefined) {
-            const skillItem = createSkillItem(skillCode, characterData.skills[skillCode], characterData.selectedFocuses)
-            if (skillItem) {
-              fvttCharacter.items.push(skillItem)
-            }
+          const skillValue = characterData.skills[skillCode] !== undefined ? characterData.skills[skillCode] : 0
+          console.log(`[FVTT Export] 創建技能: ${skillCode} -> ${skillMapping[skillCode]}, 值: ${skillValue}`)
+          
+          const skillItem = createSkillItem(skillCode, skillValue, characterData.selectedFocuses)
+          if (skillItem) {
+            console.log(`[FVTT Export] 技能物件創建成功: ${skillItem.name}`)
+            fvttCharacter.items.push(skillItem)
+          } else {
+            console.warn(`[FVTT Export] 技能物件創建失敗: ${skillCode}`)
+          }
+        })
+      } else {
+        console.warn('[FVTT Export] 角色資料中沒有技能資料，創建預設技能')
+        // 如果完全沒有技能資料，創建所有支援技能的預設版本
+        supportedSkills.forEach(skillCode => {
+          const skillItem = createSkillItem(skillCode, 0, {})
+          if (skillItem) {
+            fvttCharacter.items.push(skillItem)
           }
         })
       }
@@ -681,6 +1118,26 @@ export const useFVTTExport = () => {
           const talentItem = createTalentItem(talent)
           if (talentItem) {
             fvttCharacter.items.push(talentItem)
+          }
+        })
+      }
+
+      // 建立法術物件
+      if (characterData.spells && characterData.spells.spellSlots) {
+        characterData.spells.spellSlots.forEach(spellSlot => {
+          const spellItem = createSpellItem(spellSlot)
+          if (spellItem) {
+            fvttCharacter.items.push(spellItem)
+          }
+        })
+      }
+
+      // 建立技能包物件
+      if (characterData.skillkits) {
+        characterData.skillkits.forEach(skillkit => {
+          const skillkitItem = createSkillkitItem(skillkit)
+          if (skillkitItem) {
+            fvttCharacter.items.push(skillkitItem)
           }
         })
       }

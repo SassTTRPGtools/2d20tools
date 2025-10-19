@@ -57,7 +57,7 @@
               </td>
               <td class="p-1 border border-slate-700 bg-white">
                 <div class="flex flex-wrap gap-1 p-1 min-h-8 justify-center items-center">
-                  <span class="font-mono text-xs">{{ parseDamageEffects(weapon.damage).baseDamage }}</span>
+                  <span v-if="parseDamageEffects(weapon.damage).baseDamage" class="font-mono text-xs">{{ parseDamageEffects(weapon.damage).baseDamage }}</span>
                   <span
                     v-for="(effect, eIndex) in parseDamageEffects(weapon.damage).effects"
                     :key="`weapon-damage-effect-${eIndex}`"
@@ -67,7 +67,7 @@
                   >
                     {{ effect }}
                   </span>
-                  <span v-if="!weapon.damage || parseDamageEffects(weapon.damage).effects.length === 0" class="text-gray-400 text-xs italic">
+                  <span v-if="!weapon.damage || (!parseDamageEffects(weapon.damage).baseDamage && parseDamageEffects(weapon.damage).effects.length === 0)" class="text-gray-400 text-xs italic">
                     {{ weapon.damage || '無傷害' }}
                   </span>
                 </div>
