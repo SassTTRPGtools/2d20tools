@@ -106,7 +106,7 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue'
-import { useAchtungCthulhuStore } from '../stores/achtungCthulhuStore.js'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 // 使用 Pinia store
 const store = useAchtungCthulhuStore()
