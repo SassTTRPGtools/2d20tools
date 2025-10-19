@@ -93,10 +93,7 @@
             <div>
               <h4 class="text-lg font-semibold text-gray-800 mb-2">背景描述</h4>
               <p class="text-gray-700 mb-4">{{ selectedBackground.detailDescription }}</p>
-            </div>
-            
-            <!-- 右側：裝備和真理 -->
-            <div>
+              
               <h4 class="text-lg font-semibold text-gray-800 mb-2">起始裝備</h4>
               <ul class="text-gray-700 space-y-1 mb-4">
                 <li v-for="equipment in selectedBackground.equipment" :key="equipment" class="flex items-start">
@@ -104,116 +101,113 @@
                   <span>{{ equipment }}</span>
                 </li>
               </ul>
+            </div>
+            
+            <!-- 右側：真理選擇 -->
+            <div>
+              <h4 class="text-lg font-semibold text-gray-800 mb-4">選擇真理 (選擇1項)</h4>
+              <div class="space-y-2 mb-4">
+                <button
+                  v-for="truth in selectedBackground.truthOptions"
+                  :key="truth"
+                  @click="selectTruth(truth)"
+                  :class="[
+                    'w-full text-left p-3 border-2 rounded-lg transition-all duration-200',
+                    selectedTruth === truth
+                      ? 'bg-purple-100 border-purple-400 text-purple-800'
+                      : 'bg-white border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                  ]"
+                >
+                  {{ truth }}
+                </button>
+              </div>
+              <div class="text-sm text-gray-600">
+                <p class="mb-2"><strong>或者</strong>，你可以自行創作與背景相關的真理</p>
+                <textarea
+                  v-model="customTruth"
+                  @input="handleCustomTruthInput"
+                  placeholder="輸入自訂真理..."
+                  class="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                  rows="2"
+                ></textarea>
+              </div>
               
-              <h4 class="text-lg font-semibold text-gray-800 mb-2">可選真理</h4>
-              <ul class="text-gray-700 space-y-1">
-                <li v-for="truth in selectedBackground.truthOptions" :key="truth" class="flex items-start">
-                  <span class="text-purple-600 mr-2">•</span>
-                  <span>{{ truth }}</span>
-                </li>
-              </ul>
+              <!-- 已選擇真理顯示 -->
+              <div v-if="finalTruth" class="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                <h5 class="font-semibold text-purple-800 mb-1">已選擇真理:</h5>
+                <p class="text-sm text-purple-700">{{ finalTruth }}</p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- 機械效果頁籤 -->
         <div v-else-if="activeDetailTab === 'mechanics'">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- 屬性加成 -->
-            <div>
-              <h4 class="text-lg font-semibold text-gray-800 mb-3">屬性加成</h4>
-              <div class="space-y-2 mb-6">
-                <div 
-                  v-for="(value, attr) in selectedBackground.attributeBonus" 
-                  :key="attr"                  
-                  class="bg-green-50 border-l-4 border-green-400 p-3 rounded"
-                >
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <h5 class="font-medium text-green-800">{{ getAttributeName(attr) }} +{{ value }}</h5>
-                      <p class="text-xs text-green-600 mt-1">{{ getAttributeDescription(attr) }}</p>
+          <div class="space-y-8">
+            <!-- 屬性和技能加成區域 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- 屬性加成 -->
+              <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-3">屬性加成</h4>
+                <div class="space-y-2 mb-6">
+                  <div 
+                    v-for="(value, attr) in selectedBackground.attributeBonus" 
+                    :key="attr"                  
+                    class="bg-green-50 border-l-4 border-green-400 p-3 rounded"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <h5 class="font-medium text-green-800">{{ getAttributeName(attr) }} +{{ value }}</h5>
+                        <p class="text-xs text-green-600 mt-1">{{ getAttributeDescription(attr) }}</p>
+                      </div>
+                      <div class="text-green-500 text-xl font-bold">+{{ value }}</div>
                     </div>
-                    <div class="text-green-500 text-xl font-bold">+{{ value }}</div>
+                  </div>
+                </div>
+
+                <!-- 技能加成 -->
+                <h4 class="text-lg font-semibold text-gray-800 mb-3">技能加成</h4>
+                <div class="space-y-2">
+                  <div 
+                    v-for="(value, skill) in selectedBackground.skillBonus" 
+                    :key="skill"                  
+                    class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <h5 class="font-medium text-blue-800">{{ getSkillName(skill) }} +{{ value }}</h5>
+                        <p class="text-xs text-blue-600 mt-1">{{ getSkillDescription(skill) }}</p>
+                      </div>
+                      <div class="text-blue-500 text-xl font-bold">+{{ value }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <!-- 技能加成 -->
-              <h4 class="text-lg font-semibold text-gray-800 mb-3">技能加成</h4>
-              <div class="space-y-2">
-                <div 
-                  v-for="(value, skill) in selectedBackground.skillBonus" 
-                  :key="skill"                  
-                  class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded"
-                >
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <h5 class="font-medium text-blue-800">{{ getSkillName(skill) }} +{{ value }}</h5>
-                      <p class="text-xs text-blue-600 mt-1">{{ getSkillDescription(skill) }}</p>
-                    </div>
-                    <div class="text-blue-500 text-xl font-bold">+{{ value }}</div>
+              <!-- 專精和天賦要求 -->
+              <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-3">專精要求</h4>
+                <div class="space-y-2 mb-6">
+                  <div 
+                    v-for="requirement in selectedBackground.focusRequirements" 
+                    :key="requirement.skill"
+                    class="bg-purple-50 border-l-4 border-purple-400 p-3 rounded"
+                  >
+                    <p class="text-sm text-purple-800 font-medium">{{ requirement.description }}</p>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- 專精和天賦要求 -->
-            <div>
-              <h4 class="text-lg font-semibold text-gray-800 mb-3">專精要求</h4>
-              <div class="space-y-2 mb-6">
-                <div 
-                  v-for="requirement in selectedBackground.focusRequirements" 
-                  :key="requirement.skill"
-                  class="bg-purple-50 border-l-4 border-purple-400 p-3 rounded"
-                >
-                  <p class="text-sm text-purple-800 font-medium">{{ requirement.description }}</p>
+                
+                <h4 class="text-lg font-semibold text-gray-800 mb-3">天賦要求</h4>
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-3 rounded">
+                  <p class="text-sm text-amber-800 font-medium">{{ selectedBackground.talentRequirement.description }}</p>
                 </div>
               </div>
-              
-              <h4 class="text-lg font-semibold text-gray-800 mb-3">天賦要求</h4>
-              <div class="bg-amber-50 border-l-4 border-amber-400 p-3 rounded">
-                <p class="text-sm text-amber-800 font-medium">{{ selectedBackground.talentRequirement.description }}</p>
-              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- 自訂選擇頁籤 -->
-        <div v-else-if="activeDetailTab === 'selections'">
-          <!-- 真理選擇 -->
-          <div class="mb-6">
-            <h4 class="text-lg font-semibold text-gray-800 mb-4">選擇真理 (選擇1項)</h4>
-            <div class="space-y-2 mb-4">
-              <button
-                v-for="truth in selectedBackground.truthOptions"
-                :key="truth"
-                @click="selectTruth(truth)"
-                :class="[
-                  'w-full text-left p-3 border-2 rounded-lg transition-all duration-200',
-                  selectedTruth === truth
-                    ? 'bg-purple-100 border-purple-400 text-purple-800'
-                    : 'bg-white border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                ]"
-              >
-                {{ truth }}
-              </button>
-            </div>
-            <div class="text-sm text-gray-600">
-              <p class="mb-2"><strong>或者</strong>，你可以自行創作與背景相關的真理</p>
-              <textarea
-                v-model="customTruth"
-                @input="handleCustomTruthInput"
-                placeholder="輸入自訂真理..."
-                class="w-full p-2 border border-gray-300 rounded-lg text-sm"
-                rows="2"
-              ></textarea>
-            </div>
-          </div>
-
-            <!-- 專精選擇 -->
-            <div v-if="skillsForFocus.length > 0">
+            <!-- 專精選擇區域 -->
+            <div v-if="skillsForFocus.length > 0" class="border-t pt-6">
               <div class="flex justify-between items-center mb-4">
-                <h4 class="text-lg font-semibold text-gray-800">選擇專精</h4>
+                <h4 class="text-xl font-semibold text-gray-800">選擇專精</h4>
                 <span class="text-sm font-medium px-3 py-1 rounded-full"
                       :class="isRequiredFocusesSelected ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'">
                   已選擇: {{ selectedFocuses.length }} / {{ totalRequiredFocuses }}
@@ -250,7 +244,7 @@
                     <h5 class="font-semibold text-sm">{{ skill.name }}</h5>
                   </div>
                   
-                  <!-- 專精列表 - 採用類似AchtungCthulhuSheet的樣式 -->
+                  <!-- 專精列表 -->
                   <div class="p-3 bg-white">
                     <div class="flex flex-wrap gap-2">
                       <button
@@ -277,30 +271,12 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <!-- 已選擇的專精列表 -->
-              <div v-if="selectedFocuses.length > 0" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h5 class="font-semibold text-blue-800 mb-3">已選擇的專精:</h5>
-                <div class="space-y-2">
-                  <div v-for="focus in selectedFocuses" :key="`selected-${focus.skillCode}-${focus.name}`"
-                       class="flex justify-between items-start p-2 bg-white rounded border">
-                    <div>
-                      <span class="font-medium text-blue-800">{{ focus.skillName }} - {{ focus.name }}</span>
-                      <p class="text-sm text-blue-600 mt-1">{{ focus.description }}</p>
-                    </div>
-                    <button @click="removeFocus(focus)" 
-                            class="text-red-500 hover:text-red-700 ml-2 text-xs">
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              </div>
+              </div>              
             </div>
 
-            <!-- 天賦選擇 -->
-            <div v-if="availableTalents.length > 0">
-              <h4 class="text-lg font-semibold text-gray-800 mb-4">選擇天賦</h4>
+            <!-- 天賦選擇區域 -->
+            <div v-if="availableTalents.length > 0" class="border-t pt-6">
+              <h4 class="text-xl font-semibold text-gray-800 mb-4">選擇天賦</h4>
               
               <div class="mb-4 text-sm text-gray-600">
                 <p>{{ getTalentRequirementDescription() }}</p>
@@ -313,15 +289,23 @@
                   :key="`${talent.category}-${talent.englishName}`"
                   @click="selectedTalent = talent"
                   :class="[
-                    'w-full text-left p-4 border-b border-gray-200 last:border-b-0 transition-all duration-200 hover:bg-green-50',
+                    'w-full text-left p-4 border-b border-gray-200 last:border-b-0 transition-all duration-200 relative',
                     selectedTalent === talent
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-white text-gray-700'
+                      ? 'bg-green-100 text-green-800 border-l-4 border-l-green-500 shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-green-50 hover:border-l-4 hover:border-l-green-300'
                   ]"
                 >
                   <div class="flex justify-between items-start mb-2">
                     <div class="font-semibold">{{ talent.chineseName }}</div>
-                    <span class="text-xs bg-gray-200 px-2 py-1 rounded">{{ talent.keywords }}</span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs bg-gray-200 px-2 py-1 rounded">{{ talent.keywords }}</span>
+                      <!-- 選中指示器 -->
+                      <div v-if="selectedTalent === talent" class="text-green-600">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                   <div class="text-sm text-gray-600 leading-relaxed">{{ talent.content }}</div>
                 </button>
@@ -337,8 +321,8 @@
             </div>
 
             <!-- 選擇摘要 -->
-            <div>
-              <h4 class="text-lg font-semibold text-gray-800 mb-4">選擇摘要</h4>
+            <div class="border-t pt-6">
+              <h4 class="text-xl font-semibold text-gray-800 mb-4">選擇摘要</h4>
               <div class="bg-white border border-gray-200 rounded-lg p-4">
                 <div class="space-y-3">
                   <div>
@@ -363,8 +347,10 @@
                   </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -402,9 +388,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { backgrounds as backgroundData } from '~/data/backgrounds.js'
-import { useTalentData } from '~/composables/useTalentDataAC.js'
+import { ref, computed, watch } from 'vue'
+import { backgrounds as backgroundData } from '~/data/backgroundsAC.js'
+import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
 
 // Props
 const props = defineProps({
@@ -424,8 +410,17 @@ const props = defineProps({
 
 const emit = defineEmits(['next-step', 'prev-step', 'select-background'])
 
-// 天賦資料
-const { talentsDatabase, getTalentsByCategory } = useTalentData()
+// 天賦資料 - 添加錯誤處理
+let talentsDatabase = {}
+let getTalentsByCategory = () => []
+
+try {
+  const talentData = useTalentDataAC()
+  talentsDatabase = talentData.talentsDatabase || {}
+  getTalentsByCategory = talentData.getTalentsByCategory || (() => [])
+} catch (error) {
+  console.error('Error loading talent data:', error)
+}
 
 // 響應式變數
 const selectedBackground = ref(props.selectedBackground)
@@ -434,6 +429,21 @@ const selectedTruth = ref(null)
 const customTruth = ref('')
 const selectedFocuses = ref([]) // 改為陣列以支援多個專精
 const selectedTalent = ref(null)
+
+// 監聽 props 變化，確保同步
+watch(() => props.selectedBackground, (newVal) => {
+  if (newVal !== selectedBackground.value) {
+    selectedBackground.value = newVal
+    // 重置相關選擇
+    if (newVal) {
+      activeDetailTab.value = 'description'
+      selectedTruth.value = null
+      customTruth.value = ''
+      selectedFocuses.value = []
+      selectedTalent.value = null
+    }
+  }
+}, { immediate: true })
 
 // 技能專精資料
 const skillsData = ref([
@@ -580,12 +590,17 @@ const skillsData = ref([
 // 詳細資訊頁籤
 const detailTabs = ref([
   { key: 'description', name: '描述' },
-  { key: 'mechanics', name: '機械效果' },
-  { key: 'selections', name: '自訂選擇' }
+  { key: 'mechanics', name: '機械效果' }
 ])
 
-// 背景資料（從外部檔案導入）
-const backgrounds = ref(backgroundData)
+// 背景資料（從外部檔案導入） - 添加錯誤處理
+let backgrounds = ref([])
+try {
+  backgrounds.value = backgroundData || []
+} catch (error) {
+  console.error('Error loading background data:', error)
+  backgrounds.value = []
+}
 
 // 計算屬性
 const finalTruth = computed(() => {
@@ -744,30 +759,28 @@ const findTalentsByKeyword = (keyword) => {
           talent.keywords.includes(`，${keyword}`) ||
           talent.keywords.split('，').includes(keyword)) {
         
-        // 如果天賦包含原型關鍵字，只顯示用戶選擇的原型相關天賦
-        if (talent.keywords.includes('原型') || talent.keywords.includes('〈原型〉')) {
+        // 檢查天賦是否有原型限制（檢查是否包含任何原型關鍵字）
+        const archetypeKeywords = ['技術專家', '指揮官', '騙徒', '機械工', '滲透者', '調查員', '神秘學者', '士兵']
+        const hasArchetypeKeyword = archetypeKeywords.some(archetype => 
+          talent.keywords.includes(`〈${archetype}〉`)
+        )
+        
+        if (hasArchetypeKeyword) {
+          // 如果天賦有原型限制，只顯示與當前選擇原型匹配的天賦
           if (props.selectedArchetype) {
-            // 檢查天賦是否與選擇的原型匹配
-            const archetypeKeywords = [
-              props.selectedArchetype.chineseName,
-              props.selectedArchetype.englishName
-            ]
+            const currentArchetypeName = props.selectedArchetype.chineseName
             
-            const hasMatchingArchetype = archetypeKeywords.some(archetypeKeyword => 
-              talent.keywords.includes(archetypeKeyword) ||
-              talent.keywords.includes(`〈${archetypeKeyword}〉`)
-            )
-            
-            if (hasMatchingArchetype) {
+            // 檢查天賦是否與當前選擇的原型匹配
+            if (talent.keywords.includes(`〈${currentArchetypeName}〉`)) {
               allTalents.push({
                 ...talent,
                 category: category
               })
             }
           }
-          // 如果沒有選擇原型，則不顯示原型天賦
+          // 如果沒有選擇原型，則不顯示有原型限制的天賦
         } else {
-          // 非原型天賦正常顯示
+          // 沒有原型限制的天賦正常顯示
           allTalents.push({
             ...talent,
             category: category

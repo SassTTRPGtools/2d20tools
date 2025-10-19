@@ -1,7 +1,7 @@
 // 裝備數據模組 - Cohors Cthulhu RPG 裝備系統
 // 包含武器、盔甲、技能工具和其他裝備的完整數據庫
 
-export const useEquipmentData = () => {
+export const useEquipmentDataAC = () => {
   // 武器數據庫
   const weaponsDatabase = [
     //異域遠程武器

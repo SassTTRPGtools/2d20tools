@@ -538,7 +538,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useSpellData } from '~/composables/useSpellDataAC'
+import { useSpellDataAC } from '~/composables/useSpellDataAC'
 import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 // 使用 Pinia store
@@ -588,7 +588,7 @@ const {
   getSpellbooks, 
   getSpellsBySpellbook, 
   searchSpells 
-} = useSpellData()
+} = useSpellDataAC()
 
 // 獲取法術書清單
 const spellbooks = getSpellbooks()

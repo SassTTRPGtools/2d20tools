@@ -734,7 +734,7 @@
               <CharacterCreationStep1 
                 @next-step="nextCreationStep"
                 @select-archetype="selectArchetype"
-                :selected-archetype="selectedArchetype"
+                :selected-archetype="characterCreationState.selectedArchetype"
               />
             </div>
             
@@ -744,7 +744,7 @@
                 @next-step="nextCreationStep"
                 @prev-step="prevCreationStep"
                 @select-nationality="selectNationality"
-                :selected-nationality="selectedNationality"
+                :selected-nationality="characterCreationState.selectedNationality"
               />
             </div>
             
@@ -754,9 +754,9 @@
                 @next-step="nextCreationStep"
                 @prev-step="prevCreationStep"
                 @select-background="selectBackground"
-                :selected-background="selectedBackground"
+                :selected-background="characterCreationState.selectedBackground"
                 :archetype-focuses="selectedArchetypeFocuses"
-                :selected-archetype="selectedArchetype"
+                :selected-archetype="characterCreationState.selectedArchetype"
               />
             </div>
             
@@ -766,7 +766,7 @@
                 @next-step="nextCreationStep"
                 @prev-step="prevCreationStep"
                 @select-trait="selectTrait"
-                :selected-trait="selectedTrait"
+                :selected-trait="characterCreationState.selectedTrait"
               />
             </div>
             
@@ -1152,11 +1152,18 @@ const creationStepNames = ref([
   '最終修飾'
 ])
 
-// 角色建立過程中的選擇
-const selectedArchetype = ref(null)
-const selectedNationality = ref(null)
-const selectedBackground = ref(null)
-const selectedTrait = ref(null)
+// 角色建立過程中的選擇狀態
+const characterCreationState = ref({
+  selectedArchetype: null,
+  selectedNationality: null, 
+  selectedBackground: null,
+  selectedTrait: null,
+  // 追蹤各步驟的詳細選擇
+  archetypeSelections: null,  // 包含天賦、專精、裝備等選擇
+  nationalitySelections: null, // 包含語言等選擇
+  backgroundSelections: null,  // 包含專精、天賦、真理等選擇
+  traitSelections: null        // 特徵相關選擇
+})
 
 const tooltipStyle = computed(() => ({
   left: `${tooltip.value.x}px`,
@@ -1494,11 +1501,17 @@ const hideWoundTooltip = () => {
 const openCharacterCreation = () => {
   showCharacterCreationModal.value = true
   currentCreationStep.value = 1
-  // 重置所有選擇
-  selectedArchetype.value = null
-  selectedNationality.value = null
-  selectedBackground.value = null
-  selectedTrait.value = null
+  // 重置所有選擇狀態
+  characterCreationState.value = {
+    selectedArchetype: null,
+    selectedNationality: null,
+    selectedBackground: null,
+    selectedTrait: null,
+    archetypeSelections: null,
+    nationalitySelections: null,
+    backgroundSelections: null,
+    traitSelections: null
+  }
 }
 
 const closeCharacterCreation = () => {
@@ -1518,29 +1531,100 @@ const prevCreationStep = () => {
   }
 }
 
+// 計算原型提供的專精（供步驟3使用）
+const selectedArchetypeFocuses = computed(() => {
+  if (!characterCreationState.value.archetypeSelections?.selectedFocuses) return []
+  
+  return characterCreationState.value.archetypeSelections.selectedFocuses.map(focusName => {
+    // 從原型專精選項中找到對應的專精詳細資料
+    const archetype = characterCreationState.value.selectedArchetype
+    if (!archetype?.focusOptions) return null
+    
+    for (const [skillCode, focuses] of Object.entries(archetype.focusOptions)) {
+      const focus = focuses.find(f => f === focusName)
+      if (focus) {
+        return {
+          name: focus,
+          skillCode,
+          skillName: getSkillName(skillCode),
+          description: getFocusDescription(skillCode, focus)
+        }
+      }
+    }
+    return null
+  }).filter(Boolean)
+})
+
 // 各步驟的選擇方法
-const selectArchetype = (archetype) => {
-  selectedArchetype.value = archetype
+const selectArchetype = (archetypeData) => {
+  // archetypeData 可能是簡單的 archetype 物件或包含完整選擇的物件
+  if (archetypeData.archetype) {
+    // 完整的選擇物件（來自步驟1的確認）
+    characterCreationState.value.selectedArchetype = archetypeData.archetype
+    characterCreationState.value.archetypeSelections = {
+      selectedTalent: archetypeData.selectedTalent,
+      selectedFocuses: archetypeData.selectedFocuses,
+      selectedBelongings: archetypeData.selectedBelongings,
+      selectedAttributeChoice: archetypeData.selectedAttributeChoice,
+      selectedSkillChoice: archetypeData.selectedSkillChoice
+    }
+  } else {
+    // 簡單的 archetype 物件（初次選擇）
+    characterCreationState.value.selectedArchetype = archetypeData
+  }
 }
 
-const selectNationality = (nationality) => {
-  selectedNationality.value = nationality
+const selectNationality = (nationalityData) => {
+  if (nationalityData.nationality) {
+    // 完整的選擇物件
+    characterCreationState.value.selectedNationality = nationalityData.nationality
+    characterCreationState.value.nationalitySelections = {
+      selectedLanguages: nationalityData.selectedLanguages || []
+    }
+  } else {
+    // 簡單的 nationality 物件
+    characterCreationState.value.selectedNationality = nationalityData
+  }
 }
 
-const selectBackground = (background) => {
-  selectedBackground.value = background
+const selectBackground = (backgroundData) => {
+  if (backgroundData.background) {
+    // 完整的選擇物件
+    characterCreationState.value.selectedBackground = backgroundData.background
+    characterCreationState.value.backgroundSelections = {
+      selectedTruth: backgroundData.selectedTruth,
+      isCustomTruth: backgroundData.isCustomTruth,
+      selectedFocuses: backgroundData.selectedFocuses,
+      selectedTalent: backgroundData.selectedTalent
+    }
+  } else {
+    // 簡單的 background 物件
+    characterCreationState.value.selectedBackground = backgroundData
+  }
 }
 
-const selectTrait = (trait) => {
-  selectedTrait.value = trait
+const selectTrait = (traitData) => {
+  if (traitData.trait) {
+    // 完整的選擇物件
+    characterCreationState.value.selectedTrait = traitData.trait
+    characterCreationState.value.traitSelections = traitData.selections
+  } else {
+    // 簡單的 trait 物件
+    characterCreationState.value.selectedTrait = traitData
+  }
 }
 
 const getCharacterCreationData = () => {
   return {
-    archetype: selectedArchetype.value,
-    nationality: selectedNationality.value,
-    background: selectedBackground.value,
-    trait: selectedTrait.value
+    archetype: characterCreationState.value.selectedArchetype,
+    nationality: characterCreationState.value.selectedNationality,
+    background: characterCreationState.value.selectedBackground,
+    trait: characterCreationState.value.selectedTrait,
+    // 包含完整的選擇資料
+    archetypeSelections: characterCreationState.value.archetypeSelections,
+    nationalitySelections: characterCreationState.value.nationalitySelections,
+    backgroundSelections: characterCreationState.value.backgroundSelections,
+    traitSelections: characterCreationState.value.traitSelections
   }
 }
 
@@ -1589,4 +1673,47 @@ watch(() => store.$state, () => {
   console.log('CohorsCthvlhvSheet: Store 資料變更，觸發自動儲存')
   triggerDataChange()
 }, { deep: true })
+
+// 輔助方法
+const getSkillName = (skillCode) => {
+  const names = {
+    ACADEMIA: '學識',
+    ATHLETICS: '運動', 
+    ENGINEERING: '工程',
+    FIGHTING: '戰鬥',
+    MEDICINE: '醫學',
+    OBSERVATION: '觀察',
+    PERSUASION: '說服',
+    RESILIENCE: '韌性',
+    STEALTH: '潛匿',
+    SURVIVAL: '求生',
+    TACTICS: '戰術',
+    VEHICLES: '載具'
+  }
+  return names[skillCode] || skillCode
+}
+
+const getFocusDescription = (skillCode, focusName) => {
+  const focusDescriptions = {
+    'ACADEMIA': {
+      '藝術': '涵蓋對藝術品、藝術流派與技巧的理解，以及其在不同文化中的影響。',
+      '密碼學': '涵蓋對各種加密與解密技術的理解與應用。',
+      '財務學': '涵蓋對貿易、銀行制度的知識，及金錢對政治與文化的影響。',
+      '歷史學': '涵蓋對歷史事件、人物及其背後驅動力量的了解。',
+      '語言學': '涵蓋對現代、古代與死語的研究，以及語言的演化。',
+      '神秘學': '涵蓋對超自然現象、儀式、存在與傳統的研究。',
+      '科學': '涵蓋科學方法與其主要分支（數學、物理、化學、生物學），以及其細部領域。'
+    },
+    'FIGHTING': {
+      '徒手戰鬥': '包含以拳腳或擒拿進行的無裝備格鬥，可代表拳擊、柔道等武術訓練。',
+      '近戰武器': '使用短兵器作戰，如匕首或刺刀。',
+      '手槍': '使用左輪、半自動與衝鋒手槍等短槍。',
+      '近距作戰': '使用霰彈槍、衝鋒槍等設計於近距離或狹窄空間的武器。',
+      '步槍': '使用中長距離火器，如步槍與卡賓槍。',
+      '重型武器': '使用機槍、火焰噴射器、反坦克武器等重型武裝。'
+    }
+  }
+  
+  return focusDescriptions[skillCode]?.[focusName] || `${focusName} 專精`
+}
 </script>

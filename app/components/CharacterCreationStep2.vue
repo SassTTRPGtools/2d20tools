@@ -66,7 +66,7 @@
             <h4 class="text-xl font-bold text-gray-800">{{ randomNationality.name }}</h4>
           </div>
           <div class="text-sm text-gray-600 mb-2">
-            <strong>主要語言：</strong>{{ randomNationality.languages.join('、') }}
+            <strong>主要語言：</strong>{{ randomNationality.languages?.join('、') || '未知' }}
           </div>
           <div class="text-xs text-gray-500">
             擲骰範圍：{{ randomNationality.diceRange }}
@@ -88,22 +88,19 @@
             :key="nationality.id"
             @click="selectNationality(nationality)"
             class="relative cursor-pointer border-2 rounded-lg p-4 transition-all duration-200 hover:shadow-lg"
-            :class="
-              selectedNationality?.id === nationality.id
-                ? 'border-green-400 bg-green-100'
-                : 'border-gray-200 bg-white hover:border-green-300'
-            "
+            :class="selectedNationality?.id === nationality.id 
+              ? 'border-green-400 bg-green-100' 
+              : 'border-gray-200 bg-white hover:border-green-300'"
           >
-            <div class="text-center">
-              <div class="text-3xl mb-2">{{ nationality.flag }}</div>
-              <h4 class="font-bold text-gray-800 mb-2">{{ nationality.name }}</h4>
-              <div class="text-sm text-gray-600 mb-2">
-                <strong>語言：</strong><br>
-                {{ nationality.languages.join('、') }}
-              </div>
-              <div class="text-xs text-gray-400">
-                擲骰：{{ nationality.diceRange }}
-              </div>
+            <div class="flex items-center mb-3">
+              <span class="text-3xl mr-3">{{ nationality.flag }}</span>
+              <h4 class="text-lg font-bold text-gray-800">{{ nationality.name }}</h4>
+            </div>
+            <div class="text-sm text-gray-600 mb-2">
+              <strong>主要語言：</strong>{{ nationality.languages?.join('、') || '未知' }}
+            </div>
+            <div class="text-xs text-gray-500">
+              擲骰範圍：{{ nationality.diceRange }}
             </div>
             
             <!-- 選中指示器 -->
@@ -120,17 +117,18 @@
       </div>
     </div>
 
-    <!-- 已選擇的國籍顯示 -->
+    <!-- 選擇摘要 -->
     <div v-if="finalNationality" class="mb-8 bg-amber-50 border-2 border-amber-200 rounded-lg p-6">
-      <h3 class="text-lg font-bold text-amber-800 mb-3 text-center">✅ 已選定國籍</h3>
-      <div class="flex items-center justify-center">
+      <h3 class="text-xl font-bold text-amber-800 mb-4 text-center">✅ 已選擇國籍</h3>
+      <div class="flex items-center justify-center mb-4">
         <span class="text-4xl mr-4">{{ finalNationality.flag }}</span>
         <div>
-          <h4 class="text-xl font-bold text-gray-800">{{ finalNationality.name }}</h4>
-          <div class="text-sm text-gray-600">
-            <strong>主要語言：</strong>{{ finalNationality.languages.join('、') }}
-          </div>
+          <h4 class="text-2xl font-bold text-gray-800">{{ finalNationality.name }}</h4>
+          <p class="text-gray-600">主要語言：{{ finalNationality.languages?.join('、') || '未知' }}</p>
         </div>
+      </div>
+      <div class="text-center text-sm text-amber-700">
+        選擇方式：{{ selectionMode === 'random' ? `隨機擲骰 (${diceResult})` : '手動選擇' }}
       </div>
     </div>
 
@@ -176,7 +174,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 // Props and Emits
 const props = defineProps({
@@ -195,7 +193,14 @@ const randomNationality = ref(null)
 const isRolling = ref(false)
 const diceResult = ref(null)
 
-// 國籍資料（根據常見國籍表）
+// 監聽 props 變化，確保同步
+watch(() => props.selectedNationality, (newVal) => {
+  if (newVal !== selectedNationality.value) {
+    selectedNationality.value = newVal
+  }
+}, { immediate: true })
+
+// 國籍資料
 const nationalities = ref([
   {
     id: 'australia',
@@ -291,7 +296,12 @@ const nationalities = ref([
 
 // 計算屬性
 const finalNationality = computed(() => {
-  return selectedNationality.value || randomNationality.value
+  const nationality = selectedNationality.value || randomNationality.value
+  // 確保返回的國籍對象有完整的屬性
+  if (nationality && !nationality.languages) {
+    nationality.languages = ['未知']
+  }
+  return nationality
 })
 
 // 方法

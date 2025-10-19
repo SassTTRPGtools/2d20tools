@@ -1,6 +1,6 @@
 // 法術數據模組 - Cohors Cthulhu RPG 法術系統
 
-export const useSpellData = () => {
+export const useSpellDataAC = () => {
   // 法術數據庫
   const spellsDatabase = {
   '凱爾特儀式': [

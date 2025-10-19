@@ -1172,18 +1172,18 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useEquipmentData } from '~/composables/useEquipmentDataAC'
-import { useTalentData } from '~/composables/useTalentDataAC'
+import { useEquipmentDataAC } from '~/composables/useEquipmentDataAC'
+import { useTalentDataAC } from '~/composables/useTalentDataAC'
 import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 // 使用 Pinia store
 const store = useAchtungCthulhuStore()
 
 // 引入裝備數據
-const { weaponsDatabase, armorsDatabase, skillToolsDatabase, miscellaneousDatabase, weaponSpecialAbilities } = useEquipmentData()
+const { weaponsDatabase, armorsDatabase, skillToolsDatabase, miscellaneousDatabase, weaponSpecialAbilities } = useEquipmentDataAC()
 
 // 引入天賦數據
-const { talentsDatabase, getCategories, getTalentsByCategory } = useTalentData()
+const { talentsDatabase, getCategories, getTalentsByCategory } = useTalentDataAC()
 
 // 武器特性資料 - 使用外部數據模組
 const weaponQualities = ref(weaponSpecialAbilities)

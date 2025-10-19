@@ -267,20 +267,20 @@
           <h4 class="text-lg font-semibold text-gray-800 mb-4">原型天賦 (選擇一項)</h4>
           <div class="space-y-4">
             <div 
-              v-for="talent in selectedArchetype.talents" 
-              :key="talent.name"
+              v-for="talent in getAvailableTalents" 
+              :key="talent.englishName"
               class="border border-purple-200 rounded-lg p-4 hover:bg-purple-50 transition-colors cursor-pointer"
-              :class="selectedTalent === talent.name ? 'ring-2 ring-purple-400 bg-purple-50' : ''"
-              @click="selectTalent(talent.name)"
+              :class="selectedTalent === talent.englishName ? 'ring-2 ring-purple-400 bg-purple-50' : ''"
+              @click="selectTalent(talent.englishName)"
             >
               <div class="flex items-start justify-between">
                 <div class="flex-1">
-                  <h5 class="font-bold text-purple-800 mb-1">{{ talent.name }}</h5>
+                  <h5 class="font-bold text-purple-800 mb-1">{{ talent.chineseName }}</h5>
                   <p class="text-xs text-purple-600 mb-2 italic">關鍵詞: {{ talent.keywords }}</p>
-                  <p class="text-sm text-gray-700 leading-relaxed">{{ talent.description }}</p>
+                  <p class="text-sm text-gray-700 leading-relaxed">{{ talent.content }}</p>
                 </div>
                 <div 
-                  v-if="selectedTalent === talent.name"
+                  v-if="selectedTalent === talent.englishName"
                   class="text-purple-500 ml-2"
                 >
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -362,8 +362,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { archetypes as archetypeData } from '~/data/archetypes.js'
+import { ref, computed, watch } from 'vue'
+import { archetypesAC as archetypeData } from '~/data/archetypesAC.js'
+import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
+
+// 天賦資料
+const { talentsDatabase, getTalentsByCategory } = useTalentDataAC()
 
 // Props and Emits
 const props = defineProps({
@@ -383,6 +387,24 @@ const selectedBelongings = ref([])
 const selectedFocuses = ref([])
 const selectedAttributeChoice = ref(null)  // 神秘學者屬性選擇
 const selectedSkillChoice = ref(null)      // 神秘學者技能選擇
+
+// 監聽 props 變化，確保同步
+watch(() => props.selectedArchetype, (newVal) => {
+  if (newVal !== selectedArchetype.value) {
+    selectedArchetype.value = newVal
+    // 重新加載與此原型相關的選擇
+    if (newVal) {
+      activeDetailTab.value = 'description'
+      // 如果是回到之前選擇過的原型，這裡可以恢復選擇狀態
+      // 但目前先保持簡單，讓用戶重新選擇
+      selectedTalent.value = null
+      selectedBelongings.value = []
+      selectedFocuses.value = []
+      selectedAttributeChoice.value = null
+      selectedSkillChoice.value = null
+    }
+  }
+}, { immediate: true })
 
 // 詳細資訊頁籤
 const detailTabs = ref([
@@ -470,6 +492,30 @@ const getButtonText = computed(() => {
   }
   
   return `確認選擇 ${selectedArchetype.value.chineseName}`
+})
+
+// 獲取該原型可選的天賦
+const getAvailableTalents = computed(() => {
+  if (!selectedArchetype.value) return []
+  
+  // 根據原型的英文名稱映射到對應的天賦分類
+  const archetypeToTalentMapping = {
+    'Boffin': '技術專家',
+    'Commander': '指揮官', 
+    'Con Artist': '騙徒',
+    'Mechanic': '機械工',
+    'Infiltrator': '滲透者',
+    'Investigator': '調查員',
+    'Occult Scholar': '神秘學者',
+    'Soldier': '士兵'
+  }
+  
+  const talentCategory = archetypeToTalentMapping[selectedArchetype.value.englishName]
+  if (talentCategory) {
+    return getTalentsByCategory(talentCategory) || []
+  }
+  
+  return []
 })
 
 // 方法
