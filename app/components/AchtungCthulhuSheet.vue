@@ -767,6 +767,7 @@
                 @prev-step="prevCreationStep"
                 @select-trait="selectTrait"
                 :selected-trait="characterCreationState.selectedTrait"
+                :selected-archetype="characterCreationState.selectedArchetype"
               />
             </div>
             
@@ -786,7 +787,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, provide } from 'vue'
 import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 import CharacterCreationStep1 from './CharacterCreationStep1.vue'
 import CharacterCreationStep2 from './CharacterCreationStep2.vue'
@@ -1164,6 +1165,9 @@ const characterCreationState = ref({
   backgroundSelections: null,  // 包含專精、天賦、真理等選擇
   traitSelections: null        // 特徵相關選擇
 })
+
+// 提供角色創建狀態給子組件
+provide('characterCreationState', characterCreationState)
 
 const tooltipStyle = computed(() => ({
   left: `${tooltip.value.x}px`,
@@ -1579,7 +1583,7 @@ const selectNationality = (nationalityData) => {
     // 完整的選擇物件
     characterCreationState.value.selectedNationality = nationalityData.nationality
     characterCreationState.value.nationalitySelections = {
-      selectedLanguages: nationalityData.selectedLanguages || []
+      selectedLanguage: nationalityData.selectedLanguage || null
     }
   } else {
     // 簡單的 nationality 物件

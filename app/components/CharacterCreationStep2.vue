@@ -127,7 +127,50 @@
           <p class="text-gray-600">主要語言：{{ finalNationality.languages?.join('、') || '未知' }}</p>
         </div>
       </div>
-      <div class="text-center text-sm text-amber-700">
+      
+      <!-- 語言選擇區域 -->
+      <div v-if="needsLanguageSelection" class="mt-6 border-t border-amber-300 pt-6">
+        <h4 class="text-lg font-semibold text-amber-800 mb-4 text-center">🗣️ 選擇語言真理</h4>
+        <p class="text-sm text-amber-700 mb-4 text-center">
+          你的國籍擁有多種語言，請選擇其中一種作為你的語言真理：
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+          <button
+            v-for="language in finalNationality.languages"
+            :key="language"
+            @click="selectLanguage(language)"
+            :class="[
+              'p-3 rounded-lg border-2 text-sm font-medium transition-all duration-200',
+              selectedLanguage === language
+                ? 'bg-amber-100 border-amber-400 text-amber-800'
+                : 'bg-white border-amber-200 text-amber-700 hover:border-amber-300 hover:bg-amber-50'
+            ]"
+          >
+            🗣️ {{ language }}
+          </button>
+        </div>
+        
+        <!-- 已選擇語言顯示 -->
+        <div v-if="selectedLanguage" class="bg-white border border-amber-300 rounded-lg p-3">
+          <div class="flex items-center justify-center">
+            <span class="text-amber-600 mr-2">🎯</span>
+            <span class="font-semibold text-amber-800">已選擇語言真理：{{ selectedLanguage }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 單一語言國籍的自動顯示 -->
+      <div v-else-if="finalNationality.languages?.length === 1" class="mt-6 border-t border-amber-300 pt-6">
+        <div class="bg-white border border-amber-300 rounded-lg p-3">
+          <div class="flex items-center justify-center">
+            <span class="text-amber-600 mr-2">🎯</span>
+            <span class="font-semibold text-amber-800">語言真理：{{ finalNationality.languages[0] }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center text-sm text-amber-700 mt-4">
         選擇方式：{{ selectionMode === 'random' ? `隨機擲骰 (${diceResult})` : '手動選擇' }}
       </div>
     </div>
@@ -151,10 +194,10 @@
         </button>
         <button 
           @click="confirmSelection"
-          :disabled="!finalNationality"
+          :disabled="!canConfirm"
           class="px-8 py-3 bg-amber-600 text-white font-bold rounded-lg transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-amber-700"
         >
-          {{ finalNationality ? `確認國籍：${finalNationality.name}` : '請先選擇國籍' }}
+          {{ getConfirmButtonText() }}
         </button>
       </div>
     </div>
@@ -163,10 +206,11 @@
     <div class="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-4">
       <h4 class="font-semibold text-gray-800 mb-2">📋 國籍規則說明</h4>
       <ul class="text-sm text-gray-600 space-y-1">
-        <li>• 國籍影響角色的文化背景和語言能力</li>
+        <li>• <strong>國籍本身就是一項真理</strong>，代表你的文化身份認同</li>
         <li>• 可以選擇隨機擲骰或手動選擇國籍</li>
-        <li>• 每個國籍都有其主要語言，這影響角色的溝通能力</li>
-        <li>• 國籍選擇會影響後續的背景故事發展</li>
+        <li>• <strong>語言真理</strong>：有些國籍有多種語言，需選擇其中一種作為額外真理</li>
+        <li>• 單一語言的國籍會自動獲得該語言作為真理</li>
+        <li>• 國籍和語言共同影響角色的溝通能力和文化背景</li>
         <li>• 可以隨時重新選擇直到確認為止</li>
       </ul>
     </div>
@@ -192,11 +236,14 @@ const selectedNationality = ref(props.selectedNationality)
 const randomNationality = ref(null)
 const isRolling = ref(false)
 const diceResult = ref(null)
+const selectedLanguage = ref('')
 
 // 監聽 props 變化，確保同步
 watch(() => props.selectedNationality, (newVal) => {
   if (newVal !== selectedNationality.value) {
     selectedNationality.value = newVal
+    // 重置語言選擇
+    selectedLanguage.value = ''
   }
 }, { immediate: true })
 
@@ -304,12 +351,44 @@ const finalNationality = computed(() => {
   return nationality
 })
 
+// 是否需要語言選擇
+const needsLanguageSelection = computed(() => {
+  return finalNationality.value && finalNationality.value.languages && finalNationality.value.languages.length > 1
+})
+
+// 是否可以確認選擇
+const canConfirm = computed(() => {
+  if (!finalNationality.value) return false
+  
+  // 如果是多語言國籍，必須選擇語言
+  if (needsLanguageSelection.value) {
+    return selectedLanguage.value !== ''
+  }
+  
+  // 單語言國籍可以直接確認
+  return true
+})
+
+// 獲取確認按鈕文字
+const getConfirmButtonText = () => {
+  if (!finalNationality.value) {
+    return '請先選擇國籍'
+  }
+  
+  if (needsLanguageSelection.value && !selectedLanguage.value) {
+    return '請選擇語言真理'
+  }
+  
+  return `確認國籍：${finalNationality.value.name}`
+}
+
 // 方法
 const rollDice = () => {
   isRolling.value = true
   diceResult.value = null
   randomNationality.value = null
   selectedNationality.value = null
+  selectedLanguage.value = '' // 重置語言選擇
   
   // 模擬擲骰動畫
   setTimeout(() => {
@@ -323,6 +402,11 @@ const rollDice = () => {
     
     if (nationality) {
       randomNationality.value = nationality
+      
+      // 如果是單語言國籍，自動選擇該語言
+      if (nationality.languages && nationality.languages.length === 1) {
+        selectedLanguage.value = nationality.languages[0]
+      }
     }
     
     isRolling.value = false
@@ -333,25 +417,45 @@ const selectNationality = (nationality) => {
   selectedNationality.value = nationality
   randomNationality.value = null
   diceResult.value = null
+  selectedLanguage.value = '' // 重置語言選擇
+  
+  // 如果是單語言國籍，自動選擇該語言
+  if (nationality.languages && nationality.languages.length === 1) {
+    selectedLanguage.value = nationality.languages[0]
+  }
+}
+
+const selectLanguage = (language) => {
+  selectedLanguage.value = language
 }
 
 const clearSelection = () => {
   selectedNationality.value = null
   randomNationality.value = null
   diceResult.value = null
+  selectedLanguage.value = ''
   selectionMode.value = 'random'
 }
 
 const confirmSelection = () => {
-  if (finalNationality.value) {
-    const nationalityData = {
-      nationality: finalNationality.value,
-      selectionMethod: selectionMode.value,
-      diceResult: diceResult.value
+  if (!canConfirm.value) return
+  
+  // 確定使用的語言真理
+  const languageTruth = selectedLanguage.value || 
+    (finalNationality.value.languages?.length === 1 ? finalNationality.value.languages[0] : '')
+  
+  const nationalityData = {
+    nationality: finalNationality.value,
+    selectionMethod: selectionMode.value,
+    diceResult: diceResult.value,
+    selectedLanguage: languageTruth,
+    truths: {
+      nationality: finalNationality.value.name, // 國籍真理
+      language: languageTruth // 語言真理
     }
-    
-    emit('select-nationality', nationalityData)
-    emit('next-step')
   }
+  
+  emit('select-nationality', nationalityData)
+  emit('next-step')
 }
 </script>
