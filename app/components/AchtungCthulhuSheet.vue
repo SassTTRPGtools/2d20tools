@@ -1633,12 +1633,14 @@ const getCharacterCreationData = () => {
 }
 
 const finishCharacterCreation = (finalData) => {
-  // 應用所有選擇到角色表
-  console.log('完成角色建立:', finalData)
+  // 角色創建已在第五步驟中直接應用到 store
+  console.log('角色建立完成:', finalData)
   
-  // 這裡會應用所有的屬性、技能、天賦等變更
-  // 暫時關閉 modal，實際應用邏輯稍後實現
+  // 關閉角色創建模態框
   closeCharacterCreation()
+  
+  // 顯示成功訊息
+  console.log('角色資料已成功應用到角色表')
 }
 
 const clearAllData = () => {

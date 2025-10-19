@@ -778,6 +778,328 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
     // 自動儲存相關 actions
     updateLastSaved() {
       this.metadata.lastSaved = new Date().toISOString()
+    },
+
+    // 角色創建完成 action
+    applyCharacterCreationData(creationData) {
+      // 基本資訊更新
+      if (creationData.archetype) {
+        this.basicInfo.archetype = creationData.archetype.chineseName || creationData.archetype.name
+      }
+      if (creationData.nationality) {
+        this.basicInfo.culture = creationData.nationality.chineseName || creationData.nationality.name
+      }
+      if (creationData.background) {
+        this.basicInfo.background = creationData.background.chineseName || creationData.background.name
+      }
+
+      // 應用最終屬性
+      if (creationData.finalAttributes) {
+        Object.assign(this.attributes, creationData.finalAttributes)
+      }
+
+      // 應用最終技能
+      if (creationData.finalSkills) {
+        Object.assign(this.skills, creationData.finalSkills)
+      }
+
+      // 收集所有專精
+      const allFocuses = {}
+      
+      // 來自原型的專精
+      if (creationData.archetypeSelections?.selectedFocuses) {
+        creationData.archetypeSelections.selectedFocuses.forEach(focus => {
+          // 處理不同格式的專精資料（物件或字串）
+          const focusName = typeof focus === 'object' ? focus.name : focus
+          const skillCode = typeof focus === 'object' ? focus.skillCode : 
+            this.findSkillCodeForFocus(focusName, creationData.archetype)
+          
+          if (skillCode && focusName) {
+            if (!allFocuses[skillCode]) allFocuses[skillCode] = []
+            allFocuses[skillCode].push(focusName)
+          }
+        })
+      }
+
+      // 來自背景的專精
+      if (creationData.backgroundSelections?.selectedFocuses) {
+        creationData.backgroundSelections.selectedFocuses.forEach(focus => {
+          // 處理不同格式的專精資料（物件或字串）
+          const focusName = typeof focus === 'object' ? focus.name : focus
+          const skillCode = typeof focus === 'object' ? focus.skillCode : 
+            this.findSkillCodeForFocus(focusName, creationData.background)
+          
+          if (skillCode && focusName) {
+            if (!allFocuses[skillCode]) allFocuses[skillCode] = []
+            allFocuses[skillCode].push(focusName)
+          }
+        })
+      }
+
+      // 來自特徵的專精
+      if (creationData.traitSelections?.selectedFocuses) {
+        creationData.traitSelections.selectedFocuses.forEach(focus => {
+          // 處理不同格式的專精資料（物件或字串）
+          const focusName = typeof focus === 'object' ? focus.name : focus
+          const skillCode = typeof focus === 'object' ? focus.skillCode : 
+            this.findSkillCodeForFocus(focusName, creationData.trait)
+          
+          if (skillCode && focusName) {
+            if (!allFocuses[skillCode]) allFocuses[skillCode] = []
+            allFocuses[skillCode].push(focusName)
+          }
+        })
+      }
+
+      // 應用專精
+      Object.assign(this.selectedFocuses, allFocuses)
+
+      // 收集所有天賦
+      const allTalents = []
+
+      // 來自原型的天賦
+      // 原型自帶天賦（如果有）
+      if (creationData.archetype?.talents) {
+        allTalents.push(...creationData.archetype.talents)
+      }
+      // 原型選擇的天賦
+      if (creationData.archetypeSelections?.selectedTalent) {
+        allTalents.push(creationData.archetypeSelections.selectedTalent)
+      }
+
+      // 來自背景的天賦
+      // 背景自帶天賦（如果有）
+      if (creationData.background?.talents) {
+        allTalents.push(...creationData.background.talents)
+      }
+      // 背景選擇的天賦
+      if (creationData.backgroundSelections?.selectedTalent) {
+        allTalents.push(creationData.backgroundSelections.selectedTalent)
+      }
+
+      // 來自特徵的天賦  
+      // 特徵自帶天賦（如果有）
+      if (creationData.trait?.talents) {
+        allTalents.push(...creationData.trait.talents)
+      }
+      // 特徵選擇的天賦
+      if (creationData.traitSelections?.talent) {
+        allTalents.push(creationData.traitSelections.talent)
+      }
+
+      // 應用天賦到天賦槽位
+      allTalents.forEach((talent, index) => {
+        if (index < this.talents.length && talent) {
+          this.talents[index] = {
+            name: talent.chineseName || talent.name,
+            keywords: talent.keywords || '',
+            content: talent.content || ''
+          }
+        }
+      })
+
+      // 收集所有真理
+      const allTruths = []
+
+      // 國籍真理
+      if (creationData.nationality) {
+        allTruths.push(creationData.nationality.chineseName || creationData.nationality.name)
+      }
+
+      // 語言真理
+      if (creationData.nationalitySelections?.selectedLanguage) {
+        allTruths.push(creationData.nationalitySelections.selectedLanguage)
+      }
+
+      // 背景真理
+      if (creationData.backgroundSelections?.selectedTruth) {
+        allTruths.push(creationData.backgroundSelections.selectedTruth)
+      }
+
+      // 特徵真理
+      if (creationData.traitSelections?.truth) {
+        allTruths.push(creationData.traitSelections.truth)
+      }
+
+      // 應用真理到個人真理欄位
+      allTruths.forEach((truth, index) => {
+        if (index < this.personalTruths.length && truth) {
+          this.personalTruths[index] = truth
+        }
+      })
+
+      // 應用計算值
+      if (creationData.calculatedValues) {
+        // 更新壓力軸最大值
+        if (creationData.calculatedValues.stress) {
+          this.stress.maxStressBoxes = creationData.calculatedValues.stress
+        }
+
+        // 更新語言
+        if (creationData.calculatedValues.bonusLanguages) {
+          const languages = []
+          
+          // 基礎語言（母語）
+          if (creationData.nationality) {
+            const nativeLanguage = creationData.nationalitySelections?.selectedLanguage || 
+                                 (creationData.nationality.languages?.length === 1 ? creationData.nationality.languages[0] : null)
+            if (nativeLanguage) {
+              languages.push(nativeLanguage)
+            }
+          }
+
+          // 額外語言
+          for (let i = 0; i < creationData.calculatedValues.bonusLanguages; i++) {
+            languages.push(`額外語言 ${i + 1}`)
+          }
+
+          this.character.languages = languages.join('、')
+        }
+
+        // 更新戰鬥相關屬性
+        if (creationData.calculatedValues.armorResistance) {
+          this.combat.totalArmor = creationData.calculatedValues.armorResistance
+        }
+        if (creationData.calculatedValues.courageResistance) {
+          this.combat.courage = creationData.calculatedValues.courageResistance
+        }
+        
+        // 更新屬性額外傷害（挑戰骰加成）
+        if (creationData.calculatedValues.bonusChallengeDice) {
+          const bonusDice = creationData.calculatedValues.bonusChallengeDice
+          
+          // 體魄對應近戰額外傷害
+          if (bonusDice.melee !== undefined) {
+            this.attributeBonuses.BRA = bonusDice.melee
+          }
+          
+          // 洞察對應遠程額外傷害
+          if (bonusDice.ranged !== undefined) {
+            this.attributeBonuses.INS = bonusDice.ranged
+          }
+          
+          // 意志對應魔法額外傷害
+          if (bonusDice.magic !== undefined) {
+            this.attributeBonuses.WIL = bonusDice.magic
+          }
+        }
+      }
+
+      // 如果是施法者，設定法術相關資訊
+      if (creationData.magicInfo) {
+        this.spells.selectedCasterType = creationData.magicInfo.type
+        this.spells.powerValue = creationData.magicInfo.basePower || '0'
+        this.spells.basePower = creationData.magicInfo.basePower || '0'
+      }
+
+      // 更新筆記中的特徵資訊
+      if (creationData.trait) {
+        this.notes.traits = creationData.trait.chineseName || creationData.trait.name
+      }
+
+      // 更新最後儲存時間
+      this.updateLastSaved()
+    },
+
+    // 輔助方法：根據專精名稱找到對應的技能代碼
+    findSkillCodeForFocus(focusName, source) {
+      // 檢查來源物件中的專精定義
+      if (source?.focusOptions) {
+        for (const [skillCode, focuses] of Object.entries(source.focusOptions)) {
+          if (focuses.includes(focusName)) {
+            return skillCode
+          }
+        }
+      }
+
+      // 使用預設的技能專精對應關係
+      const focusToSkillMap = {
+        // 學術類專精
+        '考古學': 'ACADEMIA',
+        '歷史': 'ACADEMIA',
+        '神秘學': 'ACADEMIA',
+        '語言學': 'ACADEMIA',
+        '圖書館學': 'ACADEMIA',
+        '研究': 'ACADEMIA',
+        '語言': 'ACADEMIA',
+        '宗教': 'ACADEMIA',
+        '人類學': 'ACADEMIA',
+
+        // 運動類專精
+        '攀爬': 'ATHLETICS',
+        '跳躍': 'ATHLETICS',
+        '游泳': 'ATHLETICS',
+        '跑步': 'ATHLETICS',
+        '體操': 'ATHLETICS',
+
+        // 工程類專精
+        '機械': 'ENGINEERING',
+        '電子': 'ENGINEERING',
+        '爆破': 'ENGINEERING',
+        '修理': 'ENGINEERING',
+        '駕駛': 'ENGINEERING',
+        '機械工': 'ENGINEERING',
+        '電工': 'ENGINEERING',
+
+        // 戰鬥類專精
+        '近戰武器': 'FIGHTING',
+        '槍械': 'FIGHTING',
+        '徒手格鬥': 'FIGHTING',
+        '軍刀': 'FIGHTING',
+        '手槍': 'FIGHTING',
+        '步槍': 'FIGHTING',
+
+        // 醫學類專精
+        '急救': 'MEDICINE',
+        '外科': 'MEDICINE',
+        '心理學': 'MEDICINE',
+        '精神醫學': 'MEDICINE',
+        '藥理學': 'MEDICINE',
+
+        // 觀察類專精
+        '偵查': 'OBSERVATION',
+        '監視': 'OBSERVATION',
+        '追蹤': 'OBSERVATION',
+        '搜查': 'OBSERVATION',
+        '感知': 'OBSERVATION',
+
+        // 說服類專精
+        '外交': 'PERSUASION',
+        '恐嚇': 'PERSUASION',
+        '欺騙': 'PERSUASION',
+        '領導': 'PERSUASION',
+        '談判': 'PERSUASION',
+
+        // 韌性類專精
+        '耐力': 'RESILIENCE',
+        '專注': 'RESILIENCE',
+        '意志力': 'RESILIENCE',
+
+        // 潛行類專精
+        '隱蔽': 'STEALTH',
+        '扒竊': 'STEALTH',
+        '潛入': 'STEALTH',
+
+        // 生存類專精
+        '野外求生': 'SURVIVAL',
+        '追蹤': 'SURVIVAL',
+        '狩獵': 'SURVIVAL',
+        '導航': 'SURVIVAL',
+
+        // 戰術類專精
+        '指揮': 'TACTICS',
+        '策略': 'TACTICS',
+        '軍事': 'TACTICS',
+
+        // 載具類專精
+        '汽車': 'VEHICLES',
+        '船隻': 'VEHICLES',
+        '飛機': 'VEHICLES',
+        '摩托車': 'VEHICLES',
+        '坦克': 'VEHICLES'
+      }
+
+      return focusToSkillMap[focusName] || 'ACADEMIA' // 預設歸類到學術
     }
   },
   persist: {

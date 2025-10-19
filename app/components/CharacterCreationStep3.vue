@@ -590,7 +590,7 @@ const skillsData = ref([
 // 詳細資訊頁籤
 const detailTabs = ref([
   { key: 'description', name: '描述' },
-  { key: 'mechanics', name: '機械效果' }
+  { key: 'mechanics', name: '益處選項' }
 ])
 
 // 背景資料（從外部檔案導入） - 添加錯誤處理

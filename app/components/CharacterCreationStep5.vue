@@ -356,6 +356,26 @@
       </div>
     </div>
 
+    <!-- 角色名稱設定 -->
+    <div class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">👤 角色名稱</h3>
+      <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <div class="max-w-md">
+          <label for="characterName" class="block text-sm font-medium text-gray-700 mb-2">
+            角色名稱
+          </label>
+          <input
+            id="characterName"
+            v-model="characterName"
+            type="text"
+            placeholder="請輸入角色名稱"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+          />
+          <p class="text-xs text-gray-500 mt-1">這將成為您角色表上的名稱</p>
+        </div>
+      </div>
+    </div>
+
     <!-- 計算的最終屬性 -->
     <div class="mb-8">
       <h3 class="text-xl font-bold text-gray-800 mb-4">🧮 計算結果</h3>
@@ -473,10 +493,10 @@
           <div>
             <h4 class="font-semibold text-gray-800 mb-3">基本資訊</h4>
             <div class="space-y-2 text-sm">
-              <div><strong>原型:</strong> {{ characterData.archetype?.chineseName || '未選擇' }}</div>
-              <div><strong>國籍:</strong> {{ characterData.nationality?.chineseName || '未選擇' }}</div>
-              <div><strong>背景:</strong> {{ characterData.background?.chineseName || '未選擇' }}</div>
-              <div><strong>特徵:</strong> {{ characterData.trait?.chineseName || '未選擇' }}</div>
+              <div><strong>原型:</strong> {{ characterCreationState.selectedArchetype?.chineseName || characterCreationState.selectedArchetype?.name || '未選擇' }}</div>
+              <div><strong>國籍:</strong> {{ characterCreationState.selectedNationality?.chineseName || characterCreationState.selectedNationality?.name || '未選擇' }}</div>
+              <div><strong>背景:</strong> {{ characterCreationState.selectedBackground?.chineseName || characterCreationState.selectedBackground?.name || '未選擇' }}</div>
+              <div><strong>特徵:</strong> {{ characterCreationState.selectedTrait?.chineseName || characterCreationState.selectedTrait?.name || '未選擇' }}</div>
             </div>
           </div>
           
@@ -554,7 +574,8 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue'
+import { computed, inject, ref } from 'vue'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
 
 const props = defineProps({
   characterData: {
@@ -565,12 +586,18 @@ const props = defineProps({
 
 const emit = defineEmits(['finish-creation', 'prev-step'])
 
+// 使用 Pinia store
+const store = useAchtungCthulhuStore()
+
 // 使用全局狀態
 const characterCreationState = inject('characterCreationState')
 
+// 角色名稱
+const characterName = ref('')
+
 // 基礎數值計算
 const baseAttributes = {
-  AGI: 8, BRA: 8, COO: 8, INS: 8, REA: 8, WIL: 8
+  AGI: 6, BRA: 6, COO: 6, INS: 6, REA: 6, WIL: 6
 }
 
 // 計算最終屬性
@@ -708,6 +735,11 @@ const focusCount = computed(() => {
   // 來自背景的專精
   if (characterCreationState.value.backgroundSelections?.selectedFocuses) {
     count += characterCreationState.value.backgroundSelections.selectedFocuses.length
+  }
+  
+  // 來自特徵的專精
+  if (characterCreationState.value.traitSelections?.selectedFocuses) {
+    count += characterCreationState.value.traitSelections.selectedFocuses.length
   }
   
   return count
@@ -855,8 +887,20 @@ const archetypeContribution = computed(() => {
     return { talents: [], focuses: [], attributes: [], skills: [], truths: [] }
   }
   
+  const talents = []
+  
+  // 原型自帶的天賦（如果有）
+  if (archetype.talents) {
+    talents.push(...archetype.talents.map(t => t.chineseName || t.name))
+  }
+  
+  // 原型選擇的天賦
+  if (selections?.selectedTalent) {
+    talents.push(selections.selectedTalent.chineseName || selections.selectedTalent.name)
+  }
+  
   return {
-    talents: archetype.talents?.map(t => t.name) || [],
+    talents,
     focuses: selections?.selectedFocuses || [],
     attributes: Object.entries(archetype.attributeBonus || {}).map(([attr, bonus]) => `${attr}+${bonus}`),
     skills: Object.entries(archetype.skillBonus || {}).map(([skill, bonus]) => `${skill}+${bonus}`),
@@ -906,8 +950,8 @@ const backgroundContribution = computed(() => {
   }
   
   // 背景選擇的天賦
-  if (selections?.selectedTalents) {
-    talents.push(...selections.selectedTalents)
+  if (selections?.selectedTalent) {
+    talents.push(selections.selectedTalent.chineseName || selections.selectedTalent.name)
   }
   
   const attributes = []
@@ -931,7 +975,9 @@ const backgroundContribution = computed(() => {
   
   return {
     talents,
-    focuses: selections?.selectedFocuses || [],
+    focuses: (selections?.selectedFocuses || []).map(focus => 
+      typeof focus === 'object' ? focus.name : focus
+    ),
     attributes,
     skills,
     truths
@@ -958,8 +1004,8 @@ const traitContribution = computed(() => {
   }
   
   // 特徵選擇的天賦
-  if (selections?.selectedTalents) {
-    talents.push(...selections.selectedTalents)
+  if (selections?.talent) {
+    talents.push(selections.talent.chineseName || selections.talent.name)
   }
   
   // 特徵提供的專精
@@ -969,7 +1015,9 @@ const traitContribution = computed(() => {
   
   // 特徵選擇的專精
   if (selections?.selectedFocuses) {
-    focuses.push(...selections.selectedFocuses)
+    focuses.push(...selections.selectedFocuses.map(focus => 
+      typeof focus === 'object' ? focus.name : focus
+    ))
   }
   
   // 特徵的屬性加成
@@ -1039,17 +1087,24 @@ const skillCheckResult = computed(() => {
 })
 
 const focusCheckResult = computed(() => {
-  const required = 4
-  const current = focusCount.value
-  const isValid = current >= required
+  // 基本要求：原型2項、背景2項，總共4項
+  let required = 4
+  let current = focusCount.value
+  
+  // 檢查特徵是否提供額外專精
+  if (characterCreationState.value.traitSelections?.selectedFocuses?.length > 0) {
+    required += characterCreationState.value.traitSelections.selectedFocuses.length
+  }
+  
+  const isValid = current >= 4 // 至少要有基本的4項專精
   
   return {
     isValid,
     current,
-    required,
+    required: 4, // 顯示基本要求
     message: isValid 
-      ? '專精數量符合要求' 
-      : `缺少 ${required - current} 項專精（原型2項、背景2項）`
+      ? `專精數量符合要求 (${current}項)` 
+      : `缺少 ${4 - current} 項專精（原型2項、背景2項為基本要求）`
   }
 })
 
@@ -1087,8 +1142,21 @@ const getAttributeName = (attrCode) => {
 
 // 完成角色創建
 const finishCharacterCreation = () => {
+  // 構建完整的角色創建資料
   const finalCharacterData = {
-    ...props.characterData,
+    // 基本選擇
+    archetype: characterCreationState.value.selectedArchetype,
+    nationality: characterCreationState.value.selectedNationality,
+    background: characterCreationState.value.selectedBackground,
+    trait: characterCreationState.value.selectedTrait,
+    
+    // 詳細選擇
+    archetypeSelections: characterCreationState.value.archetypeSelections,
+    nationalitySelections: characterCreationState.value.nationalitySelections,
+    backgroundSelections: characterCreationState.value.backgroundSelections,
+    traitSelections: characterCreationState.value.traitSelections,
+    
+    // 計算結果
     finalAttributes: finalAttributes.value,
     finalSkills: finalSkills.value,
     calculatedValues: {
@@ -1102,7 +1170,11 @@ const finishCharacterCreation = () => {
         magic: getBonusChallengeDice('WIL')
       }
     },
+    
+    // 魔法使用者資訊
     magicInfo: magicUserInfo.value,
+    
+    // 驗證結果
     validationResults: {
       truth: truthCheckResult.value,
       attributes: attributeCheckResult.value,
@@ -1113,6 +1185,30 @@ const finishCharacterCreation = () => {
     }
   }
   
-  emit('finish-creation', finalCharacterData)
+  // 檢查是否所有驗證都通過
+  if (!allChecksValid.value) {
+    alert('請先完成所有必要的選擇並確保數值正確')
+    return
+  }
+  
+  try {
+    // 設定角色名稱（如果有提供）
+    if (characterName.value.trim()) {
+      store.setCharacterName(characterName.value.trim())
+    }
+    
+    // 應用角色創建資料到 Pinia store
+    store.applyCharacterCreationData(finalCharacterData)
+    
+    // 顯示成功訊息
+    alert('角色創建完成！所有資料已應用到角色表。')
+    
+    // 發送完成事件給父組件
+    emit('finish-creation', finalCharacterData)
+    
+  } catch (error) {
+    console.error('角色創建應用失敗:', error)
+    alert('角色創建時發生錯誤，請重試。')
+  }
 }
 </script>

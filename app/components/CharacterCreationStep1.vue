@@ -362,7 +362,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { archetypesAC as archetypeData } from '~/data/archetypesAC.js'
 import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
 
@@ -395,13 +395,22 @@ watch(() => props.selectedArchetype, (newVal) => {
     // 重新加載與此原型相關的選擇
     if (newVal) {
       activeDetailTab.value = 'description'
-      // 如果是回到之前選擇過的原型，這裡可以恢復選擇狀態
-      // 但目前先保持簡單，讓用戶重新選擇
-      selectedTalent.value = null
-      selectedBelongings.value = []
-      selectedFocuses.value = []
-      selectedAttributeChoice.value = null
-      selectedSkillChoice.value = null
+      
+      // 恢復之前的選擇狀態（如果有）
+      if (characterCreationState.value.archetypeSelections) {
+        selectedTalent.value = characterCreationState.value.archetypeSelections.selectedTalent || null
+        selectedBelongings.value = characterCreationState.value.archetypeSelections.selectedBelongings || []
+        selectedFocuses.value = characterCreationState.value.archetypeSelections.selectedFocuses || []
+        selectedAttributeChoice.value = characterCreationState.value.archetypeSelections.selectedAttributeChoice || null
+        selectedSkillChoice.value = characterCreationState.value.archetypeSelections.selectedSkillChoice || null
+      } else {
+        // 如果沒有之前的選擇，則重置為初始狀態
+        selectedTalent.value = null
+        selectedBelongings.value = []
+        selectedFocuses.value = []
+        selectedAttributeChoice.value = null
+        selectedSkillChoice.value = null
+      }
     }
   }
 }, { immediate: true })
@@ -413,6 +422,9 @@ const detailTabs = ref([
   { key: 'talents', name: '天賦' },
   { key: 'belongings', name: '物品' }
 ])
+
+// 獲取全局角色創建狀態
+const characterCreationState = inject('characterCreationState')
 
 // 原型資料（從外部檔案導入）
 const archetypes = ref(archetypeData)

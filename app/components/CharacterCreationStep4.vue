@@ -425,7 +425,7 @@ const selectedTrait = ref(props.selectedTrait)
 const activeDetailTab = ref('description')
 const detailTabs = [
   { key: 'description', name: '描述' },
-  { key: 'mechanics', name: '機械效果' }
+  { key: 'mechanics', name: '益處選項' }
 ]
 
 // 選擇狀態
