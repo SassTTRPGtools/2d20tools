@@ -27,7 +27,22 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
         <span class="absolute left-14 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          匯出
+          匯出 JSON
+        </span>
+      </button>
+
+      <!-- 匯出 FVTT -->
+      <button 
+        v-if="props.characterType === 'achtung-cthulhu'"
+        @click="handleFVTTExport"
+        class="text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-colors group relative bg-green-600 hover:bg-green-700"
+        title="匯出 FVTT"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        <span class="absolute left-14 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          匯出 FVTT
         </span>
       </button>
 
@@ -67,13 +82,15 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
+import { useFVTTExport } from '~/composables/useFVTTExport'
 
 // Props 定義，支援不同角色卡類型
 const props = defineProps({
   characterType: {
     type: String,
     default: 'cohors-cthulhu',
-    validator: (value) => ['cohors-cthulhu', 'future-expansion'].includes(value)
+    validator: (value) => ['cohors-cthulhu', 'achtung-cthulhu', 'future-expansion'].includes(value)
   },
   storageKey: {
     type: String,
@@ -88,6 +105,12 @@ const themes = {
     export: 'bg-yellow-500 hover:bg-yellow-600',
     import: 'bg-purple-500 hover:bg-purple-600',
     clear: 'bg-red-500 hover:bg-red-600'
+  },
+  'achtung-cthulhu': {
+    main: 'bg-slate-700 hover:bg-slate-800',
+    export: 'bg-amber-600 hover:bg-amber-700',
+    import: 'bg-blue-600 hover:bg-blue-700',
+    clear: 'bg-red-600 hover:bg-red-700'
   },
   'future-expansion': {
     main: 'bg-slate-600 hover:bg-slate-700',
@@ -105,8 +128,19 @@ const currentTheme = computed(() => {
 // 響應式數據
 const showMenu = ref(false)
 
-// 使用 Pinia Store
-const store = useCohorsCthvlhvStore()
+// 根據角色卡類型選擇對應的 Store
+const store = computed(() => {
+  switch (props.characterType) {
+    case 'achtung-cthulhu':
+      return useAchtungCthulhuStore()
+    case 'cohors-cthulhu':
+    default:
+      return useCohorsCthvlhvStore()
+  }
+})
+
+// 使用 FVTT 匯出功能
+const { isExporting, downloadFVTTFile } = useFVTTExport()
 
 // 切換菜單
 const toggleMenu = () => {
@@ -119,7 +153,7 @@ const toggleMenu = () => {
 const handleExport = async () => {
   try {
     // 獲取完整角色資料
-    const data = store.getFullCharacterData
+    const data = store.value.getFullCharacterData
     
     // 檢查是否有角色名稱作為檔案名
     const characterName = data.basicInfo?.characterName || '未命名角色'
@@ -144,6 +178,30 @@ const handleExport = async () => {
     console.log(`角色資料已匯出：${fileName}`)
   } catch (error) {
     console.error('匯出錯誤:', error)
+  }
+  showMenu.value = false
+}
+
+// 匯出 FVTT JSON
+const handleFVTTExport = async () => {
+  try {
+    // FVTT 匯出只支援 Achtung Cthulhu 系統
+    if (props.characterType !== 'achtung-cthulhu') {
+      console.warn('FVTT 匯出功能僅支援 Achtung Cthulhu 角色表')
+      alert('FVTT 匯出功能僅支援 Achtung Cthulhu 角色表')
+      return
+    }
+    
+    // 強制使用 Achtung Cthulhu Store
+    const achtungStore = useAchtungCthulhuStore()
+    const data = achtungStore.getFullCharacterData
+    
+    // 使用 FVTT 匯出功能
+    downloadFVTTFile(data)
+    
+    console.log('FVTT 角色資料已匯出')
+  } catch (error) {
+    console.error('FVTT 匯出錯誤:', error)
   }
   showMenu.value = false
 }
@@ -186,7 +244,7 @@ const handleImport = async () => {
             }
             
             // 載入資料到 Store
-            store.loadCharacterData(data)
+            store.value.loadCharacterData(data)
             
             // 顯示成功訊息
             const characterName = data.basicInfo?.characterName || '角色資料'
@@ -217,21 +275,21 @@ const handleImport = async () => {
 const handleClear = async () => {
   try {
     // 雙重確認避免意外清除
-    const currentCharacterName = store.basicInfo?.characterName || '當前角色'
+    const currentCharacterName = store.value.basicInfo?.characterName || '當前角色'
     
-    console.log('清除功能 - Store 物件:', store)
-    console.log('清除功能 - 可用的方法:', Object.getOwnPropertyNames(Object.getPrototypeOf(store)))
-    console.log('清除功能 - clearAllData 方法存在:', typeof store.clearAllData)
+    console.log('清除功能 - Store 物件:', store.value)
+    console.log('清除功能 - 可用的方法:', Object.getOwnPropertyNames(Object.getPrototypeOf(store.value)))
+    console.log('清除功能 - clearAllData 方法存在:', typeof store.value.clearAllData)
     
     if (confirm(`確定要清除「${currentCharacterName}」的所有資料嗎？\n\n此操作無法復原！`)) {
       if (confirm('最後確認：真的要刪除所有資料嗎？')) {
         // 檢查方法是否存在
-        if (typeof store.clearAllData !== 'function') {
-          throw new Error(`clearAllData 不是一個函數，類型為: ${typeof store.clearAllData}`)
+        if (typeof store.value.clearAllData !== 'function') {
+          throw new Error(`clearAllData 不是一個函數，類型為: ${typeof store.value.clearAllData}`)
         }
         
         console.log('開始執行 clearAllData...')
-        await store.clearAllData()
+        await store.value.clearAllData()
         console.log('所有角色資料已清除')
       }
     }
@@ -239,10 +297,10 @@ const handleClear = async () => {
     console.error('清除錯誤詳細資訊:', {
       message: error.message,
       stack: error.stack,
-      store: store,
-      storeType: typeof store,
-      clearAllDataExists: 'clearAllData' in store,
-      clearAllDataType: typeof store.clearAllData
+      store: store.value,
+      storeType: typeof store.value,
+      clearAllDataExists: 'clearAllData' in store.value,
+      clearAllDataType: typeof store.value.clearAllData
     })
   }
   showMenu.value = false

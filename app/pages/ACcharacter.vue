@@ -23,8 +23,8 @@
 
     <!-- Cohors Cthulhu 角色卡專用的懸浮按鈕 -->
     <FloatingActionButtons 
-      character-type="cohors-cthulhu"
-      storage-key="cohors-cthulhu-character-data" 
+      character-type="achtung-cthulhu"
+      storage-key="achtung-cthulhu-character-data" 
     />
 
     <!-- 浮動右側頁籤導航 -->
