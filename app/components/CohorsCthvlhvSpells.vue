@@ -539,7 +539,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useSpellData } from '~/composables/useSpellDataCC'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore.js'
 
 // 使用 Pinia store
 const store = useCohorsCthvlhvStore()

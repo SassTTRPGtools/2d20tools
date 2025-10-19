@@ -581,7 +581,7 @@
 
 <script setup>
 import { computed, inject, ref } from 'vue'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 const props = defineProps({
   characterData: {

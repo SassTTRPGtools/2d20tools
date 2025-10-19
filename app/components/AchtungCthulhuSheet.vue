@@ -788,7 +788,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, provide } from 'vue'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 import CharacterCreationStep1 from './CharacterCreationStep1.vue'
 import CharacterCreationStep2 from './CharacterCreationStep2.vue'
 import CharacterCreationStep3 from './CharacterCreationStep3.vue'

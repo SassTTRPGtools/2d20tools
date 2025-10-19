@@ -81,8 +81,8 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore.js'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 import { useFVTTExport } from '~/composables/useFVTTExport'
 
 // Props 定義，支援不同角色卡類型

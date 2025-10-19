@@ -1072,7 +1072,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useEquipmentData } from '~/composables/useEquipmentDataCC'
 import { useTalentData } from '~/composables/useTalentDataCC'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore'
+import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore.js'
 
 // 使用 Pinia store
 const store = useCohorsCthvlhvStore()
