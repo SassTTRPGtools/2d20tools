@@ -546,16 +546,7 @@
       
       <!-- 語言與經驗 -->
       <div class="flex-1 xl:max-w-sm">
-        <div class="mb-4 border-2 border-slate-700">
-          <div class="bg-slate-700 text-white p-2 text-xs font-bold">
-            語言
-          </div>
-          <textarea 
-            v-model="languages"
-            class="w-full p-2 bg-white font-serif resize-none h-32 border-0"
-          ></textarea>
-        </div>
-        
+       
         <div class="border-2 border-slate-700">
           <div class="bg-slate-700 text-white p-2 text-xs font-bold flex justify-between items-center">
             <span>經驗</span>
