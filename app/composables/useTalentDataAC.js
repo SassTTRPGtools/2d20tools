@@ -266,7 +266,7 @@ export const useTalentDataAC = () => {
       {
         englishName: 'Second Wind',
         chineseName: '再起之息',
-        keywords: '〈韌性〉，命運',
+        keywords: '〈韌性〉、〈命運〉',
         content: '在你的回合中可作為自由動作，花費 1 點命運以移除你目前所有的壓力。'
       },
       {

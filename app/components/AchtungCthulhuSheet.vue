@@ -35,7 +35,7 @@
       </div>
       <div class="flex flex-col md:w-32">
         <label class="bg-slate-700 text-white px-2 py-1 text-xs font-bold mb-1 rounded-sm">
-          文化
+          國籍
         </label>
         <input 
           type="text" 

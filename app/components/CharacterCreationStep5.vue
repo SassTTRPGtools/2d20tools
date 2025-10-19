@@ -321,6 +321,12 @@
           </div>
           <p class="text-sm">{{ talentCheckResult.current }}/{{ talentCheckResult.required }}</p>
           <p class="text-xs text-gray-600">{{ talentCheckResult.message }}</p>
+          <!-- 調試信息：顯示天賦詳情 -->
+          <div v-if="!talentCheckResult.isValid" class="mt-2 text-xs text-gray-500">
+            <div>原型天賦: {{ archetypeContribution.talents.join('、') || '無' }}</div>
+            <div>背景天賦: {{ backgroundContribution.talents.join('、') || '無' }}</div>
+            <div>特徵天賦: {{ traitContribution.talents.join('、') || '無' }}</div>
+          </div>
         </div>
 
         <!-- 整體狀態 -->
@@ -749,13 +755,28 @@ const focusCount = computed(() => {
 const talentCount = computed(() => {
   let count = 0
   
-  // 原型天賦
+  // 來自原型的天賦
+  // 原型自帶天賦（如果有）
+  if (characterCreationState.value.selectedArchetype?.talents) {
+    count += characterCreationState.value.selectedArchetype.talents.length
+  }
+  // 原型選擇的天賦
   if (characterCreationState.value.archetypeSelections?.selectedTalent) count++
   
-  // 背景天賦
+  // 來自背景的天賦
+  // 背景自帶天賦（如果有）
+  if (characterCreationState.value.selectedBackground?.talents) {
+    count += characterCreationState.value.selectedBackground.talents.length
+  }
+  // 背景選擇的天賦
   if (characterCreationState.value.backgroundSelections?.selectedTalent) count++
   
-  // 特徵天賦
+  // 來自特徵的天賦
+  // 特徵自帶天賦（如果有）
+  if (characterCreationState.value.selectedTrait?.talents) {
+    count += characterCreationState.value.selectedTrait.talents.length
+  }
+  // 特徵選擇的天賦
   if (characterCreationState.value.traitSelections?.talent) count++
   
   return count
@@ -1196,6 +1217,17 @@ const finishCharacterCreation = () => {
     if (characterName.value.trim()) {
       store.setCharacterName(characterName.value.trim())
     }
+    
+    // 添加調試信息，確認天賦數據
+    console.log('角色創建資料 - 天賦相關:', {
+      archetypeSelections: finalCharacterData.archetypeSelections,
+      backgroundSelections: finalCharacterData.backgroundSelections,
+      traitSelections: finalCharacterData.traitSelections,
+      talentCount: talentCount.value,
+      archetypeTalents: archetypeContribution.value.talents,
+      backgroundTalents: backgroundContribution.value.talents,
+      traitTalents: traitContribution.value.talents
+    })
     
     // 應用角色創建資料到 Pinia store
     store.applyCharacterCreationData(finalCharacterData)

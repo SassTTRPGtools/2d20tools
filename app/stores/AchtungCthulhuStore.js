@@ -888,6 +888,12 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
       }
 
       // 應用天賦到天賦槽位
+      console.log('應用天賦到角色表:', {
+        allTalents: allTalents.map(t => ({ name: t.chineseName || t.name, keywords: t.keywords })),
+        talentSlots: this.talents.length,
+        talentCount: allTalents.length
+      })
+      
       allTalents.forEach((talent, index) => {
         if (index < this.talents.length && talent) {
           this.talents[index] = {
@@ -895,6 +901,9 @@ export const useAchtungCthulhuStore = defineStore('achtungCthulhu', {
             keywords: talent.keywords || '',
             content: talent.content || ''
           }
+          console.log(`天賦槽位 ${index + 1}:`, this.talents[index])
+        } else if (index >= this.talents.length) {
+          console.warn(`天賦槽位不足，無法應用天賦 ${index + 1}: ${talent.chineseName || talent.name}`)
         }
       })
 
