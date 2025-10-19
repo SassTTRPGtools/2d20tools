@@ -389,8 +389,8 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { backgrounds as backgroundData } from '~/data/backgroundsAC.js'
-import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
+import { backgrounds as backgroundData } from '../data/backgroundsAC.js'
+import { useTalentDataAC } from '../composables/useTalentDataAC.js'
 
 // Props
 const props = defineProps({

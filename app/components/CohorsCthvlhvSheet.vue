@@ -696,7 +696,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useCohorsCthvlhvStore } from '~/stores/cohorsCthvlhvStore.js'
+import { useCohorsCthvlhvStore } from '../stores/cohorsCthvlhvStore.js'
 
 // 使用 Pinia store
 const store = useCohorsCthvlhvStore()

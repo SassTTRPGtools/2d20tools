@@ -397,8 +397,8 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { traitsAC } from '~/data/traitsAC.js'
-import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
+import { traitsAC } from '../data/traitsAC.js'
+import { useTalentDataAC } from '../composables/useTalentDataAC.js'
 
 // Props 和 Emits
 const props = defineProps({

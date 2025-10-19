@@ -1172,9 +1172,9 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useEquipmentDataAC } from '~/composables/useEquipmentDataAC'
-import { useTalentDataAC } from '~/composables/useTalentDataAC'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useEquipmentDataAC } from '../composables/useEquipmentDataAC'
+import { useTalentDataAC } from '../composables/useTalentDataAC'
+import { useAchtungCthulhuStore } from '../stores/achtungCthulhuStore.js'
 
 // 使用 Pinia store
 const store = useAchtungCthulhuStore()

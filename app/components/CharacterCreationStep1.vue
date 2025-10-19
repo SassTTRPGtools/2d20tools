@@ -363,8 +363,8 @@
 
 <script setup>
 import { ref, computed, watch, inject } from 'vue'
-import { archetypesAC as archetypeData } from '~/data/archetypesAC.js'
-import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
+import { archetypesAC as archetypeData } from '../data/archetypesAC.js'
+import { useTalentDataAC } from '../composables/useTalentDataAC.js'
 
 // 天賦資料
 const { talentsDatabase, getTalentsByCategory } = useTalentDataAC()

@@ -538,8 +538,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useSpellDataAC } from '~/composables/useSpellDataAC'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useSpellDataAC } from '../composables/useSpellDataAC'
+import { useAchtungCthulhuStore } from '../stores/achtungCthulhuStore.js'
 
 // 使用 Pinia store
 const store = useAchtungCthulhuStore()
