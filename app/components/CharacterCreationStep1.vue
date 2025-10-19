@@ -270,8 +270,8 @@
               v-for="talent in getAvailableTalents" 
               :key="talent.englishName"
               class="border border-purple-200 rounded-lg p-4 hover:bg-purple-50 transition-colors cursor-pointer"
-              :class="selectedTalent === talent.englishName ? 'ring-2 ring-purple-400 bg-purple-50' : ''"
-              @click="selectTalent(talent.englishName)"
+              :class="selectedTalent?.englishName === talent.englishName ? 'ring-2 ring-purple-400 bg-purple-50' : ''"
+              @click="selectTalent(talent)"
             >
               <div class="flex items-start justify-between">
                 <div class="flex-1">
@@ -280,7 +280,7 @@
                   <p class="text-sm text-gray-700 leading-relaxed">{{ talent.content }}</p>
                 </div>
                 <div 
-                  v-if="selectedTalent === talent.englishName"
+                  v-if="selectedTalent?.englishName === talent.englishName"
                   class="text-purple-500 ml-2"
                 >
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -543,8 +543,8 @@ const selectArchetype = (archetype) => {
   emit('select-archetype', archetype)
 }
 
-const selectTalent = (talentName) => {
-  selectedTalent.value = talentName
+const selectTalent = (talent) => {
+  selectedTalent.value = talent
 }
 
 const toggleBelonging = (index, maxSelections) => {
