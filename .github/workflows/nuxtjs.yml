@@ -52,20 +52,58 @@ jobs:
           echo "app/stores directory contents:"
           if [ -d "app/stores" ]; then
             ls -la app/stores/
+            echo "Checking achtungCthulhuStore.js exists:"
+            if [ -f "app/stores/achtungCthulhuStore.js" ]; then
+              echo "✓ achtungCthulhuStore.js found"
+              echo "First 5 lines of achtungCthulhuStore.js:"
+              head -5 app/stores/achtungCthulhuStore.js
+            else
+              echo "✗ achtungCthulhuStore.js NOT found"
+            fi
+            echo "Checking cohorsCthvlhvStore.js exists:"
+            if [ -f "app/stores/cohorsCthvlhvStore.js" ]; then
+              echo "✓ cohorsCthvlhvStore.js found"
+            else
+              echo "✗ cohorsCthvlhvStore.js NOT found"
+            fi
           else
             echo "app/stores directory not found!"
           fi
           echo "app/composables directory contents:"
           if [ -d "app/composables" ]; then
             ls -la app/composables/
+            echo "Checking useFVTTExport.js exists:"
+            if [ -f "app/composables/useFVTTExport.js" ]; then
+              echo "✓ useFVTTExport.js found"
+              echo "First 3 lines of useFVTTExport.js:"
+              head -3 app/composables/useFVTTExport.js
+            else
+              echo "✗ useFVTTExport.js NOT found"
+            fi
           else
             echo "app/composables directory not found!"
           fi
           echo "app/data directory contents:"
           if [ -d "app/data" ]; then
             ls -la app/data/
+            echo "Checking data files:"
+            for file in archetypesAC.js backgroundsAC.js traitsAC.js; do
+              if [ -f "app/data/$file" ]; then
+                echo "✓ $file found"
+              else
+                echo "✗ $file NOT found"
+              fi
+            done
           else
             echo "app/data directory not found!"
+          fi
+          echo "Checking nuxt.config.ts:"
+          if [ -f "nuxt.config.ts" ]; then
+            echo "✓ nuxt.config.ts found"
+            echo "nuxt.config.ts content:"
+            cat nuxt.config.ts
+          else
+            echo "✗ nuxt.config.ts NOT found"
           fi
       - name: Generate Nuxt
         run: |

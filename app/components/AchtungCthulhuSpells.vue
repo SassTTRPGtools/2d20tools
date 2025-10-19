@@ -539,10 +539,10 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useSpellDataAC } from '~/composables/useSpellDataAC'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useachtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 // 使用 Pinia store
-const store = useAchtungCthulhuStore()
+const store = useachtungCthulhuStore()
 
 // 響應式數據
 const showTooltip = ref(false)

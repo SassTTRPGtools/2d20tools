@@ -1174,10 +1174,10 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useEquipmentDataAC } from '~/composables/useEquipmentDataAC'
 import { useTalentDataAC } from '~/composables/useTalentDataAC'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useachtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 // 使用 Pinia store
-const store = useAchtungCthulhuStore()
+const store = useachtungCthulhuStore()
 
 // 引入裝備數據
 const { weaponsDatabase, armorsDatabase, skillToolsDatabase, miscellaneousDatabase, weaponSpecialAbilities } = useEquipmentDataAC()

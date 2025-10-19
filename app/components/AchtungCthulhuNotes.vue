@@ -106,10 +106,10 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue'
-import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useachtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 // 使用 Pinia store
-const store = useAchtungCthulhuStore()
+const store = useachtungCthulhuStore()
 
 // 響應式數據，使用 computed 雙向綁定
 const traits = computed({
