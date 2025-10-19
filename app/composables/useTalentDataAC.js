@@ -428,6 +428,50 @@ export const useTalentData = () => {
         content: '你有強健的胃與責任感，不讓恐懼凌駕於病患需求之上。你可花費 2 點動力，獲得等同於你能看見或聽見之受傷盟友人數的勇氣抗性。'
       }
     ],
+    '學術': [
+      {
+        englishName: 'Book Smart',
+        chineseName: '博覽群書',
+        keywords: '〈學識〉',
+        content: '你博學多聞、閱歷極廣。當你在場景中花費動力以「獲取情報」時，本場景中你之後購買的一枚額外 20 面骰，其動力消耗減少 1 點。'
+      },
+      {
+        englishName: 'Deep Expertise',
+        chineseName: '深厚專業',
+        keywords: '〈學識〉',
+        content: '你在多個領域皆為專家。對於任何技能等級達 3 以上的技能，你獲得一項額外專精。日後若有技能等級提升至 3，立即為該技能獲得一項新的專精。'
+      },
+      {
+        englishName: 'Did the Reading',
+        chineseName: '讀過資料',
+        keywords: '〈學識〉、〈進階〉',
+        content: '你事先研究過所有任務中可能遇到的細節與背景。每場景可使用一次「學術」取代任何其他技能進行檢定，並視為擁有該檢定的專精。'
+      },
+      {
+        englishName: 'Dedication',
+        chineseName: '專注投入',
+        keywords: '〈學識〉',
+        content: '你能在關鍵時刻全神貫注。當你進行擁有適用專精的技能檢定時，可花費 1 點命運，使你的致命成功範圍加倍（最大不得超過技能值的兩倍）。'
+      },
+      {
+        englishName: 'Library Dweller',
+        chineseName: '圖書館居民',
+        keywords: '〈學識〉',
+        content: '你在書籍與知識的殿堂中如魚得水。當你以「學術」進行研究檢定時，所需時間減半。'
+      },
+      {
+        englishName: 'Polyglot',
+        chineseName: '多語者',
+        keywords: '〈學識〉',
+        content: '你必須擁有「語言學」專精方可選擇此天賦。你獲得一項額外真相：「多語者」。你還能額外掌握三種任意語言（見語言表，p.62–63）。當你遇到未知語言時，可花費 1 點動力以理解文本或對話的大意。'
+      },
+      {
+        englishName: 'Studious',
+        chineseName: '勤學不倦',
+        keywords: '〈學識〉',
+        content: '當你首次在成功的技能檢定中「獲取情報」時，可額外提出一個問題。'
+      }
+    ],
     '通用天賦': [
       {
         englishName: 'Advisor',
@@ -450,13 +494,13 @@ export const useTalentData = () => {
       {
         englishName: 'Collaboration',
         chineseName: '協作',
-        keywords: '〈技能〉，進階',
+        keywords: '〈技能〉、〈進階〉',
         content: '你訓練盟友活用你的專業，這份努力已獲得成果。選擇此天賦時，請選擇一項技能（該技能等級須達 3 或以上）。\n當任一盟友嘗試進行該技能的檢定時，只要你能與其溝通，你可花費 2 點動力，讓該盟友使用你的該技能數值與其中一項專精（若適用）。'
       },
       {
         englishName: 'Cool Under Pressure',
         chineseName: '臨危不亂',
-        keywords: '〈技能〉，命運',
+        keywords: '〈技能〉、〈命運〉',
         content: '當情勢緊迫時，你能深吸一口氣並完成任務。選擇此天賦時，請選擇一項技能。\n當你以該技能進行技能檢定時，你可花費 1 點命運以自動成功該檢定，但不會產生任何動力。'
       }
     ],

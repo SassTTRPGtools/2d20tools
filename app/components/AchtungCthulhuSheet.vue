@@ -755,6 +755,8 @@
                 @prev-step="prevCreationStep"
                 @select-background="selectBackground"
                 :selected-background="selectedBackground"
+                :archetype-focuses="selectedArchetypeFocuses"
+                :selected-archetype="selectedArchetype"
               />
             </div>
             
