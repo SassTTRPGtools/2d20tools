@@ -788,7 +788,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, provide } from 'vue'
-import { useachtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 import CharacterCreationStep1 from './CharacterCreationStep1.vue'
 import CharacterCreationStep2 from './CharacterCreationStep2.vue'
 import CharacterCreationStep3 from './CharacterCreationStep3.vue'
@@ -796,7 +796,7 @@ import CharacterCreationStep4 from './CharacterCreationStep4.vue'
 import CharacterCreationStep5 from './CharacterCreationStep5.vue'
 
 // 使用 Pinia store
-const store = useachtungCthulhuStore()
+const store = useAchtungCthulhuStore()
 
 // 基本資訊的 computed 屬性
 const characterName = computed({

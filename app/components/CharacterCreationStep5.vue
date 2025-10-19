@@ -581,7 +581,7 @@
 
 <script setup>
 import { computed, inject, ref } from 'vue'
-import { useachtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 const props = defineProps({
   characterData: {
@@ -593,7 +593,7 @@ const props = defineProps({
 const emit = defineEmits(['finish-creation', 'prev-step'])
 
 // 使用 Pinia store
-const store = useachtungCthulhuStore()
+const store = useAchtungCthulhuStore()
 
 // 使用全局狀態
 const characterCreationState = inject('characterCreationState')
