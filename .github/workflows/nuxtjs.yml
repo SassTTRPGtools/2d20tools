@@ -37,6 +37,18 @@ jobs:
           node-version: "20"
       - name: Install dependencies
         run: npm ci --prefer-offline
+      - name: Debug working directory
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
+          echo "app directory contents:"
+          if [ -d "app" ]; then
+            ls -la app/
+          else
+            echo "app directory not found!"
+          fi
       - name: Generate Nuxt
         run: |
           echo "Generating Nuxt project for static deployment..."

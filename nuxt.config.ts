@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-10-12',
   devtools: { enabled: true },
+  srcDir: 'app/',
   modules: [
     '@nuxtjs/tailwindcss', 
     '@pinia/nuxt',
@@ -42,5 +43,11 @@ export default defineNuxtConfig({
   },
   
   // 確保 SPA 模式用於 GitHub Pages
-  ssr: false
+  ssr: false,
+  
+  // 確保正確的模組解析
+  alias: {
+    '~': './app',
+    '@': './app'
+  }
 })
