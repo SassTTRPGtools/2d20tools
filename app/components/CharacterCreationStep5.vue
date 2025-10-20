@@ -711,6 +711,19 @@ const finalSkills = computed(() => {
     skills[characterCreationState.value.traitSelections.specialSkill] += 1
   }
   
+  // 來自特徵的低級技能加成
+  if (characterCreationState.value.traitSelections?.lowLevelSkill) {
+    const points = characterCreationState.value.selectedTrait?.specialSkillPoints || 2
+    skills[characterCreationState.value.traitSelections.lowLevelSkill] += points
+  }
+  
+  // 來自特徵的四項技能選擇加成
+  if (characterCreationState.value.traitSelections?.fourSkills) {
+    characterCreationState.value.traitSelections.fourSkills.forEach(skill => {
+      skills[skill] += 1
+    })
+  }
+  
   // 處理特殊規則
   if (characterCreationState.value.selectedTrait?.specialSkillRule === 'all-zero-skills') {
     // 博學多能者：所有0級技能+1
@@ -923,8 +936,8 @@ const archetypeContribution = computed(() => {
   return {
     talents,
     focuses: selections?.selectedFocuses || [],
-    attributes: Object.entries(archetype.attributeBonus || {}).map(([attr, bonus]) => `${attr}+${bonus}`),
-    skills: Object.entries(archetype.skillBonus || {}).map(([skill, bonus]) => `${skill}+${bonus}`),
+    attributes: Object.entries(archetype.attributeBonus || {}).map(([attr, bonus]) => `${getAttributeName(attr)}+${bonus}`),
+    skills: Object.entries(archetype.skillBonus || {}).map(([skill, bonus]) => `${getSkillName(skill)}+${bonus}`),
     truths: []
   }
 })
@@ -947,8 +960,8 @@ const nationalityContribution = computed(() => {
   return {
     talents: [],
     focuses: [],
-    attributes: Object.entries(nationality.attributeBonus || {}).map(([attr, bonus]) => `${attr}+${bonus}`),
-    skills: Object.entries(nationality.skillBonus || {}).map(([skill, bonus]) => `${skill}+${bonus}`),
+    attributes: Object.entries(nationality.attributeBonus || {}).map(([attr, bonus]) => `${getAttributeName(attr)}+${bonus}`),
+    skills: Object.entries(nationality.skillBonus || {}).map(([skill, bonus]) => `${getSkillName(skill)}+${bonus}`),
     truths,
     languages: nationality.languages || []
   }
@@ -980,18 +993,18 @@ const backgroundContribution = computed(() => {
   
   // 背景的屬性/技能加成
   if (background.attributeBonus) {
-    attributes.push(...Object.entries(background.attributeBonus).map(([attr, bonus]) => `${attr}+${bonus}`))
+    attributes.push(...Object.entries(background.attributeBonus).map(([attr, bonus]) => `${getAttributeName(attr)}+${bonus}`))
   }
   if (background.skillBonus) {
-    skills.push(...Object.entries(background.skillBonus).map(([skill, bonus]) => `${skill}+${bonus}`))
+    skills.push(...Object.entries(background.skillBonus).map(([skill, bonus]) => `${getSkillName(skill)}+${bonus}`))
   }
   
   // 背景選擇的彈性屬性/技能
   if (selections?.flexibleAttributes) {
-    attributes.push(...selections.flexibleAttributes.map(attr => `${attr}+1`))
+    attributes.push(...selections.flexibleAttributes.map(attr => `${getAttributeName(attr)}+1`))
   }
   if (selections?.flexibleSkills) {
-    skills.push(...selections.flexibleSkills.map(skill => `${skill}+1`))
+    skills.push(...selections.flexibleSkills.map(skill => `${getSkillName(skill)}+1`))
   }
   
   return {
@@ -1048,20 +1061,33 @@ const traitContribution = computed(() => {
   
   // 特徵的技能加成
   if (trait.skillBonus) {
-    skills.push(...Object.entries(trait.skillBonus).map(([skill, bonus]) => `${skill}+${bonus}`))
+    skills.push(...Object.entries(trait.skillBonus).map(([skill, bonus]) => `${getSkillName(skill)}+${bonus}`))
   }
   
   // 特徵選擇的彈性屬性/技能
   if (selections?.flexibleAttributes) {
-    attributes.push(...selections.flexibleAttributes.map(attr => `${attr}+${trait.flexibleAttributePoints || 1}`))
+    attributes.push(...selections.flexibleAttributes.map(attr => `${getAttributeName(attr)}+${trait.flexibleAttributePoints || 1}`))
   }
   if (selections?.flexibleSkills) {
-    skills.push(...selections.flexibleSkills.map(skill => `${skill}+${trait.flexibleSkillPoints || 1}`))
+    skills.push(...selections.flexibleSkills.map(skill => `${getSkillName(skill)}+${trait.flexibleSkillPoints || 1}`))
   }
   
   // 特殊技能選擇
   if (selections?.specialSkill) {
-    skills.push(`${selections.specialSkill}+1`)
+    skills.push(`${getSkillName(selections.specialSkill)}+1`)
+  }
+  
+  // 低級技能加成
+  if (selections?.lowLevelSkill) {
+    const points = trait.specialSkillPoints || 2
+    skills.push(`${getSkillName(selections.lowLevelSkill)}+${points}`)
+  }
+  
+  // 四項技能選擇加成
+  if (selections?.fourSkills) {
+    selections.fourSkills.forEach(skill => {
+      skills.push(`${getSkillName(skill)}+1`)
+    })
   }
   
   return {
@@ -1091,8 +1117,42 @@ const attributeCheckResult = computed(() => {
 const skillCheckResult = computed(() => {
   const total = skillTotal.value
   const isDilettante = characterCreationState.value.selectedTrait?.key === 'dilettante'
-  const expected = isDilettante ? '17+' : 17
-  const isValid = isDilettante ? total >= 17 : total === 17
+  const isPolymath = characterCreationState.value.selectedTrait?.specialSkillRule === 'all-zero-skills'
+  
+  let expected = 17
+  let isValid = total === 17
+  
+  if (isDilettante) {
+    expected = '17+'
+    isValid = total >= 17
+  } else if (isPolymath) {
+    // 博學多能者：計算預期技能總數
+    const baseSkillsTotal = 17 - (characterCreationState.value.selectedTrait?.skillBonus ? 
+      Object.values(characterCreationState.value.selectedTrait.skillBonus).reduce((sum, val) => sum + val, 0) : 0)
+    
+    // 計算有多少技能是0級
+    const allSkills = [
+      'ACADEMIA', 'ATHLETICS', 'COMMAND', 'ENGINEERING', 'FIGHTING', 
+      'MEDICINE', 'OBSERVATION', 'PERSUASION', 'RESILIENCE', 
+      'STEALTH', 'SURVIVAL', 'TACTICS', 'VEHICLES'
+    ]
+    
+    const skillsWithBonus = { ...finalSkills.value }
+    // 移除博學多能者規則的影響來計算基礎技能
+    allSkills.forEach(skill => {
+      if (skillsWithBonus[skill] === 1 && !characterCreationState.value.selectedTrait?.skillBonus?.[skill]) {
+        skillsWithBonus[skill] = 0 // 這個技能原本是0級，被博學多能者+1
+      }
+    })
+    
+    const zeroSkillCount = allSkills.filter(skill => 
+      (skillsWithBonus[skill] || 0) === 0
+    ).length
+    
+    expected = `17+${zeroSkillCount}`
+    isValid = total === (17 + zeroSkillCount)
+  }
+  
   const maxSkillValid = Object.values(finalSkills.value).every(val => val <= 5)
   
   return {
@@ -1103,7 +1163,9 @@ const skillCheckResult = computed(() => {
       ? '技能等級不得超過5'
       : isValid 
         ? '技能點數分配正確' 
-        : `技能總和應為${expected}，目前為${total}`
+        : isPolymath
+          ? `博學多能者預期技能總數：${expected}，目前為${total}`
+          : `技能總和應為${expected}，目前為${total}`
   }
 })
 
@@ -1159,6 +1221,25 @@ const getAttributeName = (attrCode) => {
     INS: '洞察', REA: '智識', WIL: '意志'
   }
   return names[attrCode] || attrCode
+}
+
+const getSkillName = (skillCode) => {
+  const skillNames = {
+    ACADEMIA: '學識',
+    ATHLETICS: '運動',
+    COMMAND: '指揮',
+    ENGINEERING: '工程',
+    FIGHTING: '戰鬥',
+    MEDICINE: '醫學',
+    OBSERVATION: '觀察',
+    PERSUASION: '說服',
+    RESILIENCE: '韌性',
+    STEALTH: '潛匿',
+    SURVIVAL: '求生',
+    TACTICS: '戰術',
+    VEHICLES: '載具'
+  }
+  return skillNames[skillCode] || skillCode
 }
 
 // 完成角色創建

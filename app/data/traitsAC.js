@@ -281,11 +281,11 @@ export const traitsAC = [
     },
     flexibleAttributePoints: 1,
     skillBonus: {
-      RESILIENCE: 1  // 韌性
+      RESILIENCE: 1,  // 韌性
     },
+    specialSkillChoice: ['OBSERVATION', 'PERSUASION', 'STEALTH'], // 觀察、說服或潛匿任一 +1
     flexibleSkillPoints: 1,
     flexibleSkillCount: 2,
-    specialSkillChoice: ['OBSERVATION', 'PERSUASION', 'STEALTH'], // 觀察、說服或潛匿任一 +1
     talentRequirement: {
       keyword: '異質',
       description: '從具「異質」關鍵詞的天賦中擇一'

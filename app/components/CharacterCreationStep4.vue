@@ -38,6 +38,25 @@
           <p class="text-green-600">{{ selectedTrait.truthOptions.join('，或') }}</p>
         </div>
       </div>
+      
+      <!-- 選擇詳情 -->
+      <div v-if="selectedLowLevelSkill || selectedFourSkills.length > 0" class="mt-4 p-3 bg-green-100 rounded-lg">
+        <h4 class="font-bold text-green-800 mb-2">✨ 你的選擇：</h4>
+        <div class="text-sm text-green-700 space-y-1">
+          <p v-if="selectedLowLevelSkill">
+            <strong>低級技能提升：</strong>{{ getSkillName(selectedLowLevelSkill) }} +{{ selectedTrait.specialSkillPoints || 2 }}
+          </p>
+          <div v-if="selectedFourSkills.length > 0">
+            <strong>任選技能提升：</strong>
+            <span class="ml-1">
+              {{ selectedFourSkills.map(skill => getSkillName(skill)).join('、') }} 各 +1
+            </span>
+            <span v-if="selectedFourSkills.length < 4" class="text-amber-600 ml-2">
+              (還需選擇 {{ 4 - selectedFourSkills.length }} 項)
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 特徵列表 -->
@@ -237,8 +256,27 @@
                 <div v-if="hasSpecialSkillRules" class="space-y-2 mb-4">
                   <div v-if="selectedTrait.specialSkillRule === 'all-zero-skills'" 
                        class="bg-purple-50 border-l-4 border-purple-400 p-3 rounded">
-                    <h5 class="font-medium text-purple-800">特殊規則</h5>
+                    <h5 class="font-medium text-purple-800">特殊規則：博學多能者</h5>
                     <p class="text-xs text-purple-600 mt-1">所有目前等級為 0 的技能 +1</p>
+                    <div class="mt-2 p-2 bg-white rounded border">
+                      <p class="text-xs font-medium text-purple-700 mb-1">受影響的技能：</p>
+                      <div class="text-xs text-purple-600">
+                        <div v-if="zeroLevelSkills.length > 0" class="grid grid-cols-2 gap-1">
+                          <span v-for="skill in zeroLevelSkills" :key="skill" class="inline-block">
+                            {{ skill }} +1
+                          </span>
+                        </div>
+                        <div v-else class="text-center py-2 text-gray-500 italic">
+                          目前沒有等級為 0 的技能
+                        </div>
+                        <p v-if="zeroLevelSkills.length > 0" class="mt-2 text-xs text-amber-600 font-medium">
+                          ⚠️ 總技能點數將變成：{{ predictedSkillTotal }}（若角色具有「博學多能者」特徵則例外）
+                        </p>
+                        <p v-else class="mt-2 text-xs text-green-600 font-medium">
+                          ✅ 博學多能者規則不會增加技能點數（符合標準17點）
+                        </p>
+                      </div>
+                    </div>
                   </div>
                   
                   <div v-if="selectedTrait.specialSkillRule === 'choose-four'" 
@@ -271,6 +309,106 @@
                     >
                       {{ getSkillName(skillCode) }} +1
                     </button>
+                  </div>
+                </div>
+
+                <!-- 低級技能選擇 -->
+                <div v-if="selectedTrait.specialSkillRule === 'choose-low-level'" class="mb-4">
+                  <h5 class="text-md font-semibold text-gray-800 mb-3">
+                    選擇低級技能 (+{{ selectedTrait.specialSkillPoints || 2 }})
+                  </h5>
+                  <p class="text-sm text-gray-600 mb-3">選擇一個目前等級為 0 或 1 的技能進行提升</p>
+                  
+                  <div v-if="availableLowLevelSkills.length > 0" class="space-y-2">
+                    <button
+                      v-for="skill in availableLowLevelSkills"
+                      :key="skill.code"
+                      @click="selectLowLevelSkill(skill.code)"
+                      :class="[
+                        'w-full text-left p-3 border-2 rounded-lg transition-all duration-200',
+                        selectedLowLevelSkill === skill.code
+                          ? 'bg-purple-100 border-purple-400 text-purple-800'
+                          : 'bg-white border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                      ]"
+                    >
+                      <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2 mb-1">
+                            <span class="font-medium">{{ skill.name }}</span>
+                            <span class="text-sm bg-purple-200 text-purple-800 px-2 py-1 rounded">
+                              +{{ selectedTrait.specialSkillPoints || 2 }}
+                            </span>
+                          </div>
+                          <div class="text-xs text-gray-600">
+                            <span class="font-medium">目前等級: {{ skill.currentLevel }}</span>
+                            <span v-if="skill.bonusBreakdown.length > 0" class="ml-2">
+                              ({{ skill.bonusBreakdown.join('、') }})
+                            </span>
+                          </div>
+                          <div class="text-xs text-green-600 mt-1">
+                            選擇後等級: {{ skill.currentLevel + (selectedTrait.specialSkillPoints || 2) }}
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                  
+                  <div v-else class="text-center p-4 bg-gray-50 rounded-lg">
+                    <p class="text-gray-600">沒有符合條件的技能（等級 0-1）</p>
+                  </div>
+                </div>
+
+                <!-- 任選四項技能選擇 -->
+                <div v-if="selectedTrait.specialSkillRule === 'choose-four'" class="mb-4">
+                  <div class="flex justify-between items-center mb-3">
+                    <h5 class="text-md font-semibold text-gray-800">任選四項技能 (+1)</h5>
+                    <span class="text-sm font-medium px-3 py-1 rounded-full"
+                          :class="selectedFourSkills.length === 4 ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'">
+                      已選擇: {{ selectedFourSkills.length }} / 4
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-3">從所有技能中任選四項，各 +1</p>
+                  
+                  <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto border border-gray-200 rounded p-3">
+                    <button
+                      v-for="skill in availableFlexibleSkills"
+                      :key="skill.code"
+                      @click="toggleFourSkill(skill.code)"
+                      :disabled="!isFourSkillSelected(skill.code) && selectedFourSkills.length >= 4"
+                      :class="[
+                        'p-3 text-sm rounded border-2 transition-all duration-200',
+                        isFourSkillSelected(skill.code)
+                          ? 'bg-indigo-100 border-indigo-400 text-indigo-800'
+                          : selectedFourSkills.length < 4
+                            ? 'bg-white border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
+                            : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
+                      ]"
+                    >
+                      <div class="flex justify-between items-center">
+                        <span class="font-medium">{{ skill.name }}</span>
+                        <span v-if="isFourSkillSelected(skill.code)" class="text-indigo-500 text-lg">✓</span>
+                      </div>
+                    </button>
+                  </div>
+                  
+                  <!-- 已選擇技能總結 -->
+                  <div v-if="selectedFourSkills.length > 0" class="mt-3 p-3 bg-indigo-50 rounded-lg">
+                    <h6 class="font-semibold text-indigo-800 mb-2">已選擇的技能：</h6>
+                    <div class="flex flex-wrap gap-2">
+                      <span 
+                        v-for="skillCode in selectedFourSkills" 
+                        :key="skillCode"
+                        class="inline-flex items-center px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full"
+                      >
+                        {{ getSkillName(skillCode) }} +1
+                        <button 
+                          @click="toggleFourSkill(skillCode)"
+                          class="ml-1 text-indigo-500 hover:text-indigo-700"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -396,9 +534,10 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { traitsAC } from '~/data/traitsAC.js'
 import { useTalentDataAC } from '~/composables/useTalentDataAC.js'
+import { useAchtungCthulhuStore } from '~/stores/achtungCthulhuStore.js'
 
 // Props 和 Emits
 const props = defineProps({
@@ -414,8 +553,12 @@ const props = defineProps({
 
 const emit = defineEmits(['next-step', 'prev-step', 'select-trait'])
 
-// 使用天賦數據
+// 使用天賦數據和 store
 const { talentsDatabase } = useTalentDataAC()
+const store = useAchtungCthulhuStore()
+
+// 注入全局角色創建狀態
+const characterCreationState = inject('characterCreationState')
 
 // 響應式資料
 const traits = ref(traitsAC)
@@ -436,6 +579,8 @@ const finalTruth = computed(() => selectedTruth.value || customTruth.value)
 const selectedFlexibleAttribute = ref('')
 const selectedFlexibleSkills = ref([])
 const selectedSpecialSkill = ref('')
+const selectedLowLevelSkill = ref('')
+const selectedFourSkills = ref([])
 const selectedTalent = ref(null)
 
 // 監聽 props 變化
@@ -452,6 +597,8 @@ const resetSelections = () => {
   selectedFlexibleAttribute.value = ''
   selectedFlexibleSkills.value = []
   selectedSpecialSkill.value = ''
+  selectedLowLevelSkill.value = ''
+  selectedFourSkills.value = []
   selectedTalent.value = null
   activeDetailTab.value = 'description'
 }
@@ -496,6 +643,25 @@ const selectSpecialSkill = (skillCode) => {
   updateSelections()
 }
 
+const selectLowLevelSkill = (skillCode) => {
+  selectedLowLevelSkill.value = skillCode
+  updateSelections()
+}
+
+const toggleFourSkill = (skillCode) => {
+  const index = selectedFourSkills.value.indexOf(skillCode)
+  if (index > -1) {
+    selectedFourSkills.value.splice(index, 1)
+  } else if (selectedFourSkills.value.length < 4) {
+    selectedFourSkills.value.push(skillCode)
+  }
+  updateSelections()
+}
+
+const isFourSkillSelected = (skillCode) => {
+  return selectedFourSkills.value.includes(skillCode)
+}
+
 const toggleFlexibleSkill = (skillCode) => {
   const index = selectedFlexibleSkills.value.indexOf(skillCode)
   if (index > -1) {
@@ -520,14 +686,24 @@ const updateSelections = () => {
         flexibleAttribute: selectedFlexibleAttribute.value,
         flexibleSkills: [...selectedFlexibleSkills.value],
         specialSkill: selectedSpecialSkill.value,
+        lowLevelSkill: selectedLowLevelSkill.value,
+        fourSkills: [...selectedFourSkills.value],
         talent: selectedTalent.value
       }
     })
   }
 }
 
-// 監聽天賦選擇變化
+// 監聽選擇變化
 watch(() => selectedTalent.value, () => {
+  updateSelections()
+})
+
+watch(() => selectedLowLevelSkill.value, () => {
+  updateSelections()
+})
+
+watch(() => selectedFourSkills.value, () => {
   updateSelections()
 })
 
@@ -583,6 +759,353 @@ const hasSpecialSkillRules = computed(() => {
     selectedTrait.value.specialSkillRule === 'choose-low-level'
   )
 })
+
+// 計算當前0級技能
+const zeroLevelSkills = computed(() => {
+  if (!selectedTrait.value || selectedTrait.value.specialSkillRule !== 'all-zero-skills' || !characterCreationState) {
+    return []
+  }
+
+  const skillNames = {
+    'ACADEMIA': '學識',
+    'ATHLETICS': '運動',
+    'COMMAND': '指揮',
+    'ENGINEERING': '工程',
+    'FIGHTING': '戰鬥',
+    'MEDICINE': '醫學',
+    'OBSERVATION': '觀察',
+    'PERSUASION': '說服',
+    'RESILIENCE': '韌性',
+    'STEALTH': '潛匿',
+    'SURVIVAL': '求生',
+    'TACTICS': '戰術',
+    'VEHICLES': '載具'
+  }
+
+  // 計算包含所有前面步驟加成的技能等級
+  const currentSkills = {}
+  
+  // 初始化所有技能為0
+  Object.keys(skillNames).forEach(skillCode => {
+    currentSkills[skillCode] = 0
+  })
+
+  // 1. 來自原型的技能加成
+  if (characterCreationState.value.selectedArchetype?.skillBonus) {
+    Object.entries(characterCreationState.value.selectedArchetype.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 2. 來自國籍的技能加成
+  if (characterCreationState.value.selectedNationality?.skillBonus) {
+    Object.entries(characterCreationState.value.selectedNationality.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 3. 來自背景的技能加成
+  if (characterCreationState.value.selectedBackground?.skillBonus) {
+    Object.entries(characterCreationState.value.selectedBackground.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 4. 來自背景的彈性技能選擇
+  if (characterCreationState.value.backgroundSelections?.flexibleSkills) {
+    const flexSkills = characterCreationState.value.backgroundSelections.flexibleSkills
+    const points = characterCreationState.value.selectedBackground?.flexibleSkillPoints || 1
+    flexSkills.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + points
+    })
+  }
+
+  // 5. 特徵的固定技能加成
+  if (selectedTrait.value.skillBonus) {
+    Object.entries(selectedTrait.value.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 6. 來自特徵的彈性技能選擇（如果有的話）
+  if (selectedFlexibleSkills.value.length > 0 && selectedTrait.value.flexibleSkillPoints) {
+    selectedFlexibleSkills.value.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + selectedTrait.value.flexibleSkillPoints
+    })
+  }
+
+  // 7. 來自特徵的特殊技能選擇
+  if (selectedSpecialSkill.value) {
+    currentSkills[selectedSpecialSkill.value] = (currentSkills[selectedSpecialSkill.value] || 0) + 1
+  }
+
+  // 8. 來自特徵的低級技能加成
+  if (selectedLowLevelSkill.value && selectedTrait.value.specialSkillPoints) {
+    currentSkills[selectedLowLevelSkill.value] = (currentSkills[selectedLowLevelSkill.value] || 0) + selectedTrait.value.specialSkillPoints
+  }
+
+  // 9. 來自特徵的四項技能選擇
+  if (selectedFourSkills.value.length > 0) {
+    selectedFourSkills.value.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + 1
+    })
+  }
+
+  // 找出所有等級為0的技能
+  const zeroSkills = []
+  Object.keys(skillNames).forEach(skillCode => {
+    if (currentSkills[skillCode] === 0) {
+      zeroSkills.push(skillNames[skillCode])
+    }
+  })
+
+  return zeroSkills
+})
+
+// 預測技能總數
+const predictedSkillTotal = computed(() => {
+  if (!selectedTrait.value || selectedTrait.value.specialSkillRule !== 'all-zero-skills' || !characterCreationState) {
+    return 0
+  }
+
+  // 使用與 zeroLevelSkills 相同的邏輯計算所有技能的當前等級
+  const skillCodes = [
+    'ACADEMIA', 'ATHLETICS', 'COMMAND', 'ENGINEERING', 'FIGHTING', 
+    'MEDICINE', 'OBSERVATION', 'PERSUASION', 'RESILIENCE', 
+    'STEALTH', 'SURVIVAL', 'TACTICS', 'VEHICLES'
+  ]
+  
+  const currentSkills = {}
+  
+  // 初始化所有技能為0
+  skillCodes.forEach(skillCode => {
+    currentSkills[skillCode] = 0
+  })
+
+  // 1. 來自原型的技能加成
+  if (characterCreationState.value.selectedArchetype?.skillBonus) {
+    Object.entries(characterCreationState.value.selectedArchetype.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 2. 來自國籍的技能加成
+  if (characterCreationState.value.selectedNationality?.skillBonus) {
+    Object.entries(characterCreationState.value.selectedNationality.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 3. 來自背景的技能加成
+  if (characterCreationState.value.selectedBackground?.skillBonus) {
+    Object.entries(characterCreationState.value.selectedBackground.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 4. 來自背景的彈性技能選擇
+  if (characterCreationState.value.backgroundSelections?.flexibleSkills) {
+    const flexSkills = characterCreationState.value.backgroundSelections.flexibleSkills
+    const points = characterCreationState.value.selectedBackground?.flexibleSkillPoints || 1
+    flexSkills.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + points
+    })
+  }
+
+  // 5. 特徵的固定技能加成
+  if (selectedTrait.value.skillBonus) {
+    Object.entries(selectedTrait.value.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 6. 來自特徵的彈性技能選擇（如果有的話）
+  if (selectedFlexibleSkills.value.length > 0 && selectedTrait.value.flexibleSkillPoints) {
+    selectedFlexibleSkills.value.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + selectedTrait.value.flexibleSkillPoints
+    })
+  }
+
+  // 7. 來自特徵的特殊技能選擇
+  if (selectedSpecialSkill.value) {
+    currentSkills[selectedSpecialSkill.value] = (currentSkills[selectedSpecialSkill.value] || 0) + 1
+  }
+
+  // 8. 來自特徵的低級技能加成
+  if (selectedLowLevelSkill.value && selectedTrait.value.specialSkillPoints) {
+    currentSkills[selectedLowLevelSkill.value] = (currentSkills[selectedLowLevelSkill.value] || 0) + selectedTrait.value.specialSkillPoints
+  }
+
+  // 9. 來自特徵的四項技能選擇
+  if (selectedFourSkills.value.length > 0) {
+    selectedFourSkills.value.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + 1
+    })
+  }
+
+  // 計算當前技能總數（不包含博學多能者規則）
+  let currentTotal = Object.values(currentSkills).reduce((sum, value) => sum + value, 0)
+  
+  // 加上博學多能者規則：所有0級技能+1
+  const zeroSkillCount = zeroLevelSkills.value.length
+  currentTotal += zeroSkillCount
+
+  return currentTotal
+})
+
+// 獲取可選擇的低級技能 (等級為 0 或 1 的技能)
+const availableLowLevelSkills = computed(() => {
+  if (!selectedTrait.value || selectedTrait.value.specialSkillRule !== 'choose-low-level') {
+    return []
+  }
+
+  const skillNames = {
+    'ACADEMIA': '學識',
+    'ATHLETICS': '運動',
+    'ENGINEERING': '工程',
+    'FIGHTING': '戰鬥',
+    'MEDICINE': '醫學',
+    'OBSERVATION': '觀察',
+    'PERSUASION': '說服',
+    'RESILIENCE': '韌性',
+    'STEALTH': '潛匿',
+    'SURVIVAL': '求生',
+    'TACTICS': '戰術',
+    'VEHICLES': '載具'
+  }
+
+  // 計算包含前面所有步驟加成的當前技能等級
+  const currentSkills = {}
+  
+  // 初始化所有技能為0
+  Object.keys(skillNames).forEach(skillCode => {
+    currentSkills[skillCode] = 0
+  })
+
+  if (characterCreationState?.value) {
+    // 1. 來自原型的技能加成
+    if (characterCreationState.value.selectedArchetype?.skillBonus) {
+      Object.entries(characterCreationState.value.selectedArchetype.skillBonus).forEach(([skill, bonus]) => {
+        currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+      })
+    }
+
+    // 2. 來自國籍的技能加成
+    if (characterCreationState.value.selectedNationality?.skillBonus) {
+      Object.entries(characterCreationState.value.selectedNationality.skillBonus).forEach(([skill, bonus]) => {
+        currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+      })
+    }
+
+    // 3. 來自背景的技能加成
+    if (characterCreationState.value.selectedBackground?.skillBonus) {
+      Object.entries(characterCreationState.value.selectedBackground.skillBonus).forEach(([skill, bonus]) => {
+        currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+      })
+    }
+
+    // 4. 來自背景的彈性技能選擇
+    if (characterCreationState.value.backgroundSelections?.flexibleSkills) {
+      const flexSkills = characterCreationState.value.backgroundSelections.flexibleSkills
+      const points = characterCreationState.value.selectedBackground?.flexibleSkillPoints || 1
+      flexSkills.forEach(skill => {
+        currentSkills[skill] = (currentSkills[skill] || 0) + points
+      })
+    }
+  }
+
+  // 5. 來自當前特徵的固定技能加成
+  if (selectedTrait.value.skillBonus) {
+    Object.entries(selectedTrait.value.skillBonus).forEach(([skill, bonus]) => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + bonus
+    })
+  }
+
+  // 6. 來自當前特徵的彈性技能選擇
+  if (selectedFlexibleSkills.value.length > 0 && selectedTrait.value.flexibleSkillPoints) {
+    selectedFlexibleSkills.value.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + selectedTrait.value.flexibleSkillPoints
+    })
+  }
+
+  // 7. 來自當前特徵的特殊技能選擇
+  if (selectedSpecialSkill.value) {
+    currentSkills[selectedSpecialSkill.value] = (currentSkills[selectedSpecialSkill.value] || 0) + 1
+  }
+
+  // 8. 來自當前特徵的四項技能選擇
+  if (selectedFourSkills.value.length > 0) {
+    selectedFourSkills.value.forEach(skill => {
+      currentSkills[skill] = (currentSkills[skill] || 0) + 1
+    })
+  }
+
+  const lowLevelSkills = []
+
+  Object.keys(skillNames).forEach(skillCode => {
+    const currentLevel = currentSkills[skillCode] || 0
+    if (currentLevel <= 1) {
+      lowLevelSkills.push({
+        code: skillCode,
+        name: skillNames[skillCode],
+        currentLevel: currentLevel,
+        bonusBreakdown: getSkillBonusBreakdown(skillCode, currentSkills[skillCode])
+      })
+    }
+  })
+
+  return lowLevelSkills
+})
+
+// 獲取技能加成的詳細分解
+const getSkillBonusBreakdown = (skillCode, totalLevel) => {
+  const breakdown = []
+  
+  if (characterCreationState?.value) {
+    // 檢查原型加成
+    if (characterCreationState.value.selectedArchetype?.skillBonus?.[skillCode]) {
+      breakdown.push(`原型 +${characterCreationState.value.selectedArchetype.skillBonus[skillCode]}`)
+    }
+
+    // 檢查國籍加成
+    if (characterCreationState.value.selectedNationality?.skillBonus?.[skillCode]) {
+      breakdown.push(`國籍 +${characterCreationState.value.selectedNationality.skillBonus[skillCode]}`)
+    }
+
+    // 檢查背景加成
+    if (characterCreationState.value.selectedBackground?.skillBonus?.[skillCode]) {
+      breakdown.push(`背景 +${characterCreationState.value.selectedBackground.skillBonus[skillCode]}`)
+    }
+
+    // 檢查背景彈性技能加成
+    if (characterCreationState.value.backgroundSelections?.flexibleSkills?.includes(skillCode)) {
+      const points = characterCreationState.value.selectedBackground?.flexibleSkillPoints || 1
+      breakdown.push(`背景選擇 +${points}`)
+    }
+  }
+
+  // 檢查特徵固定加成
+  if (selectedTrait.value?.skillBonus?.[skillCode]) {
+    breakdown.push(`特徵 +${selectedTrait.value.skillBonus[skillCode]}`)
+  }
+
+  // 檢查特徵彈性加成
+  if (selectedFlexibleSkills.value.includes(skillCode) && selectedTrait.value?.flexibleSkillPoints) {
+    breakdown.push(`特徵選擇 +${selectedTrait.value.flexibleSkillPoints}`)
+  }
+
+  // 檢查特徵特殊技能選擇
+  if (selectedSpecialSkill.value === skillCode) {
+    breakdown.push(`特徵選擇 +1`)
+  }
+
+  // 檢查特徵四項技能選擇
+  if (selectedFourSkills.value.includes(skillCode)) {
+    breakdown.push(`特徵選擇 +1`)
+  }
+
+  return breakdown
+}
 
 // 獲取可選擇的天賦
 const availableTalents = computed(() => {
