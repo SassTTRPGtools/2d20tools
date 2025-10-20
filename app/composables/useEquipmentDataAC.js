@@ -217,7 +217,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "史登 Mk.IIS 消音衝鋒槍",
-    "focus": "近戰",
+    "focus": "近距作戰",
     "reach": "近距",
     "damage": "3🎲",
     "salvo": ["震懾"],
@@ -226,7 +226,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "史登 Mk.V 衝鋒槍",
-    "focus": "近戰",
+    "focus": "近距作戰",
     "reach": "近距",
     "damage": "4🎲",
     "salvo": ["震懾"],
@@ -235,7 +235,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "湯普森衝鋒槍",
-    "focus": "近戰",
+    "focus": "近距作戰",
     "reach": "近距",
     "damage": "4🎲",
     "salvo": ["震懾"],
@@ -244,7 +244,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "聯合防務 M42 衝鋒槍",
-    "focus": "近戰",
+    "focus": "近距作戰",
     "reach": "近距",
     "damage": "4🎲",
     "salvo": ["震懾"],
@@ -326,7 +326,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "溫徹斯特 M12 霰彈槍",
-    "focus": "近戰",
+    "focus": "近距作戰",
     "reach": "近距",
     "damage": "5🎲",
     "salvo": ["兇猛"],
@@ -572,7 +572,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "戰鬥匕首 42",
-    "focus": "近戰",
+    "focus": "近戰武器",
     "reach": "—",
     "damage": "1🎲穿透1",
     "salvo": [],
@@ -581,7 +581,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "德國空軍多用途折刀",
-    "focus": "近戰",
+    "focus": "近戰武器",
     "reach": "—",
     "damage": "2🎲穿透1",
     "salvo": [],
@@ -590,7 +590,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "黨衛軍匕首",
-    "focus": "近戰",
+    "focus": "近戰武器",
     "reach": "—",
     "damage": "2🎲穿透1",
     "salvo": [],
