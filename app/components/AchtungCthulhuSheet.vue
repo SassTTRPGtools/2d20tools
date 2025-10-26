@@ -979,7 +979,7 @@ const skillsData = ref([
   },
   {
     code: 'SURVIVAL',
-    name: '求生',
+    name: '生存',
     description: '此技能涵蓋角色在野外生存與行動的能力，測量其在無文明庇護下獲取必需品、適應環境、導航、覓食與築庇護所的技巧。',
     focuses: [
       { name: '動物操控', description: '理解動物行為、馴養與指令控制。' },

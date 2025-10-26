@@ -419,7 +419,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '闊劍',
     focus: '異域',
-    reach: '—',
+    reach: '鄰近',
     damage: '5🎲',
     salvo: [],
     size: '主要',
@@ -428,7 +428,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '長矛',
     focus: '異域',
-    reach: '—',
+    reach: '鄰近',
     damage: '4🎲　穿透 1',
     salvo: [],
     size: '主要',
@@ -437,7 +437,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '長劍',
     focus: '異域',
-    reach: '—',
+    reach: '鄰近',
     damage: '4🎲',
     salvo: [],
     size: '主要',
@@ -447,7 +447,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '斧頭',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲兇猛',
     salvo: [],
     size: '次要',
@@ -456,7 +456,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '球棒',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲震懾',
     salvo: [],
     size: '主要',
@@ -465,7 +465,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '警棍',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲',
     salvo: [],
     size: '次要',
@@ -474,7 +474,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '刺刀',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲穿透',
     salvo: [],
     size: '次要',
@@ -483,7 +483,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '指虎',
     focus: '徒手戰鬥',
-    reach: '—',
+    reach: '鄰近',
     damage: '2🎲震懾',
     salvo: [],
     size: '次要',
@@ -492,7 +492,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '工兵鏟',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲',
     salvo: [],
     size: '次要',
@@ -501,7 +501,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '戰鬥匕首',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '2🎲穿透 1',
     salvo: [],
     size: '次要',
@@ -510,7 +510,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '消防斧',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '4🎲兇猛',
     salvo: [],
     size: '主要',
@@ -519,7 +519,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '絞索',
     focus: '徒手戰鬥',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲纏縛',
     salvo: [],
     size: '小物品',
@@ -528,7 +528,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '軍刀',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲穿透 1',
     salvo: [],
     size: '主要',
@@ -537,16 +537,16 @@ export const useEquipmentDataAC = () => {
   {
     name: '槍托',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲',
     salvo: [],
-    size: '—',
+    size: '鄰近',
     qualities: []
   },
   {
     name: '拇指刀',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '1🎲穿透1',
     salvo: [],
     size: '次要',
@@ -555,7 +555,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '塹壕匕首',
     focus: '近戰武器',
-    reach: '—',
+    reach: '鄰近',
     damage: '3🎲兇猛',
     salvo: [],
     size: '次要',
@@ -564,7 +564,7 @@ export const useEquipmentDataAC = () => {
   {
     name: '徒手攻擊',
     focus: '徒手戰鬥',
-    reach: '—',
+    reach: '鄰近',
     damage: '2🎲',
     salvo: [],
     size: '—',
@@ -573,7 +573,7 @@ export const useEquipmentDataAC = () => {
   {
     "name": "戰鬥匕首 42",
     "focus": "近戰武器",
-    "reach": "—",
+    "reach": "鄰近",
     "damage": "1🎲穿透1",
     "salvo": [],
     "size": "次要",
@@ -582,7 +582,7 @@ export const useEquipmentDataAC = () => {
   {
     "name": "德國空軍多用途折刀",
     "focus": "近戰武器",
-    "reach": "—",
+    "reach": "鄰近",
     "damage": "2🎲穿透1",
     "salvo": [],
     "size": "次要",
@@ -591,7 +591,7 @@ export const useEquipmentDataAC = () => {
   {
     "name": "黨衛軍匕首",
     "focus": "近戰武器",
-    "reach": "—",
+    "reach": "鄰近",
     "damage": "2🎲穿透1",
     "salvo": [],
     "size": "次要",
@@ -616,7 +616,7 @@ export const useEquipmentDataAC = () => {
     "qualities": ["可靠"]
   },
   {
-    "name": "卡賓 98k",
+    "name": "卡賓98k",
     "focus": "步槍",
     "reach": "中距",
     "damage": "5🎲",
@@ -625,7 +625,7 @@ export const useEquipmentDataAC = () => {
     "qualities": ["可靠"]
   },
   {
-    "name": "卡賓 98k（狙擊型）",
+    "name": "卡賓98k（狙擊型）",
     "focus": "步槍",
     "reach": "遠距",
     "damage": "5🎲",
@@ -671,7 +671,7 @@ export const useEquipmentDataAC = () => {
   },
   {
     "name": "MP40 衝鋒槍",
-    "focus": "近戰",
+    "focus": "近距作戰",
     "reach": "近距",
     "damage": "4🎲",
     "salvo": ["震懾"],

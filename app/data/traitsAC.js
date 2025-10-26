@@ -520,5 +520,125 @@ export const traitsAC = [
     },
     truthOptions: ['童心未泯', '自創描述你旺盛膽識與活力的真理'],
     equipment: ['1 額外資源，用於任何你持有的技能工具組']
+  },
+
+  {
+    key: 'anti-fascist',
+    chineseName: '反法西斯者',
+    englishName: 'Anti-Fascist',
+    icon: '✊',
+    description: '無論你是西班牙內戰老兵、被佔領國的公民、共產主義者、無政府主義者或社會主義者，你都堅決反對軸心國的法西斯意識形態。',
+    attributeBonus: {
+      REA: 1,  // 智識
+      WIL: 1   // 意志
+    },
+    flexibleAttributePoints: 1,
+    skillBonus: {
+      FIGHTING: 1  // 戰鬥
+    },
+    flexibleSkillPoints: 1,
+    flexibleSkillCount: 3,
+    talentRequirement: {
+      keyword: '學識|戰鬥',
+      description: '從具「學識」或「戰鬥」關鍵詞的天賦中擇一'
+    },
+    truthOptions: ['反法西斯者', '自創與你對抗法西斯經歷相關的真理'],
+    equipment: ['與你政治理念相關的小冊子、報紙或書籍']
+  },
+
+  {
+    key: 'born-under-a-bad-sign',
+    chineseName: '厄運之子',
+    englishName: 'Born Under a Bad Sign',
+    icon: '🌚',
+    description: '你弄丟了鞋子。第一次上戰場時，槍卡彈；或是全隊口糧裡只有你的發霉。這不是你的錯——至少你確信自己沒做什麼該遭報應的事。只是命運似乎總愛跟你開玩笑。',
+    attributeBonus: {
+      AGI: 1,  // 敏捷
+      INS: 1   // 洞察
+    },
+    flexibleAttributePoints: 1,
+    skillBonus: {
+      ATHLETICS: 1  // 運動
+    },
+    flexibleSkillPoints: 1,
+    flexibleSkillCount: 3,
+    talentRequirement: {
+      keyword: '運動|觀察',
+      description: '從具「運動」或「觀察」關鍵詞的天賦中擇一'
+    },
+    truthOptions: ['厄運之子', '自創與你倒楣經歷相關的真理'],
+    equipment: ['一個「幸運符」——但從未真正帶來好運']
+  },
+
+  {
+    key: 'field-tester',
+    chineseName: '實驗測試員',
+    englishName: 'Field Tester',
+    icon: '🧪',
+    description: '來自 M 部門、馬傑斯特局、黑日會與夜狼部隊的實驗室中，誕生出最奇異、最驚人、也最恐怖的技術。當上級需要有人親自測試那些非凡裝置時，你總是第一個自告奮勇。',
+    attributeBonus: {
+      AGI: 1,  // 敏捷
+      COO: 1   // 協調
+    },
+    flexibleAttributePoints: 1,
+    skillBonus: {
+      ENGINEERING: 1  // 工程
+    },
+    flexibleSkillPoints: 1,
+    flexibleSkillCount: 3,
+    talentRequirement: {
+      keyword: '學識|工程',
+      description: '從具「學識」或「工程」關鍵詞的天賦中擇一'
+    },
+    truthOptions: ['實驗測試員', '自創與你測試實驗性技術相關的真理'],
+    equipment: ['獲得一組對你擁有 2 級或以上技能的專用工具組']
+  },
+
+  {
+    key: 'ruthless',
+    chineseName: '冷酷無情',
+    englishName: 'Ruthless',
+    icon: '❄️',
+    description: '戰爭即是世界，而世界即是戰爭。多愁善感只會讓你喪命，因此你將情感封鎖起來，為了報復納粹與出賣祖國的叛徒而成為復仇之刃。',
+    attributeBonus: {
+      COO: 1,  // 協調
+      WIL: 1   // 意志
+    },
+    flexibleAttributePoints: 1,
+    skillBonus: {
+      FIGHTING: 1  // 戰鬥
+    },
+    flexibleSkillPoints: 1,
+    flexibleSkillCount: 3,
+    talentRequirement: {
+      keyword: '戰鬥|韌性',
+      description: '從具「戰鬥」或「韌性」關鍵詞的天賦中擇一'
+    },
+    truthOptions: ['冷酷無情', '自創基於你成為無情戰士的過往經歷'],
+    equipment: ['一件珍貴的遺物，象徵著你在失去情感前的那段時光']
+  },
+
+  {
+    key: 'sees-beyond-the-veil',
+    chineseName: '洞悉帷幕者',
+    englishName: 'Sees Beyond the Veil',
+    icon: '👁️',
+    description: '你對能量、靈體與異象極為敏感。或許你天生如此，或許是因創傷、或某次深層宇宙洞見所致。若持續磨練，你或能發展超感知能力。目前，你僅比凡人更能察覺那不可言說之物。',
+    attributeBonus: {
+      INS: 1,  // 洞察
+      WIL: 1   // 意志
+    },
+    flexibleAttributePoints: 1,
+    skillBonus: {
+      OBSERVATION: 1  // 觀察
+    },
+    flexibleSkillPoints: 1,
+    flexibleSkillCount: 3,
+    talentRequirement: {
+      keyword: '觀察|異質',
+      description: '從具「觀察」或「異質」關鍵詞的天賦中擇一'
+    },
+    truthOptions: ['洞悉帷幕者', '自創與你超自然感知相關的真理'],
+    equipment: ['一件特別物品，用以壓制——或強化——你的幻象與感應']
   }
 ]

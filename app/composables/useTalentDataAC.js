@@ -37,8 +37,20 @@ export const useTalentDataAC = () => {
       {
         englishName: 'Strafing Run',
         chineseName: '掃射專家',
-        keywords: '〈載具〉，進階',
+        keywords: '〈載具〉、〈進階〉',
         content: '你擅長在高速中精準掃射，造成致命火力。當你駕駛載具並使用武器進行齊射攻擊時，可無視因車速或地形顛簸所造成的難度或糾葛範圍增加。'
+      },
+      {
+        englishName: 'Speed Demon',
+        chineseName: '極速狂人',
+        keywords: '〈載具〉',
+        content: '城市街道？鄉間小路？高空雲端？無論何處皆是你的遊樂場，只要能開快你就如魚得水。你駕駛、飛行或操縱的任何載具，其基礎速度增加 1。當你以載具進行延伸檢定成功時，可在壓力骰上額外加入 2🎲 以推進任務進度。'
+      },
+      {
+        englishName: 'Three Wheels on My Wagon',
+        chineseName: '我的三輪馬車',
+        keywords: '〈載具〉',
+        content: '你知道如何從每輛車中榨取最大效能，並以堅毅與意志克服任何損壞或機械故障。當你操作載具時，該載具需額外承受 1 點傷害（超出其正常傷害閾值）才會被判定為毀損。'
       }
     ],
     '異質': [
@@ -77,6 +89,30 @@ export const useTalentDataAC = () => {
         chineseName: '祕學涉獵者',
         keywords: '〈施法者〉，〈異質〉',
         content: '你涉足了難以理解的祕學力量。你成為「涉獵魔法」傳統的施法者，詳見第九章〈魔法與神話體系〉。'
+      },
+      {
+        englishName: 'Child of Carcosa',
+        chineseName: '卡爾科薩之子',
+        keywords: '〈異質〉',
+        content: '你被「黃印（Yellow Sign）」所標記。無論你曾侍奉那位黃衣之王，或只是其信徒的受害者，你已被其詛咒奪取。你面色蒼白、體弱多病，常陷於疲憊。真正的恐怖在於你能將這詛咒傳染他人。每場遊戲一次，當你以近戰攻擊成功時，可為該攻擊附加持續 4（Persistent 4）效果。'
+      },
+      {
+        englishName: 'Empath',
+        chineseName: '共感者',
+        keywords: '〈異質〉',
+        content: '荷蘭形上學者與超心理學家已研究超感知覺數十年。無論你是天生敏感，還是某事件喚醒了你的天賦，你皆能準確感知他人情緒。每場景一次，你可免費獲取一名中距離角色的情緒狀態資訊。'
+      },
+      {
+        englishName: 'Impish Familiar',
+        chineseName: '惡作靈契',
+        keywords: '〈異質〉',
+        content: '你與安德拉薩惡靈（Andrasian Imp）締結契約，這是狡詐而邪惡的魔性生物。透過儀式、祭品或奇異事件，它成為你的夥伴，卻又多變難測。它每場任務僅能被召喚一次，持續 2🎲 個場景。此惡靈視為你的盟友 NPC，受你指揮。若牠因敵人行動或意外而死，你立即獲得 1 點命運，並可選擇重新訓練此天賦（或召喚新惡靈）或改學其他天賦。'
+      },
+      {
+        englishName: 'Psychic Power',
+        chineseName: '靈能之力',
+        keywords: '〈異質〉，命運',
+        content: '你探索心靈深處，喚醒了超凡的形上能力。雖未完全掌握，但你能在專注時展現驚人潛能。當你施展「靈能與超感知」法術書（Player\'s Guide 第150頁）中的法術時，可花費 1 點命運，忽略該法術的缺陷（Flawed）狀態。'
       }
     ],
 
@@ -116,6 +152,18 @@ export const useTalentDataAC = () => {
         chineseName: '追蹤者',
         keywords: '〈求生〉',
         content: '你能追蹤最微弱的痕跡。當你進行求生檢定以追蹤動物、人類或異界生物時，第一顆購買的額外 d20 免費。\n若此追蹤為延展任務之一部分，則每擲出一個效果🎲時，額外造成 +1 壓力。'
+      },
+      {
+        englishName: 'Sheltered',
+        chineseName: '庇護所',
+        keywords: '〈求生〉',
+        content: '你有個基地——也許是荒原的抵抗據點、佔領區的安全屋，或貧民區的隱藏房間。每場任務一次，當你造訪此庇護所時，可獲得價值 4 點軍需點的次要或小物品，代表你事前準備的物資。此外，獲得 1 名額外的（潛匿）聯絡人。'
+      },
+      {
+        englishName: 'Urban Scavenger',
+        chineseName: '都市拾荒者',
+        keywords: '〈求生〉',
+        content: '你知道如何在社會縫隙間尋找所需——無論是黑市、地下網絡或佔領區。你獲得三名聯絡人，各自專精於載具、爆裂物、急救、談判或都市潛行之一。'
       }
     ],
     '戰術': [
@@ -154,6 +202,18 @@ export const useTalentDataAC = () => {
         chineseName: '團隊合作',
         keywords: '〈戰術〉',
         content: '你的領導讓團隊發揮超越個體總和的力量。當你領導或協助進行技能檢定時，若其中任一角色擁有適用專精，則所有參與者皆視為擁有該專精。\n若該技能檢定為延展任務之一部分，則在🎲池中額外加入 +2🎲 壓力。'
+      },
+      {
+        englishName: 'Guerrilla Warfare',
+        chineseName: '游擊戰術',
+        keywords: '〈戰術〉，命運',
+        content: '你擁有盟友與志同道合的反抗者網絡，能協調突襲、破壞與誘敵。每場任務一次，你可花費 1 點命運召集援軍。四名抵抗戰士／游擊隊員 NPC 會於 2🎲 回合內抵達，並在接下來三個場景中聽從你的指揮。'
+      },
+      {
+        englishName: 'Tactical Genius',
+        chineseName: '戰術天才',
+        keywords: '〈戰術〉',
+        content: '你懂得將盟友的成功化為整體優勢，推動團隊行動。當盟友於近距離內的檢定中獲得致命成功時，你可在下次檢定中重擲 1🎲。這些重擲可用於 d20 或挑戰骰，視戰術技能而定。'
       }
     ],
     '觀察': [
@@ -192,6 +252,18 @@ export const useTalentDataAC = () => {
         chineseName: '細察入微',
         keywords: '〈觀察〉',
         content: '你總是留心細節。當你在戰鬥外進行觀察檢定並將所需時間加倍時，你購買的第一顆額外 d20免費。'
+      },
+      {
+        englishName: 'A Nose for Poison',
+        chineseName: '嗅毒敏銳',
+        keywords: '〈觀察〉',
+        content: '你精通各種毒物的氣味與味道，知道哪些可被偽裝、哪些見效快、哪些隱蔽。當嘗試偵測或辨識毒物時，檢定難度減少 2（最低為 0）。此外，若你被下毒，只會在每場景結束時承受 1 點疲勞，而非全劑量影響。'
+      },
+      {
+        englishName: 'Three Moves Ahead',
+        chineseName: '洞察先機（三步預判）',
+        keywords: '〈觀察〉',
+        content: '你善於觀察、預測並準備應變。行動場景開始時，可為團隊動力池額外增加 1 點動力，象徵你提前的洞察。'
       }
     ],
     '說服': [
@@ -230,6 +302,18 @@ export const useTalentDataAC = () => {
         chineseName: '細微暗示',
         keywords: '〈說服〉',
         content: '你能洞察他人的情緒，察覺姿態、語氣與表情中的暗示，也擅長偽裝這些線索。當你花時間與某人交談或觀察後，在同場景內對其進行說服檢定時，第一次購買的額外 d20 成本降為 0。'
+      },
+      {
+        englishName: 'Gift of the Gab',
+        chineseName: '能言善道',
+        keywords: '〈說服〉',
+        content: '你擅長交談、溝通、與人打成一片，能讓對方放鬆並接受你的觀點。當你以說服進行延伸檢定時，可將檢定的阻力降低 2（最低為 1）。此外，若說服檢定出現糾葛，你可花費動力而非威脅來消除該糾葛。'
+      },
+      {
+        englishName: 'Menacing Words',
+        chineseName: '威懾之言',
+        keywords: '〈說服〉、〈進階〉',
+        content: '你周身帶有危險氣息，若將其針對某人，對方便會感受到威壓與恐懼。當你以恐嚇、談判或修辭進行技能檢定時，可將糾葛範圍增加 2，以將致命成功範圍加倍（最高至技能等級兩倍）。'
       }
     ],
     '韌性': [
@@ -274,6 +358,18 @@ export const useTalentDataAC = () => {
         chineseName: '堅毅如山',
         keywords: '〈韌性〉',
         content: '你能承受比常人更多的壓力。你的壓力軌上限增加 +3。'
+      },
+      {
+        englishName: 'Impenetrable Mind',
+        chineseName: '堅不可侵之心',
+        keywords: '〈韌性〉、〈進階〉',
+        content: '你的思緒曲折難測，別人難以讀懂，而超自然恐懼更難影響你。當防禦精神攻擊或心靈入侵時，你購買的每顆額外 d20 皆減少 1 點成本。'
+      },
+      {
+        englishName: 'Relentless',
+        chineseName: '不屈不撓',
+        keywords: '〈韌性〉',
+        content: '你歷經苦難——也許是囚徒、勞工，或僅僅熬過嚴酷寒冬——無論如何，你學會了超越極限。當你採取「喘息（Catch Breath）」主要動作時，可額外花費動力以移除疲勞（每 1 點動力移除 1 點疲勞）。'
       }
     ],
     '潛匿': [
@@ -312,13 +408,25 @@ export const useTalentDataAC = () => {
         chineseName: '完美時機',
         keywords: '〈潛匿〉',
         content: '你總能在千鈞一髮之際抵達目標地。當潛匿檢定有時間限制（如在守衛回頭前抵達、避開移動探照燈等）時，你購買的第一顆額外 d20 成本為 0。'
+      },
+      {
+        englishName: 'False Trail',
+        chineseName: '假線索',
+        keywords: '〈潛匿〉',
+        content: '誤導他人是你的專長。當你在對抗潛匿檢定中成功時，可花費 1 點動力創造一個「真理」，代表追蹤者被誤導或走錯方向。'
+      },
+      {
+        englishName: 'Quick Change',
+        chineseName: '快速換裝',
+        keywords: '〈潛匿〉',
+        content: '時尚即是偽裝的藝術。添上圍巾、更換外套、調換帽子——這些細節足以改變整體印象，使追兵與目擊者困惑。當你進行「準備（Prepare）」副動作時，可調整幾處服裝細節，創造一項與偽裝效果相關的「真理」。'
       }
     ],
     '工程': [
       {
         englishName: 'Demolitions',
         chineseName: '爆破專家',
-        keywords: '〈工程〉，進階',
+        keywords: '〈工程〉、〈進階〉',
         content: '你精通製作、安置與拆除爆炸物。當你進行與爆炸裝置相關的工程檢定時，第一次購買的額外骰免費。\n此外，每場景可忽略一次與爆炸物相關的工程檢定所產生的第一次糾葛。'
       },
       {
@@ -350,6 +458,18 @@ export const useTalentDataAC = () => {
         chineseName: '修補維生',
         keywords: '〈工程〉',
         content: '你擅長利用機械零件製造所需資源。你可花費半小時拆解一台機械，並進行一次難度 1 的洞察＋工程檢定。\n若成功，可獲得足夠零件以補充機械工具或電工工具的資源。此檢定可在代價下成功，該被拆解的物品將報廢。'
+      },
+      {
+        englishName: 'Bottomless Pockets',
+        chineseName: '無底口袋',
+        keywords: '〈工程〉',
+        content: '你有滿滿的袋子與包包，裡頭裝滿零件與半成品裝置。你可攜帶額外兩件次要物品而不受累贅影響。任務開始時可選擇一組能產生動力的技能工具組，使該工具組額外獲得 1 點可用於購買 d20 的動力。'
+      },
+      {
+        englishName: 'Fine Tuning',
+        chineseName: '微調',
+        keywords: '〈工程〉',
+        content: '你習慣調校難以駕馭的新裝備或科技原型，花時間測試與修正。任務開始時，可選擇團隊擁有的一件具實驗性（Experimental）特性的裝備，該裝備每場景第一次產生糾葛可被忽略。'
       }
     ],
     '戰鬥': [
@@ -384,10 +504,22 @@ export const useTalentDataAC = () => {
         content: '你是神準的射手，能擊中常人難以命中的目標。當你在進行遠程攻擊前使用「瞄準」副動作時，第一次購買的額外骰免費。\n此外，該攻擊獲得「穿透」特性，或使武器的穿透等級提高 1。'
       },
       {
-        englishName: 'They Don’t Like It Up ’Em',
+        englishName: "They Don't Like It Up 'Em",
         chineseName: '貼身突刺',
         keywords: '〈戰鬥〉',
         content: '你擅長近距肉搏，以無可抵擋的突擊壓制敵人。當你移動至敵人可及範圍並進行近戰攻擊時，第一次購買的額外骰免費。\n若攻擊成功，目標將被擊倒。'
+      },
+      {
+        englishName: 'Dirty Fighter',
+        chineseName: '骯髒戰法',
+        keywords: '〈戰鬥〉',
+        content: '榮譽？你沒聽過這回事。當對手在近戰或遠程攻擊檢定中擲出糾葛時，你對其下一次攻擊可重擲 1d20。'
+      },
+      {
+        englishName: 'Shield Specialist',
+        chineseName: '盾牌專家',
+        keywords: '〈戰鬥〉、〈進階〉',
+        content: '你受訓將盾牌融入戰技，使防禦與攻擊合而為一。使用盾牌時獲得額外 +1 護甲。若在持盾時使用「準備」副動作後進行近戰攻擊，可為該攻擊附加震懾效果。'
       }
     ],
     '醫學': [
@@ -424,8 +556,20 @@ export const useTalentDataAC = () => {
       {
         englishName: 'Seen Worse',
         chineseName: '見多不怪',
-        keywords: '〈醫學〉，進階',
+        keywords: '〈醫學〉、〈進階〉',
         content: '你有強健的胃與責任感，不讓恐懼凌駕於病患需求之上。你可花費 2 點動力，獲得等同於你能看見或聽見之受傷盟友人數的勇氣抗性。'
+      },
+      {
+        englishName: 'Field Medicine Expertise',
+        chineseName: '戰地醫學專家',
+        keywords: '〈醫學〉、〈進階〉',
+        content: '你擅長在艱難環境下救治傷者。當你在非正規醫療設施中以醫學檢定治療身體或精神壓力時，可將糾葛範圍減少 2（最低為 1）。若治療成功，病患的恢復時間視同在正規醫療環境中。'
+      },
+      {
+        englishName: 'First on the Scene',
+        chineseName: '第一現場',
+        keywords: '〈醫學〉',
+        content: '你懂得在危急時刻果斷行動。每場行動場景開始時，你可增加 2 點威脅以搶先行動。若有隊友瀕死，你可「保持先機」而不需花費動力，只要你是下一位行動者。'
       }
     ],
     '學術': [
@@ -470,6 +614,18 @@ export const useTalentDataAC = () => {
         chineseName: '勤學不倦',
         keywords: '〈學識〉',
         content: '當你首次在成功的技能檢定中「獲取情報」時，可額外提出一個問題。'
+      },
+      {
+        englishName: 'Explosive Chemist',
+        chineseName: '爆裂物化學家',
+        keywords: '〈學識〉、〈進階〉',
+        content: '你理解炸藥、揮發性化學物質與彈藥背後的科學。設置或拆除爆裂物時，你可用學識代替工程。此外，當以爆裂物造成壓力時，可重擲數量等同於你學識等級的挑戰骰。'
+      },
+      {
+        englishName: 'Forger',
+        chineseName: '偽造專家',
+        keywords: '〈學識〉',
+        content: '你洞察細節——紙張厚度、筆劃形狀、墨水氣味。你研究過簽名、官方文件與軍事手續，能製作或複製足以欺瞞官僚的偽件。\n製作身分文件時，檢定難度降低 1。敵人檢查文件時，識破難度提高 1。\n此外，凡依賴偽造文件的檢定，使用該文件的探員可重擲其中 1🎲。\n當你為團隊申請身分文件時，每份僅需花費 1 點軍需點（而非 2 點）。'
       }
     ],
     '通用天賦': [
@@ -502,6 +658,36 @@ export const useTalentDataAC = () => {
         chineseName: '臨危不亂',
         keywords: '〈技能〉、〈命運〉',
         content: '當情勢緊迫時，你能深吸一口氣並完成任務。選擇此天賦時，請選擇一項技能。\n當你以該技能進行技能檢定時，你可花費 1 點命運以自動成功該檢定，但不會產生任何動力。'
+      },
+      {
+        englishName: 'Frugal',
+        chineseName: '節儉',
+        keywords: '〈命運〉',
+        content: '你一向謹慎用錢，因此當有機會採購時，總能拿出些多餘物資交換、或懂得如何議價。當你申請軍需時，可花費 1 點命運，為團隊額外獲得 5 點軍需點以購買裝備。'
+      },
+      {
+        englishName: 'Individualist',
+        chineseName: '個人主義者',
+        keywords: '—',
+        content: '你並非孤僻，只是明白有時候最好的解決方式是親自上陣。你獲得 1 點個人動力，每場遊戲開始時刷新。你可在未獲協助、或未使用團隊動力的檢定上花費此點數。當你使用個人動力時，仍可藉由產生威脅來購買額外骰。'
+      },
+      {
+        englishName: 'Highly Effective',
+        chineseName: '高效能',
+        keywords: '〈技能〉',
+        content: '讓成功發揮最大效益是你的首要任務，無論是攻擊或挑戰，你都確保成果徹底落實。選擇一項技能作為此天賦之對象。每場景一次，當你以該技能造成壓力（或進行延伸任務）時，可重擲至多 2🎲。'
+      },
+      {
+        englishName: 'Never Surrender!',
+        chineseName: '永不投降！',
+        keywords: '〈命運〉',
+        content: '你擁有堅毅的意志與鬥志，當情勢險惡時，能激發內在決心重整旗鼓。當你花費 1 點命運以避免敗北時，立即重新加入場景，回復 3🎲 壓力，並獲得 2 點士氣。此士氣加成持續至場景結束。'
+      },
+      {
+        englishName: 'Practised Skill',
+        chineseName: '熟練技能',
+        keywords: '〈技能〉、〈進階〉',
+        content: '你是該領域的專家，無論是經驗、訓練或天賦，皆能讓事情顯得輕而易舉。選擇一項等級 3 以上的技能。當你以該技能進行檢定時，糾葛範圍減少 2（最低為 1）。'
       }
     ],
     '運動': [
@@ -514,7 +700,7 @@ export const useTalentDataAC = () => {
       {
         englishName: 'Might Makes Right',
         chineseName: '強壯為勝',
-        keywords: '〈運動〉，進階',
+        keywords: '〈運動〉、〈進階〉',
         content: '你懂得如何在戰鬥中發揮自身的力量與體型。當你進行近戰對抗檢定時，可使用「體魄 + 運動」進行。\n此外，你可無視所持武器的「沉重」特性。'
       },
       {
@@ -540,6 +726,18 @@ export const useTalentDataAC = () => {
         chineseName: '臥倒掩護',
         keywords: '〈運動〉',
         content: '當你在戰鬥中使用「衝鋒」動作時，對你發動的攻擊難度提高 +1，直到你下一回合開始為止。'
+      },
+      {
+        englishName: 'Disarming Technique',
+        chineseName: '繳械技術',
+        keywords: '〈運動〉',
+        content: '你受訓以近戰奪取敵人武器。當你花費動力解除敵人武裝時，可將武器移出其近距離，甚至置於觸及範圍外。此外，你可用敏捷 + 運動替代敏捷 + 戰鬥來防禦近戰攻擊。\n若成功防禦近戰攻擊，可選擇解除攻擊者武裝，而非對其造成壓力或重置位置，且無須再花費動力。'
+      },
+      {
+        englishName: 'Grenadier',
+        chineseName: '擲彈兵',
+        keywords: '〈運動〉、〈進階〉',
+        content: '你不僅擅長投擲手榴彈，更精於掌握時機與角度，以達到最大效果。當你以運動檢定擲出手榴彈時，可花費 2 點動力，將任意挑戰骰結果變更為效果面，最多至你的運動等級。'
       }
     ],
     '士兵': [
@@ -700,6 +898,106 @@ export const useTalentDataAC = () => {
         chineseName: '細緻分析',
         keywords: '〈調查員〉、〈觀察〉',
         content: '你善於注意細節，能從蛛絲馬跡中找出真相。每場景可消耗2點動力，立即向遊戲主持人提出三個關於當前場景的問題，視同使用「獲取情報」的動力花費，但不需先進行檢定。'
+      }
+    ],
+    '刺客': [
+      {
+        englishName: 'Deadly Assassination',
+        chineseName: '致命暗殺',
+        keywords: '〈刺客〉、〈戰鬥〉',
+        content: '你擅長對毫無防備的敵人迅速下手。當你對無防備目標發動攻擊時，可消耗 2 點威脅以執行致命暗殺，為該次攻擊賦予「穿透 2」與「強烈」效果（若攻擊原本已為強烈，則改為穿透 2 並額外 +3🎲 傷害）。若目標被擊倒或殺死，攻擊行動無聲無息，無人察覺。'
+      },
+      {
+        englishName: 'Skilled Poisoner',
+        chineseName: '熟練製毒者',
+        keywords: '〈刺客〉、〈醫學〉',
+        content: '你精通調製與混合毒藥配方，使材料發揮最大效用。當你使用製毒者工具組的彈藥時，可花費 1 點動力以增加 洞察 + 醫學 檢定難度 +1，或加速毒性發作，使目標於每回合結束（而非場景結束）時承受 1 點疲勞。'
+      },
+      {
+        englishName: 'Smooth Criminal',
+        chineseName: '優雅罪犯',
+        keywords: '〈刺客〉、〈運動〉、〈說服〉',
+        content: '你天生擅長脫身於危險情境，總能找到最聰明的出路。當你嘗試說服、脫逃或擺脫危險狀況時，你擲的第一顆 1🎲 不需消耗動力。'
+      }
+    ],
+    '宣傳員': [
+      {
+        englishName: 'Codebreaker',
+        chineseName: '密碼破譯者',
+        keywords: '〈宣傳員〉、〈學識〉',
+        content: '你是數學天才、填字高手或密碼專家。你曾被各國徵召，用於破解軍用電報或公開廣播中的隱密訊息。當你解謎或破譯密碼時，可將檢定難度降低 2（最低至 0）。此外，你可花費 1 點動力為自己的外發訊息加密。若他人試圖破解你的加密訊息，必須進行一次難度 2 的 智識 + 學識（密碼學） 檢定。'
+      },
+      {
+        englishName: 'Righteous Rage',
+        chineseName: '正義之怒',
+        keywords: '〈宣傳員〉、〈說服〉',
+        content: '你善於激起被壓迫者的憤怒與怒火。當你煽動群眾暴力或憤慨時，可將難度降低 1（最低至 0）。此外，你可在任何行動場景中發出鼓舞吶喊，進行一次 意志 + 說服 檢定（難度 1）作為主要動作。若成功，所有能聽見你的人在本場景的近戰攻擊中獲得「兇猛」效果。若他們已有此效果，則改為額外 +2🎲 傷害。'
+      },
+      {
+        englishName: 'Web of Contacts',
+        chineseName: '人脈之網',
+        keywords: '〈宣傳員〉、〈說服〉',
+        content: '你認識各式人物——有的可靠，有的則難以信任。在戰亂與佔領下的動盪環境中，情報來源時常變動。你可消耗 2 點威脅以在同一任務中再次動用同一聯絡人。'
+      }
+    ],
+    '襲擊者': [
+      {
+        englishName: 'Against All Odds',
+        chineseName: '逆境求生',
+        keywords: '〈襲擊者〉、〈戰鬥〉',
+        content: '你習慣於劣勢下奮戰——撤退、被包圍或人數劣勢時皆然。當戰鬥開始且你與盟友人數少於敵方時，你與所有「近距範圍」內的盟友於首回合獲得 +1 物理抗性。你可於首回合任意時刻花費 2 點動力，將此效果延長至本場景結束。'
+      },
+      {
+        englishName: 'Bolt Hole',
+        chineseName: '藏匿據點',
+        keywords: '〈襲擊者〉、〈命運〉',
+        content: '你能無聲無息地消失，對追蹤者而言宛如魔法，但其實是精準規劃與躲避技巧的結果。你可花費 1 點命運，宣告附近有一處可供你與至多 10 名盟友藏身的地點。追蹤者必須通過難度 3 的 洞察 + 觀察 檢定才能發現你們；若失敗，你與盟友至少 30 分鐘內不會被發現。'
+      },
+      {
+        englishName: 'Scrimp and Save',
+        chineseName: '節儉生存',
+        keywords: '〈襲擊者〉、〈說服〉',
+        content: '你在資源匱乏的情況下仍能延長補給的使用時間。當你在任務中第一次耗盡彈藥時，可進行一次 戰鬥 + 戰術 檢定（難度 1）。若成功，你回復 2🎲 彈藥。'
+      }
+    ],
+    '抵抗運動領袖': [
+      {
+        englishName: 'Emergency Resupply',
+        chineseName: '緊急補給',
+        keywords: '〈抵抗運動領袖〉、〈說服〉',
+        content: '你深知求生之道在於隨時獲得團隊所需資源，並培養了能於危急時刻協助你的聯絡網。然而，壓迫者的眼線無處不在，而迅速行動往往引來關注。每場任務可使用一次：當你呼叫聯絡人以請求補給時，可增加 2 點威脅以獲得至多 5 點軍需點的裝備。'
+      },
+      {
+        englishName: 'Force Multiplier',
+        chineseName: '力量倍增',
+        keywords: '〈抵抗運動領袖〉、〈戰術〉、〈命運〉',
+        content: '你知道何時應集中火力，也懂得在運氣不佳時如何減輕損失。你可花費 1 點命運以執行下列反應之一：穩定陣線（Steady Up!）：當中距離內的盟友宣告「齊射攻擊（Salvo）」時，可將其中一顆骰子設定為 1（視為致命成功）。若攻擊命中，他們可重新擲一次挑戰骰。弱點標記（Vulnerable Spot!）：當中距離內盟友進行遠程攻擊時，你可進行 洞察 + 戰術 檢定以協助。無論檢定是否成功，該盟友的攻擊皆獲得「穿透 +1」效果，或提升其武器的穿透等級 1。'
+      },
+      {
+        englishName: 'Unexpected Reinforcement',
+        chineseName: '意外增援',
+        keywords: '〈抵抗運動領袖〉、〈戰術〉',
+        content: '你建立了名聲，並能在關鍵時刻喚起鄰近的支援。當你以威脅創造「地方支援」的真理時（如干擾、破壞、臨時裝備援助等），你與中距離內所有盟友立即恢復等同你戰術技能的壓力。此外，你可再增加 1 點威脅，使你與所有盟友在本場景結束前獲得等同你戰術技能的士氣回復。'
+      }
+    ],
+    '破壞者': [
+      {
+        englishName: 'Booby Trap',
+        chineseName: '陷阱設置',
+        keywords: '〈破壞者〉、〈潛匿〉',
+        content: '你知道如何讓人打消拆除裝置或干擾你作品的念頭。當你完成工程檢定後，可花費 1 點動力在成果中添加陷阱。除非搜索者通過難度 2 的 洞察 + 觀察 檢定，否則陷阱不會被發現。拆除陷阱的檢定難度比正常高 1，若陷阱被觸發，所有「近距範圍」內的人將承受 4🎲 壓力。'
+      },
+      {
+        englishName: 'Gremlins in the Machine',
+        chineseName: '機械妖精',
+        keywords: '〈破壞者〉、〈工程〉',
+        content: '你精通如何在系統中引入微妙的缺陷，使其不致完全失效卻持續低效。當你進行工程檢定以破壞設備時，可選擇增加該設備所有相關檢定的糾葛範圍 +2，使其操作時間加倍，因為該裝置會反覆故障或出現問題。'
+      },
+      {
+        englishName: 'Timing is Everything',
+        chineseName: '精準時機',
+        keywords: '〈破壞者〉、〈工程〉',
+        content: '你的行動如同精密時鐘般運作，而團隊也懂得如何利用你的嚴密計畫。當你的破壞、爆破或其他破壞行動被敵人察覺的同一場景內，每位盟友可在他們的單次檢定中重擲一顆骰子。'
       }
     ],
   };

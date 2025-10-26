@@ -926,6 +926,261 @@ export const backgrounds = [
     equipment: [
       '取得符合身分的服飾與標誌，以及一名「神秘學」領域的聯絡人'
     ]
+  },
+  {
+    key: 'interrogator',
+    chineseName: '審訊員',
+    englishName: 'Interrogator',
+    icon: '🔍',
+    
+    description: '你擅長從謊言、半真半假的說辭與模糊的敘述中抽絲剝繭。',
+    
+    detailDescription: '你擅長從謊言、半真半假的說辭與模糊的敘述中抽絲剝繭。或許你曾受過政府組織的專業訓練，也或許只是天生擁有洞悉人心的直覺。你所採用的方法多種多樣——從魅力與威嚇，到脅迫甚至暴力。最重要的是：你能挖掘出組織所需的情報。',
+    
+    attributeBonus: {
+      COO: 1,  // 協調
+      INS: 2,  // 洞察
+      REA: 2,  // 智識
+      WIL: 1   // 意志
+    },
+    
+    skillBonus: {
+      ACADEMIA: 1,     // 學識
+      OBSERVATION: 1,  // 觀察
+      PERSUASION: 2    // 說服
+    },
+    
+    focusRequirements: [
+      {
+        skill: 'PERSUASION',
+        count: 1,
+        description: '自「說服」中選擇 1 項專精'
+      },
+      {
+        skill: 'ANY',
+        count: 1,
+        description: '並自其他任一技能中再選 1 項'
+      }
+    ],
+    
+    talentRequirement: {
+      keyword: '說服',
+      description: '選擇 1 項具「說服」關鍵詞的天賦'
+    },
+    
+    truthOptions: [
+      '富有磁性的個人魅力',
+      '人性的觀察者',
+      '令人畏懼的審問者'
+    ],
+    
+    equipment: [
+      '一位具以下任一專精的聯絡人：密碼學、爆裂物學、歷史學、語言學、神秘學或外科手術'
+    ]
+  },
+  {
+    key: 'liberated_prisoner',
+    chineseName: '被解放的囚犯',
+    englishName: 'Liberated Prisoner',
+    icon: '⛓️‍💥',
+    
+    description: '你曾被關押於監獄、駐軍、勞改營或集中營。',
+    
+    detailDescription: '你曾被關押於監獄、駐軍、勞改營或集中營。也許你是被抵抗軍突襲營救，也許你靠自己逃出。無論如何，如今你自由了——而該如何運用這份自由，由你決定。你可能是戰俘、政治犯、異議者、被迫勞動者，或僅僅是不幸的被選中者。無論過去的你是誰，如今你已截然不同，並能將那段經歷化為力量。',
+    
+    attributeBonus: {
+      AGI: 1,  // 敏捷
+      BRA: 2,  // 體魄
+      COO: 1,  // 協調
+      WIL: 2   // 意志
+    },
+    
+    skillBonus: {
+      ATHLETICS: 1,    // 運動
+      MEDICINE: 1,     // 醫學
+      RESILIENCE: 2    // 韌性
+    },
+    
+    focusRequirements: [
+      {
+        skill: 'RESILIENCE',
+        count: 1,
+        description: '自「韌性」中選擇 1 項專精'
+      },
+      {
+        skill: 'ANY',
+        count: 1,
+        description: '並自其他任一技能中再選 1 項'
+      }
+    ],
+    
+    talentRequirement: {
+      keyword: '韌性',
+      description: '選擇 1 項具「韌性」關鍵詞的天賦'
+    },
+    
+    truthOptions: [
+      '集中營倖存者',
+      '復仇為燃',
+      '為第三帝國效勞的苦工'
+    ],
+    
+    equipment: [
+      '竊盜工具組或保險箱破解工具組'
+    ]
+  },
+  {
+    key: 'partisan',
+    chineseName: '游擊隊員',
+    englishName: 'Partisan',
+    icon: '🌲',
+    
+    description: '你的祖國遭受入侵。或許你曾在佔領下苟且度日，但最終，你再也無法忍受。',
+    
+    detailDescription: '你的祖國遭受入侵。或許你曾在佔領下苟且度日，但最終，你再也無法忍受。某件事讓你徹底覺醒——宵禁、襲擊、電台的宣傳，或摯友的處決。你可能從小規模抵抗開始，逐漸轉向直接行動，也可能從拿起武器的那一刻起就未曾停手。你是數千名為奪回家園而戰的游擊戰士之一。',
+    
+    attributeBonus: {
+      AGI: 1,  // 敏捷
+      BRA: 2,  // 體魄
+      COO: 1,  // 協調
+      WIL: 2   // 意志
+    },
+    
+    skillBonus: {
+      ATHLETICS: 2,  // 運動
+      STEALTH: 1,    // 潛匿
+      SURVIVAL: 1    // 求生
+    },
+    
+    focusRequirements: [
+      {
+        skill: 'ATHLETICS',
+        count: 1,
+        description: '自「運動」中選擇 1 項專精'
+      },
+      {
+        skill: 'ANY',
+        count: 1,
+        description: '並自其他任一技能中再選 1 項'
+      }
+    ],
+    
+    talentRequirement: {
+      keyword: '運動',
+      description: '選擇 1 項具「運動」關鍵詞的天賦'
+    },
+    
+    truthOptions: [
+      '家園軍士兵',
+      '新手小隊長',
+      '祖國解放者'
+    ],
+    
+    equipment: [
+      '以下擇一：祕密通訊設備、破壞者工具組、限制值 2 或更低的武器、或一位具戰鬥專精的聯絡人'
+    ]
+  },
+  {
+    key: 'striker',
+    chineseName: '罷工者',
+    englishName: 'Striker',
+    icon: '✊',
+    
+    description: '你曾參與反戰示威，無論是遊行、總罷工，或面對納粹戰爭機器的公民抗命。',
+    
+    detailDescription: '你曾參與反戰示威，無論是遊行、總罷工，或面對納粹戰爭機器的公民抗命。你的堅定意志換來殘酷鎮壓，但你深知：第三帝國不會被孤軍奮戰擊敗，而是要靠工人、知識份子、戰士與領袖的團結力量才能推翻。',
+    
+    attributeBonus: {
+      AGI: 1,  // 敏捷
+      BRA: 2,  // 體魄
+      REA: 1,  // 智識
+      WIL: 2   // 意志
+    },
+    
+    skillBonus: {
+      ACADEMIA: 1,     // 學識
+      FIGHTING: 1,     // 戰鬥
+      PERSUASION: 2    // 說服
+    },
+    
+    focusRequirements: [
+      {
+        skill: 'PERSUASION',
+        count: 1,
+        description: '自「說服」中選擇 1 項專精'
+      },
+      {
+        skill: 'ANY',
+        count: 1,
+        description: '並自其他任一技能中再選 1 項'
+      }
+    ],
+    
+    talentRequirement: {
+      keyword: '說服',
+      description: '選擇 1 項具「說服」關鍵詞的天賦'
+    },
+    
+    truthOptions: [
+      '鼓動型演說家',
+      '中產階級工人',
+      '學生組織者'
+    ],
+    
+    equipment: [
+      '一位具以下任一專精的聯絡人：學識、徒手戰鬥、歷史學、急救、修辭或戰術'
+    ]
+  },
+  {
+    key: 'turncoat',
+    chineseName: '變節者',
+    englishName: 'Turncoat',
+    icon: '🔄',
+    
+    description: '你曾是第三帝國的一員，但那已成過去。',
+    
+    detailDescription: '你曾是第三帝國的一員，但那已成過去。無論你原隸屬於國防軍、納粹黨、蓋世太保，甚至黑日會或夜狼部隊，你如今已有理由背棄那份意識形態，轉而為同盟國與被佔領國家而戰。雖然他人對你仍存疑慮，但你的見識與內部情報是對抗昔日同僚的寶貴武器。',
+    
+    attributeBonus: {
+      COO: 1,  // 協調
+      INS: 2,  // 洞察
+      REA: 1,  // 智識
+      WIL: 2   // 意志
+    },
+    
+    skillBonus: {
+      OBSERVATION: 1,  // 觀察
+      PERSUASION: 1,   // 說服
+      TACTICS: 2       // 戰術
+    },
+    
+    focusRequirements: [
+      {
+        skill: 'TACTICS',
+        count: 1,
+        description: '自「戰術」中選擇 1 項專精'
+      },
+      {
+        skill: 'ANY',
+        count: 1,
+        description: '並自其他任一技能中再選 1 項'
+      }
+    ],
+    
+    talentRequirement: {
+      keyword: '戰術',
+      description: '選擇 1 項具「戰術」關鍵詞的天賦'
+    },
+    
+    truthOptions: [
+      '前黨衛軍軍官',
+      '叛逃的國防軍士兵',
+      '夜狼部隊叛逃者'
+    ],
+    
+    equipment: [
+      '身份證件與一把德製手槍'
+    ]
   }
 ]
 

@@ -519,7 +519,12 @@ const getAvailableTalents = computed(() => {
     'Infiltrator': '滲透者',
     'Investigator': '調查員',
     'Occult Scholar': '神秘學者',
-    'Soldier': '士兵'
+    'Soldier': '士兵',
+    'Assassin': '刺客',
+    'Propagandist': '宣傳員',
+    'Raider': '襲擊者',
+    'Resistance Leader': '抵抗運動領袖',
+    'Saboteur': '破壞者'
   }
   
   const talentCategory = archetypeToTalentMapping[selectedArchetype.value.englishName]

@@ -848,9 +848,502 @@ export const archetypesAC = [
         ]
       }
     ]
+  },
+  {
+    key: 'assassin',
+    chineseName: '刺客',
+    englishName: 'Assassin',
+    icon: '🗡️',
+    
+    // 基本描述
+    description: '無論是在月光下相遇、豪華宴會中潛伏，或潛行於敵後線內，刺客皆以死亡為業。身為抵抗運動的一員，刺客以佔領軍軍官、關鍵人員、合作者與叛徒為目標。',
+    
+    detailDescription: '無論是在月光下相遇、豪華宴會中潛伏，或潛行於敵後線內，刺客皆以死亡為業。身為抵抗運動的一員，刺客以佔領軍軍官、關鍵人員、合作者與叛徒為目標。其技藝包括暗藏的刀刃、消音手槍與致命毒藥，但他們也能即興取材，讓任何物件成為致命武器。',
+    
+    // 扮演提示
+    roleplayTips: [
+      '施展迅捷而致命的攻擊',
+      '調製並施放陰險的毒藥',
+      '當情勢失控時從容脫身'
+    ],
+    
+    // 角色特色
+    features: [
+      '精通暗殺技巧和致命武器',
+      '擅長調製和使用毒藥',
+      '能夠在危險中迅速脫身',
+      '善於偽裝和潛入目標地點'
+    ],
+    
+    // 關鍵屬性（用於顯示）
+    keyAttributes: ['AGI', 'COO'],
+    
+    // 屬性加成（根據原文：敏捷+2, 協調+2, 洞察+1, 智識+1）
+    attributeBonus: {
+      AGI: 2,  // 敏捷
+      COO: 2,  // 協調
+      INS: 1,  // 洞察
+      REA: 1   // 智識
+    },
+    
+    // 技能加成（根據原文：運動+1, 戰鬥+2, 醫學+1, 觀察+2, 說服+1, 潛匿+2）
+    skillBonus: {
+      ATHLETICS: 1,    // 運動
+      FIGHTING: 2,     // 戰鬥
+      MEDICINE: 1,     // 醫學
+      OBSERVATION: 2,  // 觀察
+      PERSUASION: 1,   // 說服
+      STEALTH: 2       // 潛匿
+    },
+    
+    // 專精選擇說明
+    focusDescription: '從「戰鬥」「觀察」「潛匿」三項技能中選擇任意兩項專精',
+    
+    // 可選專精列表（用於顯示）
+    availableFocuses: [
+      '從「戰鬥」「觀察」「潛匿」三項技能中選擇任意兩項專精'
+    ],
+    
+    // 專精選項（對應到實際技能代碼）
+    focusOptions: {
+      FIGHTING: ['徒手戰鬥', '近戰武器', '手槍', '近距作戰', '步槍', '重型武器', '威脅感知', '異域'],
+      OBSERVATION: ['聽覺', '直覺', '視覺', '嗅覺與味覺'],
+      STEALTH: ['偽裝', '迷彩', '都市潛行', '野外潛行']
+    },
+    
+    // 所持物品選項
+    belongings: [
+      {
+        category: '刺客裝備',
+        note: '製毒者工具組與隱藏武器',
+        selectCount: 0, // 固定獲得所有物品
+        options: [
+          {
+            name: '製毒者工具組',
+            type: 'equipment',
+            alternative: {
+              name: '製毒者工具組（固定獲得）',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '隱藏武器',
+            type: 'equipment',
+            alternative: {
+              name: '隱藏武器（固定獲得）',
+              type: 'equipment'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'propagandist',
+    chineseName: '宣傳員',
+    englishName: 'Propagandist',
+    icon: '📢',
+    
+    // 基本描述
+    description: '宣傳員操縱情感與信念。他們可能擅長演說或文字傳播，也可能精於向群眾散布資訊。',
+    
+    detailDescription: '宣傳員操縱情感與信念。他們可能擅長演說或文字傳播，也可能精於向群眾散布資訊。作為抵抗運動的一員，宣傳員總是掌握消息，負責凝聚盟友以求生存與壯大。他們的工作需要隱密與耐心，雖不持武器，卻能憑言語與思想，激勵人民對抗壓迫者。',
+    
+    // 扮演提示
+    roleplayTips: [
+      '鼓舞被壓迫的民眾',
+      '建立可靠的人脈網絡',
+      '破解常規戰或隱密之戰的情報密碼'
+    ],
+    
+    // 角色特色
+    features: [
+      '精通宣傳和煽動技巧',
+      '擁有廣泛的人脈網絡',
+      '擅長密碼學和情報分析',
+      '能夠凝聚民心對抗壓迫'
+    ],
+    
+    // 關鍵屬性（用於顯示）
+    keyAttributes: ['INS', 'WIL'],
+    
+    // 屬性加成（根據原文：體魄+1, 洞察+2, 智識+1, 意志+2）
+    attributeBonus: {
+      BRA: 1,  // 體魄
+      INS: 2,  // 洞察
+      REA: 1,  // 智識
+      WIL: 2   // 意志
+    },
+    
+    // 技能加成（根據原文：學識+2, 運動+1, 戰鬥+1, 觀察+1, 說服+2, 戰術+2）
+    skillBonus: {
+      ACADEMIA: 2,     // 學識
+      ATHLETICS: 1,    // 運動
+      FIGHTING: 1,     // 戰鬥
+      OBSERVATION: 1,  // 觀察
+      PERSUASION: 2,   // 說服
+      TACTICS: 2       // 戰術
+    },
+    
+    // 專精選擇說明
+    focusDescription: '從「學識」「說服」「戰術」三項技能中選擇任意兩項專精',
+    
+    // 可選專精列表（用於顯示）
+    availableFocuses: [
+      '從「學識」「說服」「戰術」三項技能中選擇任意兩項專精'
+    ],
+    
+    // 專精選項（對應到實際技能代碼）
+    focusOptions: {
+      ACADEMIA: ['藝術', '密碼學', '財務學', '歷史學', '語言學', '神秘學', '科學'],
+      PERSUASION: ['魅力', '暗示', '恐嚇', '談判', '修辭', '欺瞞', '祈招'],
+      TACTICS: ['空軍', '陸軍', '祕密行動', '領導', '海軍', '技術專案']
+    },
+    
+    // 所持物品選項
+    belongings: [
+      {
+        category: '宣傳員裝備',
+        note: '身分證件與一位聯絡人（任意專精）',
+        selectCount: 1, // 選擇一位聯絡人
+        options: [
+          {
+            name: '身分證件',
+            type: 'equipment',
+            alternative: {
+              name: '身分證件（固定獲得）',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '聯絡人（任意專精）',
+            type: 'contact',
+            alternative: {
+              name: '聯絡人（對應任意專精）',
+              type: 'contact'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'raider',
+    chineseName: '襲擊者',
+    englishName: 'Raider',
+    icon: '⚔️',
+    
+    // 基本描述
+    description: '身為游擊戰專家，襲擊者熟知伏擊、竊取與脫身之道，總能在增援抵達前全身而退。',
+    
+    detailDescription: '身為游擊戰專家，襲擊者熟知伏擊、竊取與脫身之道，總能在增援抵達前全身而退。他們行動迅速、打擊猛烈、隨即消失，待危險過去後再現身。在抵抗運動中，襲擊者的任務是擾亂敵軍與警察行動，將敵方的資源轉化為己用，以延長戰線，讓抵抗持續數週甚至數月。',
+    
+    // 扮演提示
+    roleplayTips: [
+      '解放被壓迫軍隊掠奪的物資',
+      '成為緊密游擊隊中的可靠成員',
+      '快速出擊、猛烈打擊、自由生存'
+    ],
+    
+    // 角色特色
+    features: [
+      '精通游擊戰術和伏擊技巧',
+      '擅長快速打擊後脫身',
+      '能夠奪取和利用敵方資源',
+      '在團隊中發揮關鍵作用'
+    ],
+    
+    // 關鍵屬性（用於顯示）
+    keyAttributes: ['BRA', 'COO'],
+    
+    // 屬性加成（根據原文：敏捷+1, 體魄+2, 協調+2, 意志+1）
+    attributeBonus: {
+      AGI: 1,  // 敏捷
+      BRA: 2,  // 體魄
+      COO: 2,  // 協調
+      WIL: 1   // 意志
+    },
+    
+    // 技能加成（根據原文：戰鬥+2, 觀察+2, 潛匿+1, 求生+1, 戰術+1, 載具+2）
+    skillBonus: {
+      FIGHTING: 2,     // 戰鬥
+      OBSERVATION: 2,  // 觀察
+      STEALTH: 1,      // 潛匿
+      SURVIVAL: 1,     // 求生
+      TACTICS: 1,      // 戰術
+      VEHICLES: 2      // 載具
+    },
+    
+    // 專精選擇說明
+    focusDescription: '從「戰鬥」「觀察」「載具」三項技能中選擇任意兩項專精',
+    
+    // 可選專精列表（用於顯示）
+    availableFocuses: [
+      '從「戰鬥」「觀察」「載具」三項技能中選擇任意兩項專精'
+    ],
+    
+    // 專精選項（對應到實際技能代碼）
+    focusOptions: {
+      FIGHTING: ['徒手戰鬥', '近戰武器', '手槍', '近距作戰', '步槍', '重型武器', '威脅感知', '異域'],
+      OBSERVATION: ['聽覺', '直覺', '視覺', '嗅覺與味覺'],
+      VEHICLES: ['汽車', '摩托車', '重型載具', '坦克', '飛機', '船艇']
+    },
+    
+    // 所持物品選項
+    belongings: [
+      {
+        category: '襲擊者裝備',
+        note: '爆破工具組或保險箱破解工具組、限制值2或更低武器、聯絡人（載具）',
+        selectCount: 1, // 選擇工具組類型
+        options: [
+          {
+            name: '爆破工具組',
+            type: 'equipment',
+            alternative: {
+              name: '保險箱破解工具組',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '限制值2或更低武器',
+            type: 'equipment',
+            alternative: {
+              name: '限制值2或更低武器（固定獲得）',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '聯絡人（載具）',
+            type: 'contact',
+            alternative: {
+              name: '聯絡人（載具專精）',
+              type: 'contact'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'resistance_leader',
+    chineseName: '抵抗運動領袖',
+    englishName: 'Resistance Leader',
+    icon: '🛡️',
+    
+    // 基本描述
+    description: '兼具戰術家、政治家與軍需官職能的抵抗運動領袖，必須熟知組織運作的每個細節，並能與其他抵抗小組、同情者及正規軍建立聯繫。',
+    
+    detailDescription: '兼具戰術家、政治家與軍需官職能的抵抗運動領袖，必須熟知組織運作的每個細節，並能與其他抵抗小組、同情者及正規軍建立聯繫。他們在缺乏支援與成功保證的情況下仍須做出艱難決策——然而，鮮有人能比他們更致力於追求自由的理想。',
+    
+    // 扮演提示
+    roleplayTips: [
+      '帶領你的抵抗小組',
+      '在風險與報酬間取得平衡以達成目標',
+      '打破壓迫的枷鎖，解放你的人民與祖國'
+    ],
+    
+    // 角色特色
+    features: [
+      '出色的領導能力和組織技巧',
+      '能夠建立和維持複雜的聯盟關係',
+      '擅長在資源匱乏中做出艱難決策',
+      '致力於自由與解放的崇高理想'
+    ],
+    
+    // 關鍵屬性（用於顯示）
+    keyAttributes: ['INS', 'WIL'],
+    
+    // 屬性加成（根據原文：體魄+1, 協調+1, 洞察+2, 意志+2）
+    attributeBonus: {
+      BRA: 1,  // 體魄
+      COO: 1,  // 協調
+      INS: 2,  // 洞察
+      WIL: 2   // 意志
+    },
+    
+    // 技能加成（根據原文：學識+1, 觀察+2, 說服+2, 韌性+1, 求生+1, 戰術+2）
+    skillBonus: {
+      ACADEMIA: 1,     // 學識
+      OBSERVATION: 2,  // 觀察
+      PERSUASION: 2,   // 說服
+      RESILIENCE: 1,   // 韌性
+      SURVIVAL: 1,     // 求生
+      TACTICS: 2       // 戰術
+    },
+    
+    // 專精選擇說明
+    focusDescription: '從「觀察」「說服」「戰術」三項技能中選擇任意兩項專精',
+    
+    // 可選專精列表（用於顯示）
+    availableFocuses: [
+      '從「觀察」「說服」「戰術」三項技能中選擇任意兩項專精'
+    ],
+    
+    // 專精選項（對應到實際技能代碼）
+    focusOptions: {
+      OBSERVATION: ['聽覺', '直覺', '視覺', '嗅覺與味覺'],
+      PERSUASION: ['魅力', '暗示', '恐嚇', '談判', '修辭', '欺瞞', '祈招'],
+      TACTICS: ['空軍', '陸軍', '祕密行動', '領導', '海軍', '技術專案']
+    },
+    
+    // 所持物品選項
+    belongings: [
+      {
+        category: '抵抗運動領袖裝備',
+        note: '兩位聯絡人（各自擁有一項專精）、步槍或衝鋒槍與任意手槍各一另附手榴彈、偽裝工具組',
+        selectCount: 2, // 選擇兩位聯絡人和武器類型
+        options: [
+          {
+            name: '聯絡人（專精1）',
+            type: 'contact',
+            alternative: {
+              name: '聯絡人（擁有專精）',
+              type: 'contact'
+            }
+          },
+          {
+            name: '聯絡人（專精2）',
+            type: 'contact',
+            alternative: {
+              name: '聯絡人（擁有專精）',
+              type: 'contact'
+            }
+          },
+          {
+            name: '步槍',
+            type: 'equipment',
+            alternative: {
+              name: '衝鋒槍',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '手槍與手榴彈',
+            type: 'equipment',
+            alternative: {
+              name: '手槍與手榴彈（固定獲得）',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '偽裝工具組',
+            type: 'equipment',
+            alternative: {
+              name: '偽裝工具組（固定獲得）',
+              type: 'equipment'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'saboteur',
+    chineseName: '破壞者',
+    englishName: 'Saboteur',
+    icon: '💣',
+    
+    // 基本描述
+    description: '破壞者深諳如何摧毀、損壞或癱瘓設施以達最大效果。在抵抗運動中，優秀的破壞者是無可取代的行動人員。',
+    
+    detailDescription: '破壞者深諳如何摧毀、損壞或癱瘓設施以達最大效果。在抵抗運動中，優秀的破壞者是無可取代的行動人員。許多任務的目標都是讓法西斯的機械齒輪停轉——破壞者擁有各種達成此目的的手段：無論是爆破、隱密破壞或單純蠻力，你都具備讓它實現的技能。',
+    
+    // 扮演提示
+    roleplayTips: [
+      '成為最具資源應變力的人',
+      '在壓力下冷靜行動',
+      '摧毀敵軍防禦與基礎設施'
+    ],
+    
+    // 角色特色
+    features: [
+      '精通爆破和破壞技術',
+      '能夠在高壓環境中保持冷靜',
+      '擅長摧毀敵方設施和裝備',
+      '具備出色的資源應變能力'
+    ],
+    
+    // 關鍵屬性（用於顯示）
+    keyAttributes: ['BRA', 'REA'],
+    
+    // 屬性加成（根據原文：體魄+2, 協調+1, 智識+2, 意志+1）
+    attributeBonus: {
+      BRA: 2,  // 體魄
+      COO: 1,  // 協調
+      REA: 2,  // 智識
+      WIL: 1   // 意志
+    },
+    
+    // 技能加成（根據原文：運動+1, 工程+2, 醫學+1, 觀察+2, 潛匿+2, 載具+1）
+    skillBonus: {
+      ATHLETICS: 1,    // 運動
+      ENGINEERING: 2,  // 工程
+      MEDICINE: 1,     // 醫學
+      OBSERVATION: 2,  // 觀察
+      STEALTH: 2,      // 潛匿
+      VEHICLES: 1      // 載具
+    },
+    
+    // 專精選擇說明
+    focusDescription: '從「工程」「觀察」「潛匿」三項技能中選擇任意兩項專精',
+    
+    // 可選專精列表（用於顯示）
+    availableFocuses: [
+      '從「工程」「觀察」「潛匿」三項技能中選擇任意兩項專精'
+    ],
+    
+    // 專精選項（對應到實際技能代碼）
+    focusOptions: {
+      ENGINEERING: ['建築學', '戰鬥工兵', '電子學', '爆裂物學', '機械工程'],
+      OBSERVATION: ['聽覺', '直覺', '視覺', '嗅覺與味覺'],
+      STEALTH: ['偽裝', '迷彩', '都市潛行', '野外潛行']
+    },
+    
+    // 所持物品選項
+    belongings: [
+      {
+        category: '破壞者裝備',
+        note: '爆破工具組、隱藏炸藥、步槍或衝鋒槍與任意手槍各一另附手榴彈',
+        selectCount: 1, // 選擇武器類型
+        options: [
+          {
+            name: '爆破工具組',
+            type: 'equipment',
+            alternative: {
+              name: '爆破工具組（固定獲得）',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '隱藏炸藥',
+            type: 'equipment',
+            alternative: {
+              name: '隱藏炸藥（固定獲得）',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '步槍',
+            type: 'equipment',
+            alternative: {
+              name: '衝鋒槍',
+              type: 'equipment'
+            }
+          },
+          {
+            name: '手槍與手榴彈',
+            type: 'equipment',
+            alternative: {
+              name: '手槍與手榴彈（固定獲得）',
+              type: 'equipment'
+            }
+          }
+        ]
+      }
+    ]
   }
-  // 已完成所有八個官方原型
+  // 已完成所有十三個原型（八個官方 + 五個抵抗運動）
 ]
 
-// 導出預設原型（完整的八個官方原型：技術專家、指揮官、騙徒、機械工、滲透者、調查員、神秘學者、士兵）
+// 導出預設原型（完整的十三個原型：技術專家、指揮官、騙徒、機械工、滲透者、調查員、神秘學者、士兵、刺客、宣傳員、襲擊者、抵抗運動領袖、破壞者）
 export default archetypesAC
